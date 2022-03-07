@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="textViewFont" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="buttonFont" parent="@android:style/Widget.DeviceDefault.Button">
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="editTextFont" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="spinnerFont" parent="@style/DropDown_PowerSpinner">
+        <item name="fontFamily">@font/font</item>
+    </style>
+</resources>

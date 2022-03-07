@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="jyotti.apexing.apexing_android.ui.activity.account.AccountActivity" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        tools:context=".ui.account.AccountActivity">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/set_id"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_wrapper"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="10dp"
+            android:background="@null"
+            android:gravity="center"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/main"
+            app:hintTextColor="@color/main">
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/type_id"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.skydoves.powerspinner.PowerSpinnerView
+            android:id="@+id/spinner_platform"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/et_wrapper"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:hint="@string/choice_platform"
+            android:textColor="@color/black"
+            android:textColorHint="@color/main"
+            android:textSize="24sp"
+            app:spinner_arrow_gravity="top"
+            app:spinner_arrow_padding="5dp"
+            app:spinner_divider_show="false"
+            app:spinner_item_array="@array/platforms"
+            app:spinner_popup_animation="fade"
+            app:spinner_popup_background="@color/white"
+            app:spinner_popup_elevation="14dp" />
+
+        <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_wrapper"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:onClick="@{activity::onClickHelp}"
+            android:text="@string/help"
+            android:textColor="@color/lighter"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/btn_enroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box_gradient"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:focusable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:onClick="@{activity::onClickEnroll}"
+                android:paddingVertical="10dp"
+                android:text="@string/enroll"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

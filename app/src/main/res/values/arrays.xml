@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="platforms">
+        <item>PC</item>
+        <item>PS4</item>
+        <item>X1</item>
+    </string-array>
+</resources>

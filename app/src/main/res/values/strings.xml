@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Apexing-Android</string>
+    <string name="app">APEXING.</string>
+
+    <!--    Common-->
+    <string name="notice">알림</string>
+    <string name="battle_royal">배틀로얄</string>
+    <string name="arena">아레나</string>
+    <string name="rank">랭크</string>
+    <string name="damage">대미지</string>
+    <string name="kill">킬</string>
+    <string name="kd">K/D</string>
+    <string name="games_played">플레이한 게임</string>
+    <string name="network_error">네트워크 오류입니다.\n연결 상태를 확인하고 다시 시도하세요.</string>
+    <string name="retry">재시도</string>
+
+    <!--    AccountActivity-->
+    <string name="set_id">서비스 이용을 위해\nID를 등록해주세요.</string>
+    <string name="type_id">ID 입력</string>
+    <string name="type_at_least_one">한 글자 이상 입력하여야 합니다.</string>
+    <string name="id">ID</string>
+    <string name="choice_platform">플랫폼 선택</string>
+    <string name="origin_id">오리진 ID 를 입력해주세요.</string>
+    <string name="if_you_are_steam_user">스팀 유저는 연동된 오리진 계정의\n닉네임을 입력해주세요.</string>
+    <string name="please_set_id">ID를 입력해주세요.</string>
+    <string name="please_set_platform">플랫폼을 선택해주세요.</string>
+    <string name="please_set_all">ID 입력과 플랫폼 선택이 필요합니다.</string>
+    <string name="please_retry">일시적인 오류입니다. 다시 시도해주세요.</string>
+    <string name="account_error">ID를 확인하고 다시 시도해주세요.</string>
+    <string name="help">도와주세요!</string>
+    <string name="account_help_web">https://github.com/</string>
+
+    <!--    HomeActivity-->
+    <string name="main">메인</string>
+    <string name="statistics">통계</string>
+    <string name="enroll">등록</string>
+
+    <!--    MainFragment-->
+    <string name="korean_nickname">한글 닉네임은\n표시되지 않습니다.</string>
+    <string name="map">맵</string>
+    <string name="crafting">제작</string>
+    <string name="user">유저</string>
+    <string name="daily">오늘</string>
+    <string name="weekly">이번 주</string>
+    <string name="to_the_nex_level">다음 레벨까지</string>
+    <string name="tab_to_detail">탭하여 자세히 알아보기</string>
+
+    <!--    StatisticsFragment-->
+    <string name="most_legend">모스트 레전드</string>
+    <string name="basic_statistics">기본 통계</string>
+    <string name="battle_ability">전투 능력</string>
+    <string name="recent_games_statistics">최근 20전 킬 / 데스</string>
+    <string name="statistics_made_by_source">모든 통계는 기록된 게임을 바탕으로 산출됩니다.</string>
+    <string name="kill_avg_all">전체 평균 킬</string>
+    <string name="damage_avg_all">전체 평균 대미지</string>
+    <string name="kill_avg_recent">최근 평균 킬</string>
+    <string name="damage_avg_recent">최근 평균 대미지</string>
+    <string name="change_id">ID 변경</string>
+    <string name="match_refresh">전적 갱신</string>
+
+</resources>

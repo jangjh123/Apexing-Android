@@ -1,0 +1,4 @@
+package jyotti.apexing.apexing_android.data.model.main.crafting
+
+data class Crafting(
+    val bundleContent: List<BundleContent>)
