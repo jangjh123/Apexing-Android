@@ -18,6 +18,8 @@ class MainViewModel @Inject constructor(
     private val repository: MainRepository,
     dispatcher: CoroutineDispatcher
 ) : ViewModel() {
+    private val scope = CoroutineScope(dispatcher)
+
     private val user = MutableLiveData<User>()
     private val map = MutableLiveData<List<Map>>()
     private val crafting = MutableLiveData<List<Crafting>>()
@@ -25,8 +27,6 @@ class MainViewModel @Inject constructor(
     private val contentsCount = MutableLiveData(0)
     private val networkMessage = SingleLiveEvent<Unit>()
     private val timeOut = SingleLiveEvent<Unit>()
-
-    private val scope = CoroutineScope(dispatcher)
 
     fun getUserLiveData() = user
     fun getMapLiveData() = map

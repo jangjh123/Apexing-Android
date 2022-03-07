@@ -57,5 +57,6 @@
     <string name="damage_avg_recent">최근 평균 대미지</string>
     <string name="change_id">ID 변경</string>
     <string name="match_refresh">전적 갱신</string>
+    <string name="survival_duration">생존 시간</string>
 
 </resources>

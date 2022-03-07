@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.data.remote
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Maps
@@ -39,4 +40,12 @@ interface ApiService {
         @Query("lang") lang: String,
         @Query("auth") key: String
     ): Call<List<News>>
+
+    @GET("games?")
+    fun fetchMatch(
+        @Query("auth") key: String,
+        @Query("uid") uid: String,
+        @Query("start") date: Long,
+        @Query("limit") limit: Int
+    ): Call<JsonArray>
 }
