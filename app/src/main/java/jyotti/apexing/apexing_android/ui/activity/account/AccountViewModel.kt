@@ -20,7 +20,7 @@ class AccountViewModel @Inject constructor(
     fun getMessageLiveData() = message
 
     fun checkAccount(platform: String, id: String) {
-        repository.readAccount(platform, id,
+        repository.sendAccountRequest(platform, id,
             onSuccess = {
                 message.postValue(0)
                 scope.launch {

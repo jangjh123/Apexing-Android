@@ -22,12 +22,11 @@ class StatisticsViewModel @Inject constructor(
 
     private val scope = CoroutineScope(dispatcher)
 
-    fun getMatch() {
+    fun updateMatch() {
         scope.launch {
-            repository.readMatch(
+            repository.sendMatchRequest(
                 repository.readStoredUid().first(),
                 repository.readStoredRefreshDate().first(),
-                Int.MAX_VALUE,
                 onSuccess = {
 
                 },

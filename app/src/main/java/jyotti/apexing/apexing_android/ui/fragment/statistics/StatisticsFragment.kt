@@ -44,6 +44,6 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     private fun showMatch() {
-        viewModel.getMatch()
+        viewModel.updateMatch()
     }
 }

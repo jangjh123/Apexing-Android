@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
 
     fun getUser() {
         scope.launch {
-            repository.readUser(
+            repository.sendUserRequest(
                 repository.getPlatformFlow().first(),
                 repository.getIdFlow().first(),
                 onSuccess = {
@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getMap() {
-        repository.readMap(
+        repository.sendMapRequest(
             onSuccess = {
                 val list = listOf(it.battleRoyal, it.ranked, it.arenas, it.arenasRanked)
                 map.postValue(list)
@@ -70,7 +70,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getCrafting() {
-        repository.readCrafting(
+        repository.sendCraftingRequest(
             onSuccess = {
                 crafting.postValue(it)
             },
@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getNews() {
-        repository.readNews(
+        repository.sendNewsRequest(
             onSuccess = {
                 news.postValue(it)
             },

@@ -36,7 +36,7 @@ class MainRepository @Inject constructor(
     fun getPlatformFlow() = platformFlow
     fun getIdFlow() = idFlow
 
-    fun readUser(
+    fun sendUserRequest(
         platform: String,
         id: String,
         onSuccess: (User) -> Unit,
@@ -62,7 +62,7 @@ class MainRepository @Inject constructor(
             })
     }
 
-    fun readMap(
+    fun sendMapRequest(
         onSuccess: (Maps) -> Unit,
         onError: () -> Unit,
         onFailure: () -> Unit
@@ -85,7 +85,7 @@ class MainRepository @Inject constructor(
         })
     }
 
-    fun readCrafting(
+    fun sendCraftingRequest(
         onSuccess: (List<Crafting>) -> Unit,
         onError: () -> Unit,
         onFailure: () -> Unit
@@ -112,7 +112,7 @@ class MainRepository @Inject constructor(
             })
     }
 
-    fun readNews(
+    fun sendNewsRequest(
         onSuccess: (List<News>) -> Unit,
         onError: () -> Unit,
         onFailure: () -> Unit

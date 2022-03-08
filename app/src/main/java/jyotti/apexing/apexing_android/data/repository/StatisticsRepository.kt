@@ -36,20 +36,20 @@ class StatisticsRepository @Inject constructor(
     fun readStoredUid() = uidFlow
     fun readStoredRefreshDate() = refreshDateFlow
 
-    fun readMatch(
+    fun sendMatchRequest(
         uid: String,
         start: Long,
-        limit: Int,
-        onSuccess: (JsonArray) -> Unit,
+        onSuccess: (List<MatchModels.Match>) -> Unit,
         onError: () -> Unit,
         onFailure: () -> Unit
     ) {
-        networkManager.getClient().fetchMatch(KEY_API, uid, start, limit).enqueue(object :
+        networkManager.getClient().fetchMatch(KEY_API, uid, start, Int.MAX_VALUE).enqueue(object :
             Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 when (response.code()) {
                     200 -> {
-                        onSuccess(response.body()!!)
+                        onSuccess(setDamageAndKill(response.body()!!))
+
                     }
                     else -> {
                         onError()
@@ -61,5 +61,54 @@ class StatisticsRepository @Inject constructor(
                 onFailure()
             }
         })
+    }
+
+    private fun setDamageAndKill(jsonArray: JsonArray): ArrayList<MatchModels.Match> {
+
+        val matchList = ArrayList<MatchModels.Match>()
+
+        if (!jsonArray.isEmpty) {
+            jsonArray.forEach {
+                with(it.asJsonObject) {
+                    var kill = 0
+                    var damage = 0
+
+                    try {
+                        if (this.get("gameData").asJsonArray.size() > 0) {
+                            for (i in 0..2) {
+                                if (get("gameData").asJsonArray[i].asJsonObject.get("key")
+                                        .toString() == "\"kills\"" ||
+                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
+                                        .toString() == "\"specialEvent_kills\""
+                                ) {
+                                    kill =
+                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
+                                } else if (get("gameData").asJsonArray[i].asJsonObject.get("key")
+                                        .toString() == "\"damage\"" ||
+                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
+                                        .toString() == "\"specialEvent_damage\""
+                                )
+                                    damage =
+                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    matchList.add(
+                        MatchModels.Match(
+                            legendPlayed = get("legendPlayed").asString,
+                            gameMode = get("gameMode").asString,
+                            gameLengthSecs = get("gameLengthSecs").asInt,
+                            gameStartTimestamp = get("gameStartTimestamp").asLong,
+                            kill = kill,
+                            damage = damage
+                        )
+                    )
+                }
+            }
+        }
+        return matchList
     }
 }

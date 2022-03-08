@@ -21,7 +21,7 @@ class AccountRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    fun readAccount(
+    fun sendAccountRequest(
         platform: String,
         id: String,
         onSuccess: (String) -> Unit,
