@@ -18,8 +18,12 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     private lateinit var platform: String
     private lateinit var id: String
 
-    override fun startProcess() {
+    override fun onStart() {
+        super.onStart()
         binding.activity = this@AccountActivity
+    }
+
+    override fun startProcess() {
         showView()
     }
 

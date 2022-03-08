@@ -41,8 +41,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         startActivity(intent)
     })
 
-    override fun startProcess() {
+    override fun onStart() {
+        super.onStart()
         binding.fragment = this@MainFragment
+    }
+
+    override fun startProcess() {
         showUser()
         showMap()
         showCrafting()
