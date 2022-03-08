@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,9 +20,7 @@ class SplashViewModel @Inject constructor(
 
     fun getStoredPlatform() {
         scope.launch {
-            repository.readSavedPlatform().collect {
-                platformData.postValue(it)
-            }
+            platformData.postValue(repository.readStoredPlatform().first())
         }
     }
 

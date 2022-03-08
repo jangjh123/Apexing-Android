@@ -13,6 +13,7 @@ import jyotti.apexing.apexing_android.data.repository.AccountRepository
 import jyotti.apexing.apexing_android.data.repository.MainRepository
 import jyotti.apexing.apexing_android.data.repository.SplashRepository
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -20,8 +21,11 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideSplashRepository(dataStore: DataStore<Preferences>) =
-        SplashRepository(dataStore)
+    fun provideSplashRepository(
+        dataStore: DataStore<Preferences>,
+        dispatcher: CoroutineDispatcher
+    ) =
+        SplashRepository(dataStore, dispatcher)
 
     @ViewModelScoped
     @Provides
@@ -34,14 +38,16 @@ object RepositoryModule {
     @Provides
     fun provideMainRepository(
         networkManager: NetworkManager,
-        dataStore: DataStore<Preferences>
-    ) = MainRepository(networkManager, dataStore)
+        dataStore: DataStore<Preferences>,
+        dispatcher: CoroutineDispatcher
+    ) = MainRepository(networkManager, dataStore, dispatcher)
 
     @ViewModelScoped
     @Provides
     fun provideStatisticsRepository(
         networkManager: NetworkManager,
         dataStore: DataStore<Preferences>,
-        matchDao: MatchDao
-    ) = StatisticsRepository(networkManager, dataStore, matchDao)
+        matchDao: MatchDao,
+        dispatcher: CoroutineDispatcher
+    ) = StatisticsRepository(networkManager, dataStore, matchDao, dispatcher)
 }

@@ -11,6 +11,7 @@ import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_PLATFORM
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -21,15 +22,16 @@ import javax.inject.Inject
 
 class MainRepository @Inject constructor(
     private val networkManager: NetworkManager,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    dispatcher: CoroutineDispatcher
 ) {
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcher)
 
     private val idFlow = dataStore.data.map {
         it[KEY_ID] ?: ""
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcher)
 
     fun getPlatformFlow() = platformFlow
     fun getIdFlow() = idFlow

@@ -3,15 +3,16 @@ package jyotti.apexing.apexing_android.binding
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.apexing.apexing_android.R
-import dagger.hilt.android.qualifiers.ApplicationContext
+import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,7 +27,7 @@ object BindingAdapter {
     @BindingAdapter("setAdapter")
     fun setAdapter(
         view: RecyclerView,
-        adapter: ListAdapter<Any, RecyclerView.ViewHolder>
+        adapter: ListAdapter<Any?, RecyclerView.ViewHolder>
     ) {
         view.adapter = adapter
     }
@@ -74,7 +75,15 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("context", "indicator0", "indicator1", "indicator2", "indicator3", "indicator4", "setIndicator")
+    @BindingAdapter(
+        "context",
+        "indicator0",
+        "indicator1",
+        "indicator2",
+        "indicator3",
+        "indicator4",
+        "setIndicator"
+    )
     fun setIndicator(
         view: RecyclerView,
         context: Context,

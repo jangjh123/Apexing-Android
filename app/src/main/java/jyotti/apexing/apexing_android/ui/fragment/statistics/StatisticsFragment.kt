@@ -24,7 +24,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     override fun startProcess() {
-
+        showMatch()
     }
 
     override fun setObserver() {
@@ -41,5 +41,9 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             binding.rvMatch.scrollToPosition(50)
             binding.rvMatch.smoothScrollToPosition(0)
         }
+    }
+
+    private fun showMatch() {
+        viewModel.getMatch()
     }
 }

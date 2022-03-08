@@ -11,6 +11,7 @@ import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.repository.MainRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,20 +38,19 @@ class MainViewModel @Inject constructor(
     fun getTimeOut() = timeOut
 
     fun getUser() {
-        scope.async {
-            repository.getPlatformFlow().collect { platform ->
-                repository.getIdFlow().collect { id ->
-                    repository.readUser(platform, id,
-                        onSuccess = {
-                            user.postValue(it)
-                        }, onError = {
-                            getUser()
-                        },
-                        onFailure = {
-                            networkMessage.call()
-                        })
-                }
-            }
+        scope.launch {
+            repository.readUser(
+                repository.getPlatformFlow().first(),
+                repository.getIdFlow().first(),
+                onSuccess = {
+                    user.postValue(it)
+                },
+                onError = {
+                    getUser()
+                },
+                onFailure = {
+                    networkMessage.call()
+                })
         }
     }
 
@@ -102,7 +102,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun removeAccount() {
-        scope.async {
+        scope.launch {
             repository.clearDataStore()
         }
     }

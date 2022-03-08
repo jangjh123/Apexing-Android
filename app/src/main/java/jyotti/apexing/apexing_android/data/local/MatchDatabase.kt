@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 
-@Database(entities = [MatchModels.Match::class], version = 1)
+@Database(entities = [MatchModels.Match::class], version = 1, exportSchema = false)
 abstract class MatchDatabase : RoomDatabase() {
 
     abstract fun getMatchDao(): MatchDao
