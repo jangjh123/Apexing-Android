@@ -6,14 +6,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import jyotti.apexing.datastore.dataStore
+import jyotti.apexing.data_store.dataStore
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DatastoreModule {
+object DataStoreModule {
 
     @Singleton
     @Provides
-    fun provideAccountDatastore(@ApplicationContext context: Context) = context.dataStore
+    fun provideAccountDataStore(@ApplicationContext context: Context) = context.dataStore
 }

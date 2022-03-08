@@ -1,7 +1,6 @@
 package jyotti.apexing.apexing_android.data.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.apexing.apexing_android.BuildConfig.KEY_API
@@ -10,8 +9,8 @@ import jyotti.apexing.apexing_android.data.model.main.map.Maps
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
-import jyotti.apexing.datastore.KEY_ID
-import jyotti.apexing.datastore.KEY_PLATFORM
+import jyotti.apexing.data_store.KEY_ID
+import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -142,7 +141,7 @@ class MainRepository @Inject constructor(
         })
     }
 
-    suspend fun clearDatastore() {
+    suspend fun clearDataStore() {
         dataStore.edit {
             it.clear()
         }

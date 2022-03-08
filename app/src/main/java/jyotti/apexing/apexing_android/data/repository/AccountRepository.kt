@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.edit
 import com.apexing.apexing_android.BuildConfig.KEY_API
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
-import jyotti.apexing.datastore.KEY_ID
-import jyotti.apexing.datastore.KEY_PLATFORM
-import jyotti.apexing.datastore.KEY_UID
+import jyotti.apexing.data_store.KEY_ID
+import jyotti.apexing.data_store.KEY_PLATFORM
+import jyotti.apexing.data_store.KEY_UID
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
     private val networkManager: NetworkManager,
-    private val datastore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>
 ) {
 
     fun readAccount(
@@ -61,14 +61,14 @@ class AccountRepository @Inject constructor(
     }
 
     suspend fun storeAccount(platform: String, id: String, uid: String) {
-        datastore.edit {
+        dataStore.edit {
             it
             it[KEY_PLATFORM] = platform
         }
-        datastore.edit {
+        dataStore.edit {
             it[KEY_ID] = id
         }
-        datastore.edit {
+        dataStore.edit {
             it[KEY_UID] = uid
         }
     }

@@ -103,7 +103,7 @@ class MainViewModel @Inject constructor(
 
     fun removeAccount() {
         scope.async {
-            repository.clearDatastore()
+            repository.clearDataStore()
         }
     }
 
