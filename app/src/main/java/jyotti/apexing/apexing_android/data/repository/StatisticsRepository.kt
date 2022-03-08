@@ -1,12 +1,23 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.graphics.Color
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.insertFooterItem
+import androidx.paging.insertHeaderItem
 import com.apexing.apexing_android.BuildConfig.KEY_API
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieEntry
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.data.local.MatchDao
+import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
+import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
+import jyotti.apexing.apexing_android.util.CustomPieDataSet
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
 import jyotti.apexing.data_store.KEY_UID
 import kotlinx.coroutines.CoroutineDispatcher
@@ -110,5 +121,141 @@ class StatisticsRepository @Inject constructor(
             }
         }
         return matchList
+    }
+
+    suspend fun storeRefreshDate(refreshDate: Long) {
+        dataStore.edit {
+            it[KEY_REFRESH_DATE] = refreshDate
+        }
+    }
+
+    fun storeMatch(matchList: List<MatchModels.Match>) {
+        matchList.forEach {
+            matchDao.insert(it)
+        }
+    }
+
+    fun readMatch() = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            MatchPagingSource(matchDao)
+        }
+    ).flow.map {
+        it
+            .insertHeaderItem(item = setHeaderValue(matchDao.getAll(), refreshedDate = System.currentTimeMillis() / 1000))
+            .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
+    }
+
+    private fun setHeaderValue(matchList: List<MatchModels.Match>, refreshedDate: Long) =
+        MatchModels.Header(
+            pieData = getPieChart(matchList),
+            killRvgAll = getKillRvgAll(matchList),
+            damageRvgAll = getDamageRvgAll(matchList),
+            killRvgRecent = getKillRvgRecent(matchList),
+            damageRvgRecent = getDamageRvgRecent(matchList),
+            refreshedDate = refreshedDate
+        )
+
+
+    private fun getKillRvgAll(matchList: List<MatchModels.Match>): Double {
+        var kills = 0.0
+        matchList.forEach {
+            kills += it.kill
+        }
+        return kills / matchList.size
+    }
+
+    private fun getDamageRvgAll(matchList: List<MatchModels.Match>): Double {
+        var damages = 0.0
+        matchList.forEach {
+            damages += it.damage
+        }
+        return damages / matchList.size
+    }
+
+    private fun getKillRvgRecent(matchList: List<MatchModels.Match>): Double {
+        var kills = 0.0
+        if (matchList.size > 19) {
+
+            for (i in 0..19) {
+                kills += matchList[i].kill
+            }
+        }
+        return kills / 20
+    }
+
+    private fun getDamageRvgRecent(matchList: List<MatchModels.Match>): Double {
+        var damages = 0.0
+        if (matchList.size > 19) {
+
+            for (i in 0..19) {
+                damages += matchList[i].damage
+            }
+        }
+        return damages / 20
+    }
+
+
+    private fun getPieChart(
+        matchList: List<MatchModels.Match>
+    ): PieData {
+
+        val mostLegendList = ArrayList<MostLegend>().apply {
+            add(MostLegend("Ash", 0))
+            add(MostLegend("Bangalore", 0))
+            add(MostLegend("Bloodhound", 0))
+            add(MostLegend("Caustic", 0))
+            add(MostLegend("Crypto", 0))
+            add(MostLegend("Fuse", 0))
+            add(MostLegend("Gibraltar", 0))
+            add(MostLegend("Horizon", 0))
+            add(MostLegend("Lifeline", 0))
+            add(MostLegend("Loba", 0))
+            add(MostLegend("Mad Maggie", 0))
+            add(MostLegend("Mirage", 0))
+            add(MostLegend("Octane", 0))
+            add(MostLegend("Pathfinder", 0))
+            add(MostLegend("Rampart", 0))
+            add(MostLegend("Revenant", 0))
+            add(MostLegend("Seer", 0))
+            add(MostLegend("Valkyrie", 0))
+            add(MostLegend("Wattson", 0))
+            add(MostLegend("Wraith", 0))
+        }
+
+        for (i in matchList.indices) {
+            for (j in mostLegendList.indices) {
+                if (matchList[i].legendPlayed == mostLegendList[j].legendName) { // 맵이나 셋으로 바꾸자
+                    mostLegendList[j].addPlayCount()
+                    continue
+                }
+            }
+        }
+
+        val sortedList = mostLegendList.sortedByDescending {
+            it.playCount
+        }
+
+        val pieEntries: ArrayList<PieEntry> = ArrayList<PieEntry>().apply {
+            for (i in 0..4) {
+                add(PieEntry(sortedList[i].playCount.toFloat(), sortedList[i].legendName))
+            }
+        }
+
+        val colorList = ArrayList<Int>().apply {
+            add(0, Color.parseColor("#b93038"))
+            add(1, Color.parseColor("#b14142"))
+            add(2, Color.parseColor("#a74e4c"))
+            add(3, Color.parseColor("#9d5a56"))
+            add(4, Color.parseColor("#926460"))
+        }
+
+        val pieDataSet = CustomPieDataSet(pieEntries, "").apply {
+            valueTextColor = Color.WHITE
+            valueTextSize = 40f
+            colors = colorList
+        }
+
+        return PieData(pieDataSet)
     }
 }

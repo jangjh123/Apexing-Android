@@ -1,16 +1,13 @@
 package jyotti.apexing.apexing_android.ui.fragment.statistics
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import jyotti.apexing.apexing_android.util.SingleLiveEvent
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +16,10 @@ class StatisticsViewModel @Inject constructor(
     dispatcher: CoroutineDispatcher
 ) :
     ViewModel() {
-
     private val scope = CoroutineScope(dispatcher)
+    private val databaseMessage = SingleLiveEvent<Unit>()
+
+    fun getDatabaseMessage() = databaseMessage
 
     fun updateMatch() {
         scope.launch {
@@ -28,7 +27,14 @@ class StatisticsViewModel @Inject constructor(
                 repository.readStoredUid().first(),
                 repository.readStoredRefreshDate().first(),
                 onSuccess = {
+                    scope.launch {
+                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
+                        withContext(Dispatchers.Default) {
+                            repository.storeMatch(it)
+                        }
 
+                        databaseMessage.call()
+                    }
                 },
                 onError = {
 
@@ -39,6 +45,7 @@ class StatisticsViewModel @Inject constructor(
 
             )
         }
-
     }
+
+    fun getMatch() = repository.readMatch().cachedIn(viewModelScope)
 }

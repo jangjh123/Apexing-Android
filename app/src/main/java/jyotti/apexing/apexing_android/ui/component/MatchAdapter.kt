@@ -98,14 +98,14 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                         root.resources.getIdentifier(
                             "mad_maggie",
                             "drawable",
-                            "com.apex.apexing"
+                            "jyotti.apexing.apexing_android"
                         )
                     }
                     else -> {
                         root.resources.getIdentifier(
                             imageName,
                             "drawable",
-                            "com.apex.apexing"
+                            "jyotti.apexing.apexing_android"
                         )
                     }
                 }
@@ -168,7 +168,6 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     holeRadius = 60F
                     setHoleColor(Color.WHITE)
                     data = item.pieData
-
 
                     tvPie0.text = item.pieData.dataSets[0].getEntryForIndex(0).label
                     tvPie1.text = item.pieData.dataSets[0].getEntryForIndex(1).label
