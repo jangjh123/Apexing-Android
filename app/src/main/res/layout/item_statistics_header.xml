@@ -26,15 +26,18 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:id="@+id/btn_refresh_match"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/box_gradient"
+                android:clickable="true"
                 android:elevation="5dp"
+                android:focusable="true"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:background="?attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
