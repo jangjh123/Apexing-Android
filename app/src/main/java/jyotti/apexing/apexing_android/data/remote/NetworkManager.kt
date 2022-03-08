@@ -11,9 +11,9 @@ class NetworkManager {
             .baseUrl("https://api.mozambiquehe.re/")
             .client(
                 OkHttpClient.Builder()
-                    .connectTimeout(5, TimeUnit.SECONDS)
-                    .writeTimeout(5, TimeUnit.SECONDS)
-                    .readTimeout(5, TimeUnit.SECONDS)
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
