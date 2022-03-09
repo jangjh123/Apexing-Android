@@ -79,7 +79,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         }
 
         viewModel.getContentsCount().observe(viewLifecycleOwner) {
-            if (it > 4) {
+            if (it > 3) {
                 setOnSuccessView(
                     successView = binding.layoutView,
                     failureView = binding.layoutNull

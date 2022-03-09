@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.ui.fragment.statistics
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +8,7 @@ import com.apexing.apexing_android.R
 import com.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseFragment
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,8 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
 
     val matchAdapter = MatchAdapter(
         onClickRefresh = {
-
+            showProgress()
+            startProcess()
         })
 
     override fun onStart() {

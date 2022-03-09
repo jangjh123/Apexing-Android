@@ -3,8 +3,10 @@ package jyotti.apexing.apexing_android.ui.component
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.apexing.apexing_android.R
 import com.apexing.apexing_android.databinding.ItemMatchBinding
 import com.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import com.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
@@ -168,6 +170,15 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     holeRadius = 60F
                     setHoleColor(Color.WHITE)
                     data = item.pieData
+                    data.setValueTextColor(Color.WHITE)
+                    data.setValueTextSize(15f)
+                    data.dataSet.colors.apply {
+                        add(0, ContextCompat.getColor(root.context, R.color.pie0))
+                        add(1, ContextCompat.getColor(root.context, R.color.pie1))
+                        add(2, ContextCompat.getColor(root.context, R.color.pie2))
+                        add(3, ContextCompat.getColor(root.context, R.color.pie3))
+                        add(4, ContextCompat.getColor(root.context, R.color.pie4))
+                    }
 
                     tvPie0.text = item.pieData.dataSets[0].getEntryForIndex(0).label
                     tvPie1.text = item.pieData.dataSets[0].getEntryForIndex(1).label

@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.ui.activity.home
 
+import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.apexing.apexing_android.R

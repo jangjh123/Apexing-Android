@@ -1,6 +1,8 @@
 package jyotti.apexing.apexing_android.data.repository
 
 import android.graphics.Color
+import android.util.Log
+import androidx.core.graphics.toColorLong
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -9,7 +11,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.apexing.apexing_android.BuildConfig.KEY_API
+import com.apexing.apexing_android.R
 import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.data.local.MatchDao
@@ -242,20 +246,6 @@ class StatisticsRepository @Inject constructor(
             }
         }
 
-        val colorList = ArrayList<Int>().apply {
-            add(0, Color.parseColor("#b93038"))
-            add(1, Color.parseColor("#b14142"))
-            add(2, Color.parseColor("#a74e4c"))
-            add(3, Color.parseColor("#9d5a56"))
-            add(4, Color.parseColor("#926460"))
-        }
-
-        val pieDataSet = CustomPieDataSet(pieEntries, "").apply {
-            valueTextColor = Color.WHITE
-            valueTextSize = 40f
-            colors = colorList
-        }
-
-        return PieData(pieDataSet)
+        return PieData(CustomPieDataSet(pieEntries, ""))
     }
 }
