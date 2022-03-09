@@ -435,6 +435,11 @@
 
             </LinearLayout>
 
+            <com.github.mikephil.charting.charts.RadarChart
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/chart_radar"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -460,6 +465,12 @@
 
 
             </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/chart_line"/>
+
         </LinearLayout>
 
     </ScrollView>

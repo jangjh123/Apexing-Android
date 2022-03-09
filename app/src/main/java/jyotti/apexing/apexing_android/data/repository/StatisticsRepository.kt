@@ -2,7 +2,6 @@ package jyotti.apexing.apexing_android.data.repository
 
 import android.graphics.Color
 import android.util.Log
-import androidx.core.graphics.toColorLong
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -12,9 +11,7 @@ import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.apexing.apexing_android.BuildConfig.KEY_API
 import com.apexing.apexing_android.R
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.data.*
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
@@ -146,7 +143,12 @@ class StatisticsRepository @Inject constructor(
         }
     ).flow.map {
         it
-            .insertHeaderItem(item = setHeaderValue(matchDao.getAll(), refreshedDate = System.currentTimeMillis() / 1000))
+            .insertHeaderItem(
+                item = setHeaderValue(
+                    matchDao.getAll(),
+                    refreshedDate = System.currentTimeMillis() / 1000
+                )
+            )
             .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
     }
 
@@ -157,49 +159,12 @@ class StatisticsRepository @Inject constructor(
             damageRvgAll = getDamageRvgAll(matchList),
             killRvgRecent = getKillRvgRecent(matchList),
             damageRvgRecent = getDamageRvgRecent(matchList),
-            refreshedDate = refreshedDate
+            refreshedDate = refreshedDate,
+            radarData = getRadarChart(matchList),
+//            lineData =
         )
 
-
-    private fun getKillRvgAll(matchList: List<MatchModels.Match>): Double {
-        var kills = 0.0
-        matchList.forEach {
-            kills += it.kill
-        }
-        return kills / matchList.size
-    }
-
-    private fun getDamageRvgAll(matchList: List<MatchModels.Match>): Double {
-        var damages = 0.0
-        matchList.forEach {
-            damages += it.damage
-        }
-        return damages / matchList.size
-    }
-
-    private fun getKillRvgRecent(matchList: List<MatchModels.Match>): Double {
-        var kills = 0.0
-        if (matchList.size > 19) {
-
-            for (i in 0..19) {
-                kills += matchList[i].kill
-            }
-        }
-        return kills / 20
-    }
-
-    private fun getDamageRvgRecent(matchList: List<MatchModels.Match>): Double {
-        var damages = 0.0
-        if (matchList.size > 19) {
-
-            for (i in 0..19) {
-                damages += matchList[i].damage
-            }
-        }
-        return damages / 20
-    }
-
-
+    // PieChart
     private fun getPieChart(
         matchList: List<MatchModels.Match>
     ): PieData {
@@ -247,5 +212,89 @@ class StatisticsRepository @Inject constructor(
         }
 
         return PieData(CustomPieDataSet(pieEntries, ""))
+    }
+
+    // Basic Statistics
+    private fun getKillRvgAll(matchList: List<MatchModels.Match>): Double {
+        var kills = 0.0
+        matchList.forEach {
+            kills += it.kill
+        }
+        return kills / matchList.size
+    }
+    private fun getDamageRvgAll(matchList: List<MatchModels.Match>): Double {
+        var damages = 0.0
+        matchList.forEach {
+            damages += it.damage
+        }
+        return damages / matchList.size
+    }
+    private fun getKillRvgRecent(matchList: List<MatchModels.Match>): Double {
+        var kills = 0.0
+        if (matchList.size > 19) {
+
+            for (i in 0..19) {
+                kills += matchList[i].kill
+            }
+        }
+        return kills / 20
+    }
+    private fun getDamageRvgRecent(matchList: List<MatchModels.Match>): Double {
+        var damages = 0.0
+        if (matchList.size > 19) {
+
+            for (i in 0..19) {
+                damages += matchList[i].damage
+            }
+        }
+        return damages / 20
+    }
+
+    private fun getRadarChart(
+        matchList: List<MatchModels.Match>
+    ): RadarData {
+        val label = ""
+        val radarEntries = ArrayList<RadarEntry>().apply {
+            add(RadarEntry(getRadarChartValue(matchList)!![0]))
+            add(RadarEntry(getRadarChartValue(matchList)!![1]))
+            add(RadarEntry(getRadarChartValue(matchList)!![2]))
+//            add(RadarEntry(getRadarChartValue(matchList)!![3]))
+        }
+
+        val radarDataSet = RadarDataSet(radarEntries, label)
+
+        return RadarData(radarDataSet)
+    }
+
+    private fun getRadarChartValue(matchList: List<MatchModels.Match>): FloatArray? {
+        val data = FloatArray(4)
+
+        var killCatch = 0
+        var survivalAbility = 0
+        var deal = 0
+
+        matchList.forEach {
+            killCatch += it.kill
+            survivalAbility += it.gameLengthSecs
+            deal += it.damage
+        }
+
+        var killCatchData = killCatch.toFloat() / matchList.size
+        killCatchData *= 20
+        data[0] = killCatchData
+
+        var survivalAbilityData = survivalAbility.toFloat() / matchList.size
+        survivalAbilityData /= 12
+        data[1] = survivalAbilityData
+
+        for (i in matchList.indices) {
+            deal += matchList[i].damage
+        }
+        var dealingData = deal.toFloat() / matchList.size
+        dealingData /= 10
+        data[2] = dealingData
+
+
+        return data
     }
 }

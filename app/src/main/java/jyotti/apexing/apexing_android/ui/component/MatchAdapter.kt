@@ -1,6 +1,7 @@
 package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -12,6 +13,10 @@ import com.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import com.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.RadarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModelType
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
@@ -154,6 +159,8 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
             item.pieData.setValueFormatter(PercentFormatter())
 
             with(binding) {
+
+//                PieChart
                 chartPie.apply {
                     setTouchEnabled(false)
                     centerText = "Most 5"
@@ -185,30 +192,70 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     tvPie2.text = item.pieData.dataSets[0].getEntryForIndex(2).label
                     tvPie3.text = item.pieData.dataSets[0].getEntryForIndex(3).label
                     tvPie4.text = item.pieData.dataSets[0].getEntryForIndex(4).label
-
-                    tvKillAvgAll.text = String.format("%.2f", item.killRvgAll)
-                    tvDamageAvgAll.text = String.format("%.2f", item.damageRvgAll)
-                    tvKillAvgRecent.text = String.format("%.2f", item.killRvgRecent)
-                    tvDamageAvgRecent.text = String.format("%.2f", item.damageRvgRecent)
-
-                    val killIncrease = item.killRvgRecent - item.killRvgAll
-
-                    tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
-                    if (killIncrease > 0) {
-                        tvKillIncrease.setTextColor(Color.BLUE)
-                    } else {
-                        tvKillIncrease.setTextColor(Color.RED)
-                    }
-
-                    val damageIncrease = item.damageRvgRecent - item.damageRvgAll
-
-                    tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
-                    if (damageIncrease > 0) {
-                        tvDamageIncrease.setTextColor(Color.BLUE)
-                    } else {
-                        tvDamageIncrease.setTextColor(Color.RED)
-                    }
                 }
+
+//                Basic Statistics
+                tvKillAvgAll.text = String.format("%.2f", item.killRvgAll)
+                tvDamageAvgAll.text = String.format("%.2f", item.damageRvgAll)
+                tvKillAvgRecent.text = String.format("%.2f", item.killRvgRecent)
+                tvDamageAvgRecent.text = String.format("%.2f", item.damageRvgRecent)
+
+                val killIncrease = item.killRvgRecent - item.killRvgAll
+
+                tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
+                if (killIncrease > 0) {
+                    tvKillIncrease.setTextColor(Color.BLUE)
+                } else {
+                    tvKillIncrease.setTextColor(Color.RED)
+                }
+
+                val damageIncrease = item.damageRvgRecent - item.damageRvgAll
+
+                tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
+                if (damageIncrease > 0) {
+                    tvDamageIncrease.setTextColor(Color.BLUE)
+                } else {
+                    tvDamageIncrease.setTextColor(Color.RED)
+                }
+
+//                RadarChart
+                chartRadar.apply {
+                    setTouchEnabled(false)
+                    data = item.radarData
+                    setDrawMarkers(false)
+
+                    webColor = ContextCompat.getColor(root.context, R.color.main)
+
+                    val xAxis: XAxis = this.xAxis
+                    val valueList = ArrayList<String>().apply {
+                        add(0, "킬 캐치")
+                        add(1, "딜링")
+                        add(2, "생존 능력")
+                    }
+                    xAxis.valueFormatter = IndexAxisValueFormatter(valueList)
+                    xAxis.textSize = 12f
+
+                    val yAxis: YAxis = this.yAxis
+                    yAxis.setDrawLabels(false)
+                    yAxis.calculate(0f, 100f)
+                    yAxis.axisMinimum = 0f
+                    yAxis.axisMaximum = 100f
+
+                    legend.isEnabled = false
+                    description.textAlign = Paint.Align.RIGHT
+                    webLineWidth = 1f
+                    description.isEnabled = false
+                    webLineWidthInner = 1f
+                    webColorInner = ContextCompat.getColor(root.context, R.color.light_gray)
+                    animateXY(1000, 1000, Easing.EaseInOutQuad)
+                    invalidate()
+                }
+
+//                LineChart
+                chartLine.apply {
+
+                }
+
 
                 btnRefreshMatch.setOnClickListener {
                     onClickRefresh()
