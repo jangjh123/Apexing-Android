@@ -2,6 +2,7 @@ package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -13,9 +14,7 @@ import com.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import com.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModelType
@@ -221,32 +220,43 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 //                RadarChart
                 chartRadar.apply {
                     setTouchEnabled(false)
-                    data = item.radarData
                     setDrawMarkers(false)
 
-                    webColor = ContextCompat.getColor(root.context, R.color.main)
-
-                    val xAxis: XAxis = this.xAxis
                     val valueList = ArrayList<String>().apply {
                         add(0, "킬 캐치")
                         add(1, "딜링")
                         add(2, "생존 능력")
+                        add(3, "적극성")
                     }
-                    xAxis.valueFormatter = IndexAxisValueFormatter(valueList)
-                    xAxis.textSize = 12f
 
-                    val yAxis: YAxis = this.yAxis
-                    yAxis.setDrawLabels(false)
-                    yAxis.calculate(0f, 100f)
-                    yAxis.axisMinimum = 0f
-                    yAxis.axisMaximum = 100f
+                    xAxis.apply {
+                        valueFormatter = IndexAxisValueFormatter(valueList)
+                        textSize = 15f
+                    }
+
+                    yAxis.apply {
+                        setDrawLabels(false)
+                        axisMinimum = 0f
+                        axisMaximum = 100f
+                        setLabelCount(10, true)
+                    }
+
+                    val radarData = RadarData(item.radarDataSet.apply {
+                        color = ContextCompat.getColor(root.context, R.color.main)
+                        lineWidth = 2f
+                        setDrawFilled(true)
+                        fillColor = ContextCompat.getColor(root.context, R.color.lighter)
+                    })
+
+                    data = radarData.apply {
+                        setValueTextSize(15f)
+                    }
 
                     legend.isEnabled = false
-                    description.textAlign = Paint.Align.RIGHT
-                    webLineWidth = 1f
                     description.isEnabled = false
-                    webLineWidthInner = 1f
-                    webColorInner = ContextCompat.getColor(root.context, R.color.light_gray)
+                    webLineWidthInner = 2f
+                    webColor = ContextCompat.getColor(root.context, R.color.radar_line)
+                    webColorInner = ContextCompat.getColor(root.context, R.color.radar_line)
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
                     invalidate()
                 }

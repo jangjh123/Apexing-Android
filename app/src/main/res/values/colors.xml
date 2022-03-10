@@ -25,4 +25,6 @@
     <color name="pie2">#6b484a</color>
     <color name="pie3">#63585c</color>
     <color name="pie4">#57666f</color>
+
+    <color name="radar_line">#d97a75</color>
 </resources>

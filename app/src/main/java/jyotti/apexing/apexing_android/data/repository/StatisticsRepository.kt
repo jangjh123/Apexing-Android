@@ -160,7 +160,7 @@ class StatisticsRepository @Inject constructor(
             killRvgRecent = getKillRvgRecent(matchList),
             damageRvgRecent = getDamageRvgRecent(matchList),
             refreshedDate = refreshedDate,
-            radarData = getRadarChart(matchList),
+            radarDataSet = getRadarChart(matchList),
 //            lineData =
         )
 
@@ -222,6 +222,7 @@ class StatisticsRepository @Inject constructor(
         }
         return kills / matchList.size
     }
+
     private fun getDamageRvgAll(matchList: List<MatchModels.Match>): Double {
         var damages = 0.0
         matchList.forEach {
@@ -229,6 +230,7 @@ class StatisticsRepository @Inject constructor(
         }
         return damages / matchList.size
     }
+
     private fun getKillRvgRecent(matchList: List<MatchModels.Match>): Double {
         var kills = 0.0
         if (matchList.size > 19) {
@@ -239,6 +241,7 @@ class StatisticsRepository @Inject constructor(
         }
         return kills / 20
     }
+
     private fun getDamageRvgRecent(matchList: List<MatchModels.Match>): Double {
         var damages = 0.0
         if (matchList.size > 19) {
@@ -252,26 +255,24 @@ class StatisticsRepository @Inject constructor(
 
     private fun getRadarChart(
         matchList: List<MatchModels.Match>
-    ): RadarData {
+    ): RadarDataSet {
         val label = ""
         val radarEntries = ArrayList<RadarEntry>().apply {
             add(RadarEntry(getRadarChartValue(matchList)!![0]))
             add(RadarEntry(getRadarChartValue(matchList)!![1]))
             add(RadarEntry(getRadarChartValue(matchList)!![2]))
-//            add(RadarEntry(getRadarChartValue(matchList)!![3]))
+            add(RadarEntry(getRadarChartValue(matchList)!![3]))
         }
 
-        val radarDataSet = RadarDataSet(radarEntries, label)
-
-        return RadarData(radarDataSet)
+        return RadarDataSet(radarEntries, label)
     }
 
     private fun getRadarChartValue(matchList: List<MatchModels.Match>): FloatArray? {
         val data = FloatArray(4)
 
-        var killCatch = 0
-        var survivalAbility = 0
-        var deal = 0
+        var killCatch = 0f
+        var survivalAbility = 0f
+        var deal = 0f
 
         matchList.forEach {
             killCatch += it.kill
@@ -279,21 +280,22 @@ class StatisticsRepository @Inject constructor(
             deal += it.damage
         }
 
-        var killCatchData = killCatch.toFloat() / matchList.size
+        var killCatchData = killCatch / matchList.size
         killCatchData *= 20
         data[0] = killCatchData
 
-        var survivalAbilityData = survivalAbility.toFloat() / matchList.size
+        var survivalAbilityData = survivalAbility / matchList.size
         survivalAbilityData /= 12
         data[1] = survivalAbilityData
 
         for (i in matchList.indices) {
             deal += matchList[i].damage
         }
-        var dealingData = deal.toFloat() / matchList.size
-        dealingData /= 10
-        data[2] = dealingData
+        var dealData = deal / matchList.size
+        dealData /= 10
+        data[2] = dealData
 
+        data[3] = ((killCatchData + dealData) / survivalAbilityData) * 25
 
         return data
     }

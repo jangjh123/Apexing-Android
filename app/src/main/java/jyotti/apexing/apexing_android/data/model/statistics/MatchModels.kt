@@ -2,9 +2,8 @@ package jyotti.apexing.apexing_android.data.model.statistics
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
 
 sealed class MatchModels(var type: MatchModelType) {
     @Entity
@@ -26,7 +25,7 @@ sealed class MatchModels(var type: MatchModelType) {
         val killRvgRecent: Double,
         val damageRvgRecent: Double,
         val refreshedDate: Long,
-        val radarData: RadarData,
+        val radarDataSet: RadarDataSet,
 //        val lineData: LineData
     ) : MatchModels(MatchModelType.HEADER)
 
