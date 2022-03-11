@@ -15,4 +15,7 @@ interface MatchDao {
 
     @Insert
     fun insert(list: MatchModels.Match)
+
+    @Query("DELETE FROM 'match'")
+    suspend fun deleteAll()
 }

@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
+import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Maps
 import jyotti.apexing.apexing_android.data.model.main.news.News
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class MainRepository @Inject constructor(
     private val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
+    private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
     private val platformFlow = dataStore.data.map {
@@ -140,6 +142,10 @@ class MainRepository @Inject constructor(
                 onFailure()
             }
         })
+    }
+
+    suspend fun clearDatabase() {
+        matchDao.deleteAll()
     }
 
     suspend fun clearDataStore() {

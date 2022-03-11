@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,6 +110,15 @@ class MainViewModel @Inject constructor(
         scope.launch {
             delay(5000)
             timeOut.call()
+        }
+    }
+
+    fun deleteStoredMatches(onSuccess: () -> Unit) {
+        scope.launch {
+            withContext(Dispatchers.Default) {
+                repository.clearDatabase()
+            }
+            onSuccess()
         }
     }
 }

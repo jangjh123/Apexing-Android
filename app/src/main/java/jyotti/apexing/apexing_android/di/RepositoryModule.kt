@@ -39,8 +39,9 @@ object RepositoryModule {
     fun provideMainRepository(
         networkManager: NetworkManager,
         dataStore: DataStore<Preferences>,
+        matchDao: MatchDao,
         dispatcher: CoroutineDispatcher
-    ) = MainRepository(networkManager, dataStore, dispatcher)
+    ) = MainRepository(networkManager, dataStore, matchDao, dispatcher)
 
     @ViewModelScoped
     @Provides
