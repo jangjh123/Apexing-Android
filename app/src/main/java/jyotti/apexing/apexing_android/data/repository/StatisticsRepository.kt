@@ -303,8 +303,8 @@ class StatisticsRepository @Inject constructor(
         val dealList = ArrayList<BarEntry>()
         val killList = ArrayList<BarEntry>()
 
-        if (matchList.size > 29) {
-            for (i in 0..29) {
+        if (matchList.size > 19) {
+            for (i in 0..19) {
                 dealList.add(BarEntry(i.toFloat(), matchList[i].damage.toFloat()))
                 killList.add(BarEntry(i.toFloat(), matchList[i].kill.toFloat()))
             }

@@ -287,7 +287,10 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     setTouchEnabled(false)
                     data = BarData(item.barDataSet)
 
-                    item.barDataSet[0].color = ContextCompat.getColor(root.context, R.color.main)
+                    item.barDataSet[0].apply {
+                        color = ContextCompat.getColor(root.context, R.color.main)
+                        valueTextSize = 9f
+                    }
                     item.barDataSet[1].apply {
                         color = ContextCompat.getColor(root.context, R.color.main)
                         valueTextSize = 12f
