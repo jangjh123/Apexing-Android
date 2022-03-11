@@ -310,7 +310,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                     legend.isEnabled = false
                     description.isEnabled = false
-                    animateXY(1000, 1000, Easing.EaseInOutQuad)
+                    animateXY(0, 500, Easing.EaseInOutQuad)
                     invalidate()
                 }
 
