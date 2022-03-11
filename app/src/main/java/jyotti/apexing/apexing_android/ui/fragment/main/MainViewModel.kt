@@ -109,7 +109,7 @@ class MainViewModel @Inject constructor(
 
     fun setTimeOut() {
         scope.launch {
-            delay(10000)
+            delay(5000)
             timeOut.call()
         }
     }
