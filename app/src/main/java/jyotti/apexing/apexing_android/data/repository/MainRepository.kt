@@ -3,7 +3,7 @@ package jyotti.apexing.apexing_android.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.apexing.apexing_android.BuildConfig.KEY_API
+import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Maps
 import jyotti.apexing.apexing_android.data.model.main.news.News
@@ -12,7 +12,6 @@ import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import retrofit2.Call

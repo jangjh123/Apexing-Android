@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.apexing.apexing_android.databinding.ItemNewsBinding
+import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
 import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.util.GenericDiffUtil

@@ -5,11 +5,11 @@ import android.net.Uri
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
-import com.apexing.apexing_android.R
-import com.apexing.apexing_android.databinding.ActivityAccountBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
+import jyotti.apexing.apexing_android.databinding.ActivityAccountBinding
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 
 @AndroidEntryPoint

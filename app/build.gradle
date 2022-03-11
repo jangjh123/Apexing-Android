@@ -12,7 +12,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.apexing_android"
+        applicationId "jyotti.apexing.apexing_android"
         minSdk 23
         targetSdk 32
         versionCode 1

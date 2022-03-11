@@ -1,13 +1,12 @@
 package jyotti.apexing.apexing_android.ui.activity.home
 
-import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import com.apexing.apexing_android.R
-import com.apexing.apexing_android.databinding.ActivityHomeBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
+import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
 

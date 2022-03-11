@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
-import com.apexing.apexing_android.R
-import com.apexing.apexing_android.databinding.FragmentMainBinding
+import jyotti.apexing.apexing_android.R
+import jyotti.apexing.apexing_android.databinding.FragmentMainBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException

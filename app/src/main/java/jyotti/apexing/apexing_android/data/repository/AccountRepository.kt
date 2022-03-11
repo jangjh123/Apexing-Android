@@ -3,7 +3,7 @@ package jyotti.apexing.apexing_android.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.apexing.apexing_android.BuildConfig.KEY_API
+import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.data_store.KEY_ID

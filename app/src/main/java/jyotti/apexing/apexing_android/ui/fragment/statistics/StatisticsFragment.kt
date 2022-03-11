@@ -4,8 +4,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.apexing.apexing_android.R
-import com.apexing.apexing_android.databinding.FragmentStatisticsBinding
+import jyotti.apexing.apexing_android.R
+import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseFragment
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
@@ -49,8 +49,8 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     fun onClickGoUp(view: View) {
-        if ((binding.rvMatch.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() > 50) {
-            binding.rvMatch.scrollToPosition(25)
+        if ((binding.rvMatch.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() > 10) {
+            binding.rvMatch.scrollToPosition(10)
         }
         binding.rvMatch.smoothScrollToPosition(0)
     }

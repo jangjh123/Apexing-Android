@@ -3,8 +3,8 @@ package jyotti.apexing.apexing_android.ui.activity.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.viewModels
-import com.apexing.apexing_android.R
-import com.apexing.apexing_android.databinding.ActivitySplashBinding
+import jyotti.apexing.apexing_android.R
+import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
