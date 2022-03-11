@@ -49,7 +49,7 @@
     <string name="most_legend">모스트 레전드</string>
     <string name="basic_statistics">기본 통계</string>
     <string name="battle_ability">전투 능력</string>
-    <string name="recent_games_statistics">최근 20전 킬 / 데스</string>
+    <string name="recent_games_statistics">최근 20전 킬 / 딜</string>
     <string name="statistics_made_by_source">모든 통계는 기록된 게임을 바탕으로 산출됩니다.</string>
     <string name="kill_avg_all">전체 평균 킬</string>
     <string name="damage_avg_all">전체 평균 대미지</string>

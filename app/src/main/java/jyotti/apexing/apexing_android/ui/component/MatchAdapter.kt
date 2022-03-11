@@ -1,8 +1,7 @@
 package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
-import android.graphics.Paint
-import android.util.Log
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -238,6 +237,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                         setDrawLabels(false)
                         axisMinimum = 0f
                         axisMaximum = 100f
+                        typeface = Typeface.DEFAULT_BOLD
                         setLabelCount(10, true)
                     }
 
@@ -254,7 +254,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                     legend.isEnabled = false
                     description.isEnabled = false
-                    webLineWidthInner = 2f
+                    webLineWidthInner = 1f
                     webColor = ContextCompat.getColor(root.context, R.color.radar_line)
                     webColorInner = ContextCompat.getColor(root.context, R.color.radar_line)
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
@@ -262,7 +262,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                 }
 
 //                LineChart
-                chartLine.apply {
+                chartBar.apply {
 
                 }
 

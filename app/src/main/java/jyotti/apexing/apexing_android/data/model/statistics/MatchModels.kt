@@ -2,6 +2,8 @@ package jyotti.apexing.apexing_android.data.model.statistics
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.RadarDataSet
 
@@ -26,7 +28,7 @@ sealed class MatchModels(var type: MatchModelType) {
         val damageRvgRecent: Double,
         val refreshedDate: Long,
         val radarDataSet: RadarDataSet,
-//        val lineData: LineData
+        val barData: List<BarDataSet>
     ) : MatchModels(MatchModelType.HEADER)
 
     data class Footer(

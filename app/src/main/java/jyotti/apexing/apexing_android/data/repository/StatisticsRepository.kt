@@ -1,7 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.graphics.Color
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -10,7 +8,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.apexing.apexing_android.BuildConfig.KEY_API
-import com.apexing.apexing_android.R
 import com.github.mikephil.charting.data.*
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.data.local.MatchDao
@@ -18,6 +15,7 @@ import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
+import jyotti.apexing.apexing_android.util.CustomBarDataSet
 import jyotti.apexing.apexing_android.util.CustomPieDataSet
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
 import jyotti.apexing.data_store.KEY_UID
@@ -29,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
+
 
 class StatisticsRepository @Inject constructor(
     private val networkManager: NetworkManager,
@@ -161,7 +160,7 @@ class StatisticsRepository @Inject constructor(
             damageRvgRecent = getDamageRvgRecent(matchList),
             refreshedDate = refreshedDate,
             radarDataSet = getRadarChart(matchList),
-//            lineData =
+            barData = getLineChartValue(matchList)
         )
 
     // PieChart
@@ -298,5 +297,19 @@ class StatisticsRepository @Inject constructor(
         data[3] = ((killCatchData + dealData) / survivalAbilityData) * 25
 
         return data
+    }
+
+    private fun getLineChartValue(matchList: List<MatchModels.Match>): List<BarDataSet> {
+        val dealList = ArrayList<BarEntry>()
+        val killList = ArrayList<BarEntry>()
+
+        if (matchList.size > 29) {
+            for (i in 0..29) {
+                dealList.add(BarEntry(i.toFloat(), matchList[i].damage.toFloat()))
+                killList.add(BarEntry(i.toFloat(), matchList[i].kill.toFloat()))
+            }
+        }
+
+        return listOf(BarDataSet(dealList, "딜"), CustomBarDataSet(killList, "킬"))
     }
 }
