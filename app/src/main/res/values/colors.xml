@@ -22,10 +22,10 @@
     <color name="blue">#0000ff</color>
 
     <color name="pie0">#b93038</color>
-    <color name="pie1">#703838</color>
-    <color name="pie2">#6b484a</color>
-    <color name="pie3">#63585c</color>
-    <color name="pie4">#57666f</color>
+    <color name="pie1">#008000</color>
+    <color name="pie2">#5e7e9b</color>
+    <color name="pie3">#009900</color>
+    <color name="pie4">#00498c</color>
 
     <color name="radar_line">#d97a75</color>
 </resources>

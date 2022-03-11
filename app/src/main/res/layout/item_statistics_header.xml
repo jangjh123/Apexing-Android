@@ -468,8 +468,17 @@
 
             <com.github.mikephil.charting.charts.BarChart
                 android:layout_width="match_parent"
+                android:layout_marginHorizontal="5dp"
                 android:layout_height="250dp"
                 android:id="@+id/chart_bar"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textColor="@color/gray"
+                android:text="@string/bar_chart_description"/>
 
         </LinearLayout>
 

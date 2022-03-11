@@ -58,5 +58,6 @@
     <string name="change_id">ID 변경</string>
     <string name="match_refresh">전적 갱신</string>
     <string name="survival_duration">생존 시간</string>
+    <string name="bar_chart_description">막대 위 숫자는 가한 대미지, 아래의 숫자는 킬을 나타냅니다.</string>
 
 </resources>
