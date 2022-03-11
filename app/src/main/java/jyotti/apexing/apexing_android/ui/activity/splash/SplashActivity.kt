@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         viewModel.getStoredPlatform()
     }
 
-    override fun setObserver() {
+    override fun setObservers() {
         viewModel.getPlatformLiveData().observe(this) { platform ->
             val intent: Intent = if (platform.isEmpty()) {
                 Intent(this, AccountActivity::class.java)

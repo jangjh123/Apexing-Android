@@ -22,17 +22,17 @@ class MainViewModel @Inject constructor(
     private val scope = CoroutineScope(dispatcher)
 
     private val user = MutableLiveData<User>()
-    private val map = MutableLiveData<List<Map>>()
-    private val crafting = MutableLiveData<List<Crafting>>()
-    private val news = MutableLiveData<List<News>>()
+    private val mapList = MutableLiveData<List<Map>>()
+    private val craftingList = MutableLiveData<List<Crafting>>()
+    private val newsList = MutableLiveData<List<News>>()
     private val contentsCount = MutableLiveData(0)
     private val networkMessage = SingleLiveEvent<Unit>()
     private val timeOut = SingleLiveEvent<Unit>()
 
     fun getUserLiveData() = user
-    fun getMapLiveData() = map
-    fun getCraftingLiveData() = crafting
-    fun getNewsLiveData() = news
+    fun getMapLiveData() = mapList
+    fun getCraftingLiveData() = craftingList
+    fun getNewsLiveData() = newsList
     fun getContentsCount() = contentsCount
     fun getNetworkMessage() = networkMessage
     fun getTimeOut() = timeOut
@@ -58,7 +58,7 @@ class MainViewModel @Inject constructor(
         repository.sendMapRequest(
             onSuccess = {
                 val list = listOf(it.battleRoyal, it.ranked, it.arenas, it.arenasRanked)
-                map.postValue(list)
+                mapList.postValue(list)
             },
             onError = {
                 getMap()
@@ -72,7 +72,7 @@ class MainViewModel @Inject constructor(
     fun getCrafting() {
         repository.sendCraftingRequest(
             onSuccess = {
-                crafting.postValue(it)
+                craftingList.postValue(it)
             },
             onError = {
                 getCrafting()
@@ -86,7 +86,7 @@ class MainViewModel @Inject constructor(
     fun getNews() {
         repository.sendNewsRequest(
             onSuccess = {
-                news.postValue(it)
+                newsList.postValue(it)
             },
             onError = {
                 getNews()

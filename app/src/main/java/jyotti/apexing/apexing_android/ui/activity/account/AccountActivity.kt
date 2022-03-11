@@ -68,7 +68,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         )
     }
 
-    override fun setObserver() {
+    override fun setObservers() {
         viewModel.getMessageLiveData().observe(this) {
             dismissProgress()
             when (it) {

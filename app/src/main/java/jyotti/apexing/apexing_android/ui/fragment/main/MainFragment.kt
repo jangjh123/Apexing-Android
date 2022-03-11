@@ -54,7 +54,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         viewModel.setTimeOut()
     }
 
-    override fun setObserver() {
+    override fun setObservers() {
         viewModel.getTimeOut().observe(viewLifecycleOwner) {
             if (isProgressShowing()) {
                 dismissProgress()
@@ -153,7 +153,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             }
 
             Glide.with(this)
-                .load(user.legends.selected.imageAssets.banner)
+                .load(user.legends.selected.imageAsset.banner)
                 .centerCrop()
                 .thumbnail(0.1f)
                 .listener(imageLoadingListener())
@@ -186,35 +186,35 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setCraftingView(craftingList: List<Crafting>) {
         Glide.with(this)
-            .load(craftingList[0].bundleContent[0].itemType.asset)
+            .load(craftingList[0].bundleContents[0].itemType.asset)
             .centerCrop()
             .thumbnail(0.1f)
             .listener(imageLoadingListener())
             .into(binding.ivCraft0)
         Glide.with(this)
-            .load(craftingList[0].bundleContent[1].itemType.asset)
+            .load(craftingList[0].bundleContents[1].itemType.asset)
             .centerCrop()
             .thumbnail(0.1f)
             .listener(imageLoadingListener())
             .into(binding.ivCraft1)
         Glide.with(this)
-            .load(craftingList[1].bundleContent[0].itemType.asset)
+            .load(craftingList[1].bundleContents[0].itemType.asset)
             .centerCrop()
             .thumbnail(0.1f)
             .listener(imageLoadingListener())
             .into(binding.ivCraft2)
         Glide.with(this)
-            .load(craftingList[1].bundleContent[1].itemType.asset)
+            .load(craftingList[1].bundleContents[1].itemType.asset)
             .centerCrop()
             .thumbnail(0.1f)
             .listener(imageLoadingListener())
             .into(binding.ivCraft3)
 
         with(binding) {
-            tvCraftingCost0.text = craftingList[0].bundleContent[0].cost.toString()
-            tvCraftingCost1.text = craftingList[0].bundleContent[1].cost.toString()
-            tvCraftingCost2.text = craftingList[1].bundleContent[0].cost.toString()
-            tvCraftingCost3.text = craftingList[1].bundleContent[1].cost.toString()
+            tvCraftingCost0.text = craftingList[0].bundleContents[0].cost.toString()
+            tvCraftingCost1.text = craftingList[0].bundleContents[1].cost.toString()
+            tvCraftingCost2.text = craftingList[1].bundleContents[0].cost.toString()
+            tvCraftingCost3.text = craftingList[1].bundleContents[1].cost.toString()
         }
     }
 

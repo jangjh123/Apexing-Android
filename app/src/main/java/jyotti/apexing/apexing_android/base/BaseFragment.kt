@@ -21,7 +21,7 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        setObserver()
+        setObservers()
         showProgress()
         startProcess()
 
@@ -50,7 +50,7 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
         dismissProgress()
     }
 
-    protected open fun setObserver() {
+    protected open fun setObservers() {
 
     }
 

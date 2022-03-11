@@ -13,12 +13,12 @@ abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : A
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObserver()
+        setObservers()
         init()
         startProcess()
     }
 
-    protected open fun setObserver() {
+    protected open fun setObservers() {
 
     }
 

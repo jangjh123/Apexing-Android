@@ -31,7 +31,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         showMatch()
     }
 
-    override fun setObserver() {
+    override fun setObservers() {
         viewModel.getDatabaseMessage().observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 viewModel.getMatch().collect {

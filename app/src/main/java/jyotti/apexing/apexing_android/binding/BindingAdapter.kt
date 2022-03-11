@@ -95,22 +95,22 @@ object BindingAdapter {
         boolean: Boolean
     ) {
         if (boolean) {
-            val indicatorList = listOf(indicator0, indicator1, indicator2, indicator3, indicator4)
+            val indicators = listOf(indicator0, indicator1, indicator2, indicator3, indicator4)
             view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     val currentIndex =
                         (view.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
-                    for (i in indicatorList.indices) {
+                    for (i in indicators.indices) {
                         if (i == currentIndex) {
-                            indicatorList[i].setColorFilter(
+                            indicators[i].setColorFilter(
                                 ContextCompat.getColor(
                                     context,
                                     R.color.deep_gray
                                 )
                             )
                         } else {
-                            indicatorList[i].setColorFilter(
+                            indicators[i].setColorFilter(
                                 ContextCompat.getColor(
                                     context,
                                     R.color.gray
