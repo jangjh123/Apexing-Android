@@ -13,6 +13,7 @@ import com.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import com.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
@@ -22,6 +23,7 @@ import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.UnixConverter
 import java.text.DecimalFormat
 import java.util.*
+
 
 class MatchAdapter(private val onClickRefresh: () -> Unit) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
@@ -40,7 +42,6 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
             }
         }
     }
-
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)!!.type) {
@@ -161,35 +162,48 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 //                PieChart
                 chartPie.apply {
                     setTouchEnabled(false)
-                    centerText = "Most 5"
-                    setCenterTextSize(15f)
-                    setCenterTextColor(Color.BLACK)
-                    setUsePercentValues(true)
-                    setDrawEntryLabels(false)
-                    description.isEnabled = false
-                    legend.isEnabled = false
-                    animateY(750, Easing.EaseInOutQuad)
-                    setTransparentCircleAlpha(50)
-                    setTransparentCircleColor(Color.WHITE)
-                    isDrawHoleEnabled = true
-                    holeRadius = 60F
-                    setHoleColor(Color.WHITE)
+
                     data = item.pieData
                     data.setValueTextColor(Color.WHITE)
                     data.setValueTextSize(15f)
+
                     data.dataSet.colors.apply {
-                        add(0, ContextCompat.getColor(root.context, R.color.pie0))
+                        add(
+                            0,
+                            ContextCompat.getColor(
+                                root.context,
+                                R.color.pie0
+                            )
+                        )
                         add(1, ContextCompat.getColor(root.context, R.color.pie1))
                         add(2, ContextCompat.getColor(root.context, R.color.pie2))
                         add(3, ContextCompat.getColor(root.context, R.color.pie3))
                         add(4, ContextCompat.getColor(root.context, R.color.pie4))
                     }
 
+                    centerText = "Most 5"
+                    setCenterTextSize(15f)
+                    setCenterTextColor(Color.BLACK)
+
+                    setUsePercentValues(true)
+                    setDrawEntryLabels(false)
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    isDrawHoleEnabled = true
+
+                    animateY(750, Easing.EaseInOutQuad)
+                    setTransparentCircleAlpha(50)
+                    setTransparentCircleColor(Color.WHITE)
+                    holeRadius = 60F
+                    setHoleColor(Color.WHITE)
+
                     tvPie0.text = item.pieData.dataSets[0].getEntryForIndex(0).label
                     tvPie1.text = item.pieData.dataSets[0].getEntryForIndex(1).label
                     tvPie2.text = item.pieData.dataSets[0].getEntryForIndex(2).label
                     tvPie3.text = item.pieData.dataSets[0].getEntryForIndex(3).label
                     tvPie4.text = item.pieData.dataSets[0].getEntryForIndex(4).label
+
+                    invalidate()
                 }
 
 //                Basic Statistics
@@ -221,6 +235,23 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     setTouchEnabled(false)
                     setDrawMarkers(false)
 
+                    val radarData = RadarData(item.radarDataSet.apply {
+                        color = ContextCompat.getColor(
+                            root.context,
+                            R.color.main
+                        )
+                        lineWidth = 2f
+                        setDrawFilled(true)
+                        fillColor = ContextCompat.getColor(
+                            root.context,
+                            R.color.lighter
+                        )
+                    })
+
+                    data = radarData.apply {
+                        setValueTextSize(15f)
+                    }
+
                     val valueList = ArrayList<String>().apply {
                         add(0, "킬 캐치")
                         add(1, "딜링")
@@ -241,16 +272,6 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                         setLabelCount(10, true)
                     }
 
-                    val radarData = RadarData(item.radarDataSet.apply {
-                        color = ContextCompat.getColor(root.context, R.color.main)
-                        lineWidth = 2f
-                        setDrawFilled(true)
-                        fillColor = ContextCompat.getColor(root.context, R.color.lighter)
-                    })
-
-                    data = radarData.apply {
-                        setValueTextSize(15f)
-                    }
 
                     legend.isEnabled = false
                     description.isEnabled = false
@@ -261,9 +282,36 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     invalidate()
                 }
 
-//                LineChart
+//                BarChart
                 chartBar.apply {
+                    setTouchEnabled(false)
+                    data = BarData(item.barDataSet)
 
+                    item.barDataSet[0].color = ContextCompat.getColor(root.context, R.color.main)
+                    item.barDataSet[1].apply {
+                        color = ContextCompat.getColor(root.context, R.color.main)
+                        valueTextSize = 12f
+                        setValueTextColors(
+                            listOf(
+                                ContextCompat.getColor(
+                                    root.context,
+                                    R.color.transparent
+                                ), ContextCompat.getColor(root.context, R.color.white)
+                            )
+                        )
+                    }
+
+                    axisLeft.setDrawGridLines(false)
+                    xAxis.setDrawGridLines(false)
+                    xAxis.setDrawAxisLine(false)
+                    xAxis.setDrawGridLinesBehindData(false)
+                    xAxis.setDrawLabels(false)
+                    xAxis.setDrawLimitLinesBehindData(false)
+
+                    legend.isEnabled = false
+                    description.isEnabled = false
+                    animateXY(1000, 1000, Easing.EaseInOutQuad)
+                    invalidate()
                 }
 
 

@@ -160,7 +160,7 @@ class StatisticsRepository @Inject constructor(
             damageRvgRecent = getDamageRvgRecent(matchList),
             refreshedDate = refreshedDate,
             radarDataSet = getRadarChart(matchList),
-            barData = getLineChartValue(matchList)
+            barDataSet = getLineChartValue(matchList)
         )
 
     // PieChart
