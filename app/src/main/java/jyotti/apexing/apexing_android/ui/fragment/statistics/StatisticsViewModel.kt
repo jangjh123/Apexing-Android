@@ -18,8 +18,10 @@ class StatisticsViewModel @Inject constructor(
     ViewModel() {
     private val scope = CoroutineScope(dispatcher)
     private val databaseMessage = SingleLiveEvent<Unit>()
+    private val timeOut = SingleLiveEvent<Unit>()
 
     fun getDatabaseMessage() = databaseMessage
+    fun getTimeOut() = timeOut
 
     fun updateMatch() {
         scope.launch {
@@ -48,4 +50,11 @@ class StatisticsViewModel @Inject constructor(
     }
 
     fun getMatch() = repository.readMatch().cachedIn(viewModelScope)
+
+    fun setTimeOut() {
+        scope.launch {
+            delay(5000)
+            timeOut.call()
+        }
+    }
 }

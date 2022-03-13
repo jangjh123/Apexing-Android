@@ -29,9 +29,17 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
 
     override fun startProcess() {
         showMatch()
+        viewModel.setTimeOut()
     }
 
     override fun setObservers() {
+        viewModel.getTimeOut().observe(viewLifecycleOwner) {
+            if (isProgressShowing()) {
+                dismissProgress()
+                setOnFailureView(failureView = binding.layoutNull, successView = binding.layoutView)
+            }
+        }
+
         viewModel.getDatabaseMessage().observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 viewModel.getMatch().collect {
