@@ -16,7 +16,6 @@ import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
-import jyotti.apexing.apexing_android.util.CustomPieDataSet
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
 import jyotti.apexing.data_store.KEY_UID
 import kotlinx.coroutines.CoroutineDispatcher
@@ -210,7 +209,7 @@ class StatisticsRepository @Inject constructor(
             }
         }
 
-        return PieData(CustomPieDataSet(pieEntries, ""))
+        return PieData(PieDataSet(pieEntries, ""))
     }
 
     // Basic Statistics

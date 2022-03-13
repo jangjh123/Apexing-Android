@@ -23,6 +23,7 @@ import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.UnixConverter
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.absoluteValue
 
 
 class MatchAdapter(private val onClickRefresh: () -> Unit) :
@@ -164,7 +165,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     setTouchEnabled(false)
 
                     data = item.pieData
-                    data.setValueTextColor(Color.WHITE)
+                    data.setValueTextColor(Color.TRANSPARENT)
                     data.setValueTextSize(15f)
 
                     data.dataSet.colors.apply {
@@ -197,11 +198,17 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     holeRadius = 60F
                     setHoleColor(Color.WHITE)
 
-                    tvPie0.text = item.pieData.dataSets[0].getEntryForIndex(0).label
-                    tvPie1.text = item.pieData.dataSets[0].getEntryForIndex(1).label
-                    tvPie2.text = item.pieData.dataSets[0].getEntryForIndex(2).label
-                    tvPie3.text = item.pieData.dataSets[0].getEntryForIndex(3).label
-                    tvPie4.text = item.pieData.dataSets[0].getEntryForIndex(4).label
+                    tvPie0.text = data.dataSets[0].getEntryForIndex(0).label
+                    tvPie1.text = data.dataSets[0].getEntryForIndex(1).label
+                    tvPie2.text = data.dataSets[0].getEntryForIndex(2).label
+                    tvPie3.text = data.dataSets[0].getEntryForIndex(3).label
+                    tvPie4.text = data.dataSets[0].getEntryForIndex(4).label
+
+                    tvPieValue0.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(0).value)
+                    tvPieValue1.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(1).value)
+                    tvPieValue2.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(2).value)
+                    tvPieValue3.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(3).value)
+                    tvPieValue4.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(4).value)
 
                     invalidate()
                 }
@@ -327,6 +334,8 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
             }
         }
     }
+
+    private fun getPercentage(ySum: Int, yValue: Float) = String.format("%.1f", (yValue / ySum) * 100) + "%"
 
     inner class FooterViewHolder(private val binding: ItemStatisticsFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
