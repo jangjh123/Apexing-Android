@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,6 +11,7 @@ import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.repository.MainRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -100,9 +102,30 @@ class MainViewModel @Inject constructor(
         contentsCount.postValue(contentsCount.value?.plus(1))
     }
 
-    fun removeAccount() {
+    fun removeAccount(onFinished: () -> Unit) {
         scope.launch {
-            repository.clearDataStore()
+            repository.getPlatformFlow().collect { platform ->
+                repository.getIdFlow().collect { id ->
+                    repository.removeFirebaseUser(platform, id,
+                        onSuccess = {
+                            scope.launch {
+                                repository.clearDataStore()
+                            }
+                            deleteStoredMatches {
+                                onFinished()
+                            }
+                        })
+                }
+            }
+        }
+    }
+
+    private fun deleteStoredMatches(onSuccess: () -> Unit) {
+        scope.launch {
+            withContext(Dispatchers.Default) {
+                repository.clearDatabase()
+            }
+            onSuccess()
         }
     }
 
@@ -110,15 +133,6 @@ class MainViewModel @Inject constructor(
         scope.launch {
             delay(5000)
             timeOut.call()
-        }
-    }
-
-    fun deleteStoredMatches(onSuccess: () -> Unit) {
-        scope.launch {
-            withContext(Dispatchers.Default) {
-                repository.clearDatabase()
-            }
-            onSuccess()
         }
     }
 }

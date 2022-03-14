@@ -1,10 +1,10 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
@@ -123,7 +123,7 @@ class MainRepository @Inject constructor(
     ) {
         networkManager.getClient().fetchNews("ko", KEY_API).enqueue(object : Callback<List<News>> {
             override fun onResponse(call: Call<List<News>>, response: Response<List<News>>) {
-                when(response.code()) {
+                when (response.code()) {
                     200 -> {
                         val newsList = ArrayList<News>()
 
@@ -135,7 +135,8 @@ class MainRepository @Inject constructor(
                             }
                         }
 
-                    } else -> {
+                    }
+                    else -> {
                         onError()
                     }
                 }
@@ -154,6 +155,16 @@ class MainRepository @Inject constructor(
     suspend fun clearDataStore() {
         dataStore.edit {
             it.clear()
+        }
+    }
+
+    fun removeFirebaseUser(
+        platform: String,
+        id: String,
+        onSuccess: () -> Unit
+    ) {
+        databaseRef.child(platform).child(id).removeValue().addOnSuccessListener {
+            onSuccess()
         }
     }
 }

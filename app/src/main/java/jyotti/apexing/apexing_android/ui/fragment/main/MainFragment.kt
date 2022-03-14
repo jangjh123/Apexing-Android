@@ -223,8 +223,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     fun onClickChangeAccount(view: View) {
-        viewModel.removeAccount()
-        viewModel.deleteStoredMatches {
+        viewModel.removeAccount {
             finishAffinity(requireActivity())
             val intent = Intent(requireContext(), AccountActivity::class.java)
             startActivity(intent)
