@@ -3,6 +3,8 @@ package jyotti.apexing.apexing_android.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
@@ -14,11 +16,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import java.lang.NullPointerException
+import java.util.HashMap
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
     private val networkManager: NetworkManager,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val databaseRef: DatabaseReference
 ) {
 
     fun sendAccountRequest(
@@ -62,7 +66,6 @@ class AccountRepository @Inject constructor(
 
     suspend fun storeAccount(platform: String, id: String, uid: String) {
         dataStore.edit {
-            it
             it[KEY_PLATFORM] = platform
         }
         dataStore.edit {
@@ -71,5 +74,9 @@ class AccountRepository @Inject constructor(
         dataStore.edit {
             it[KEY_UID] = uid
         }
+
+        val user: HashMap<String, String> = HashMap()
+        user[id] = platform
+        databaseRef.child(platform).updateChildren(user as Map<String, String>)
     }
 }

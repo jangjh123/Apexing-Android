@@ -3,6 +3,8 @@ package jyotti.apexing.apexing_android.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
@@ -24,7 +26,8 @@ class MainRepository @Inject constructor(
     private val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
     private val matchDao: MatchDao,
-    dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher,
+    private val databaseRef: DatabaseReference
 ) {
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
