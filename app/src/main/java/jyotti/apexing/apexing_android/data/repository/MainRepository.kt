@@ -163,8 +163,16 @@ class MainRepository @Inject constructor(
         id: String,
         onSuccess: () -> Unit
     ) {
-        databaseRef.child(platform).child(id).removeValue().addOnSuccessListener {
-            onSuccess()
-        }
+        databaseRef.child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.ref.child(id).removeValue()
+                onSuccess()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 }

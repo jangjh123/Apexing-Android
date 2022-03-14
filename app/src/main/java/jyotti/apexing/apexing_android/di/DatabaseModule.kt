@@ -1,4 +1,4 @@
-package jyotti.apexing.apexing_android.data.repository
+package jyotti.apexing.apexing_android.di
 
 import android.content.Context
 import androidx.room.Room
