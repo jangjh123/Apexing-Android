@@ -61,8 +61,7 @@
                 setLayoutManager="@{1}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:visibility="invisible" />
+                android:overScrollMode="never"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_go_up"

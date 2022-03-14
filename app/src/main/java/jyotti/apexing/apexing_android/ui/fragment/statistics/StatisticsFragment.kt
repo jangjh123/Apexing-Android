@@ -40,13 +40,24 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             }
         }
 
+        viewModel.getNetworkMessage().observe(viewLifecycleOwner) {
+            setOnFailureView(
+                failureView = binding.layoutNull,
+                successView = binding.layoutView
+            )
+            dismissProgress()
+        }
+
         viewModel.getDatabaseMessage().observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 viewModel.getMatch().collect {
                     matchAdapter.submitData(lifecycle, it)
                 }
             }
-            binding.rvMatch.visibility = View.VISIBLE
+            setOnSuccessView(
+                successView = binding.layoutView,
+                failureView = binding.layoutNull
+            )
             dismissProgress()
         }
     }

@@ -17,9 +17,11 @@ class StatisticsViewModel @Inject constructor(
 ) :
     ViewModel() {
     private val scope = CoroutineScope(dispatcher)
+    private val networkMessage = SingleLiveEvent<Unit>()
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val timeOut = SingleLiveEvent<Unit>()
 
+    fun getNetworkMessage() = networkMessage
     fun getDatabaseMessage() = databaseMessage
     fun getTimeOut() = timeOut
 
@@ -42,7 +44,7 @@ class StatisticsViewModel @Inject constructor(
                     updateMatch()
                 },
                 onFailure = {
-
+                    networkMessage.call()
                 }
 
             )
