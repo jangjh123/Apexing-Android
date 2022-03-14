@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "245149161599",
+    "project_id": "apexing-android",
+    "storage_bucket": "apexing-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245149161599:android:cbf268ad34a17050c8874a",
+        "android_client_info": {
+          "package_name": "jyotti.apexing.apexing_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245149161599-3f8i4jsc6oqdp7uobjsgnc1bp2194mnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVaHyBqKZst83TMiU2m9oT1xYn4dYoIgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245149161599-3f8i4jsc6oqdp7uobjsgnc1bp2194mnf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
