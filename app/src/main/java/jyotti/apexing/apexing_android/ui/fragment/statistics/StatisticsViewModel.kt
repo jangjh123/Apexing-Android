@@ -39,7 +39,7 @@ class StatisticsViewModel @Inject constructor(
                     }
                 },
                 onError = {
-
+                    updateMatch()
                 },
                 onFailure = {
 
