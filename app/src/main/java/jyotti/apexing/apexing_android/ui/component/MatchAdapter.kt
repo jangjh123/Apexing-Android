@@ -101,7 +101,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                 val imageName = item.legendPlayed.lowercase(Locale.getDefault())
                 val imageId: Int = when (item.legendPlayed) {
 
-                    "Mad Maggie" -> {
+                    "MadMaggie" -> {
                         root.resources.getIdentifier(
                             "mad_maggie",
                             "drawable",

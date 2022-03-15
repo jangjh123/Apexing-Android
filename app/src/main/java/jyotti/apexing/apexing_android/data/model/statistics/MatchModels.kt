@@ -6,7 +6,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.RadarDataSet
 
-sealed class MatchModels(val type: MatchModelType) {
+sealed class MatchModels(var type: MatchModelType) {
     @Entity
     data class Match(
         @PrimaryKey(autoGenerate = true)

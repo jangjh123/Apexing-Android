@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.*
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
+import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
@@ -108,7 +109,14 @@ class StatisticsRepository @Inject constructor(
 
                     matchList.add(
                         MatchModels.Match(
-                            legendPlayed = get("legendPlayed").asString,
+                            legendPlayed = when (get("legendPlayed").asString) {
+                                "Mad Maggie" -> {
+                                    "MadMaggie"
+                                }
+                                else -> {
+                                    get("legendPlayed").asString
+                                }
+                            },
                             gameMode = get("gameMode").asString,
                             gameLengthSecs = get("gameLengthSecs").asInt,
                             gameStartTimestamp = get("gameStartTimestamp").asLong,
@@ -168,26 +176,9 @@ class StatisticsRepository @Inject constructor(
     ): PieData {
 
         val mostLegendList = ArrayList<MostLegend>().apply {
-            add(MostLegend("Ash", 0))
-            add(MostLegend("Bangalore", 0))
-            add(MostLegend("Bloodhound", 0))
-            add(MostLegend("Caustic", 0))
-            add(MostLegend("Crypto", 0))
-            add(MostLegend("Fuse", 0))
-            add(MostLegend("Gibraltar", 0))
-            add(MostLegend("Horizon", 0))
-            add(MostLegend("Lifeline", 0))
-            add(MostLegend("Loba", 0))
-            add(MostLegend("Mad Maggie", 0))
-            add(MostLegend("Mirage", 0))
-            add(MostLegend("Octane", 0))
-            add(MostLegend("Pathfinder", 0))
-            add(MostLegend("Rampart", 0))
-            add(MostLegend("Revenant", 0))
-            add(MostLegend("Seer", 0))
-            add(MostLegend("Valkyrie", 0))
-            add(MostLegend("Wattson", 0))
-            add(MostLegend("Wraith", 0))
+            enumValues<LegendNames>().forEach {
+                this.add(MostLegend(it.name, 0))
+            }
         }
 
         for (i in matchList.indices) {
@@ -256,16 +247,16 @@ class StatisticsRepository @Inject constructor(
     ): RadarDataSet {
         val label = ""
         val radarEntries = ArrayList<RadarEntry>().apply {
-            add(RadarEntry(getRadarChartValue(matchList)!![0]))
-            add(RadarEntry(getRadarChartValue(matchList)!![1]))
-            add(RadarEntry(getRadarChartValue(matchList)!![2]))
-            add(RadarEntry(getRadarChartValue(matchList)!![3]))
+            add(RadarEntry(getRadarChartValue(matchList)[0]))
+            add(RadarEntry(getRadarChartValue(matchList)[1]))
+            add(RadarEntry(getRadarChartValue(matchList)[2]))
+            add(RadarEntry(getRadarChartValue(matchList)[3]))
         }
 
         return RadarDataSet(radarEntries, label)
     }
 
-    private fun getRadarChartValue(matchList: List<MatchModels.Match>): FloatArray? {
+    private fun getRadarChartValue(matchList: List<MatchModels.Match>): FloatArray {
         val data = FloatArray(4)
 
         var killCatch = 0f
