@@ -72,20 +72,20 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         viewModel.getMessageLiveData().observe(this) {
             dismissProgress()
             when (it) {
-                0 -> {
+                AccountMessage.Success -> {
                     val intent = Intent(this, HomeActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     finish()
                 }
-                1 -> {
+                AccountMessage.Null -> {
                     showSnackBar(getString(R.string.account_error))
                 }
-                2 -> {
+                AccountMessage.Error -> {
                     showSnackBar(getString(R.string.please_retry))
                 }
-                else -> {
+                AccountMessage.NetworkError -> {
                     showSnackBar(getString(R.string.network_error))
                 }
             }

@@ -15,26 +15,33 @@ class AccountViewModel @Inject constructor(
     dispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val scope = CoroutineScope(dispatcher)
-    private val message = MutableLiveData<Int>()
+    private val message = MutableLiveData<AccountMessage>()
 
     fun getMessageLiveData() = message
 
     fun checkAccount(platform: String, id: String) {
         repository.sendAccountRequest(platform, id,
             onSuccess = {
-                message.postValue(0)
+                message.postValue(AccountMessage.Success)
                 scope.launch {
                     repository.storeAccount(platform, id, it)
                 }
             },
             onNull = {
-                message.postValue(1)
+                message.postValue(AccountMessage.Null)
             },
             onError = {
-                message.postValue(2)
+                message.postValue(AccountMessage.Error)
             },
             onFailure = {
-                message.postValue(3)
+                message.postValue(AccountMessage.NetworkError)
             })
     }
+}
+
+sealed class AccountMessage {
+    object Success : AccountMessage()
+    object Null : AccountMessage()
+    object Error : AccountMessage()
+    object NetworkError : AccountMessage()
 }

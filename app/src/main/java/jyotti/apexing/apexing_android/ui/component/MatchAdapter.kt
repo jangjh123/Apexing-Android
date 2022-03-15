@@ -38,7 +38,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
             1 -> {
                 (holder as HeaderViewHolder).bind(getItem(position) as MatchModels.Header)
             }
-            else -> {
+            2 -> {
                 (holder as FooterViewHolder).bind(getItem(position) as MatchModels.Footer)
             }
         }
@@ -52,7 +52,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
             MatchModelType.HEADER -> {
                 1
             }
-            else -> {
+            MatchModelType.FOOTER -> {
                 2
             }
         }

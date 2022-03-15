@@ -3,11 +3,10 @@ package jyotti.apexing.apexing_android.data.model.statistics
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.RadarDataSet
 
-sealed class MatchModels(var type: MatchModelType) {
+sealed class MatchModels(val type: MatchModelType) {
     @Entity
     data class Match(
         @PrimaryKey(autoGenerate = true)
