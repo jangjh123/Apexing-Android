@@ -7,14 +7,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import com.github.mikephil.charting.data.*
 import com.google.gson.JsonArray
+import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
-import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
@@ -174,29 +173,25 @@ class StatisticsRepository @Inject constructor(
     private fun getPieChart(
         matchList: List<MatchModels.Match>
     ): PieData {
-
-        val mostLegendList = ArrayList<MostLegend>().apply {
+        val mostLegendMap = HashMap<String, Int>().also { map ->
             enumValues<LegendNames>().forEach {
-                this.add(MostLegend(it.name, 0))
+                map[it.name] = 0
             }
         }
 
         for (i in matchList.indices) {
-            for (j in mostLegendList.indices) {
-                if (matchList[i].legendPlayed == mostLegendList[j].legendName) { // 맵이나 셋으로 바꾸자
-                    mostLegendList[j].addPlayCount()
-                    continue
-                }
-            }
+            mostLegendMap[matchList[i].legendPlayed] =
+                mostLegendMap.getValue(matchList[i].legendPlayed) + 1
         }
 
-        val sortedList = mostLegendList.sortedByDescending {
-            it.playCount
+
+        val sortedList = mostLegendMap.toList().sortedByDescending {
+            it.second
         }
 
         val pieEntries: ArrayList<PieEntry> = ArrayList<PieEntry>().apply {
             for (i in 0..4) {
-                add(PieEntry(sortedList[i].playCount.toFloat(), sortedList[i].legendName))
+                add(PieEntry(sortedList[i].second.toFloat(), sortedList[i].first))
             }
         }
 
