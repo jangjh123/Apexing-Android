@@ -197,20 +197,21 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     setTransparentCircleColor(Color.WHITE)
                     holeRadius = 60F
                     setHoleColor(Color.WHITE)
-
-                    tvPie0.text = data.dataSets[0].getEntryForIndex(0).label
-                    tvPie1.text = data.dataSets[0].getEntryForIndex(1).label
-                    tvPie2.text = data.dataSets[0].getEntryForIndex(2).label
-                    tvPie3.text = data.dataSets[0].getEntryForIndex(3).label
-                    tvPie4.text = data.dataSets[0].getEntryForIndex(4).label
-
-                    tvPieValue0.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(0).value)
-                    tvPieValue1.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(1).value)
-                    tvPieValue2.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(2).value)
-                    tvPieValue3.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(3).value)
-                    tvPieValue4.text = getPercentage(data.yValueSum.toInt(), data.dataSets[0].getEntryForIndex(4).value)
-
                     invalidate()
+                }
+
+                chartPie.also {
+                    tvPie0.text = it.data.dataSets[0].getEntryForIndex(0).label
+                    tvPie1.text = it.data.dataSets[0].getEntryForIndex(1).label
+                    tvPie2.text = it.data.dataSets[0].getEntryForIndex(2).label
+                    tvPie3.text = it.data.dataSets[0].getEntryForIndex(3).label
+                    tvPie4.text = it.data.dataSets[0].getEntryForIndex(4).label
+
+                    tvPieValue0.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(0).value)
+                    tvPieValue1.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(1).value)
+                    tvPieValue2.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(2).value)
+                    tvPieValue3.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(3).value)
+                    tvPieValue4.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(4).value)
                 }
 
 //                Basic Statistics
@@ -221,21 +222,21 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 val killIncrease = item.killRvgRecent - item.killRvgAll
 
-                tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
                 if (killIncrease > 0) {
                     tvKillIncrease.setTextColor(Color.BLUE)
                 } else {
                     tvKillIncrease.setTextColor(Color.RED)
                 }
+                tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
 
                 val damageIncrease = item.damageRvgRecent - item.damageRvgAll
 
-                tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
                 if (damageIncrease > 0) {
                     tvDamageIncrease.setTextColor(Color.BLUE)
                 } else {
                     tvDamageIncrease.setTextColor(Color.RED)
                 }
+                tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
 
 //                RadarChart
                 chartRadar.apply {
