@@ -31,7 +31,7 @@ class AccountViewModel @Inject constructor(
                 message.postValue(AccountMessage.Null)
             },
             onError = {
-                message.postValue(AccountMessage.Error)
+                checkAccount(platform, id)
             },
             onFailure = {
                 message.postValue(AccountMessage.NetworkError)
