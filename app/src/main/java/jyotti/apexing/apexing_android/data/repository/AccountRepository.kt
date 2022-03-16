@@ -20,18 +20,18 @@ import java.util.HashMap
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
-    private val networkManager: NetworkManager,
+    val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
     private val databaseRef: DatabaseReference
 ) {
 
-    fun sendAccountRequest(
+    inline fun sendAccountRequest(
         platform: String,
         id: String,
-        onSuccess: (String) -> Unit,
-        onNull: () -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+        crossinline onSuccess: (String) -> Unit,
+        crossinline onNull: () -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchAccount(platform, id, KEY_API).enqueue(object :
             Callback<JsonObject> {

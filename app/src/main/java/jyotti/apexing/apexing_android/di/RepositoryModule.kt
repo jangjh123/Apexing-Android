@@ -40,11 +40,11 @@ object RepositoryModule {
     @Provides
     fun provideMainRepository(
         networkManager: NetworkManager,
+        databaseRef: DatabaseReference,
         dataStore: DataStore<Preferences>,
         matchDao: MatchDao,
-        dispatcher: CoroutineDispatcher,
-        databaseRef: DatabaseReference
-    ) = MainRepository(networkManager, dataStore, matchDao, dispatcher, databaseRef)
+        dispatcher: CoroutineDispatcher
+    ) = MainRepository(networkManager, databaseRef, dataStore, matchDao, dispatcher)
 
     @ViewModelScoped
     @Provides

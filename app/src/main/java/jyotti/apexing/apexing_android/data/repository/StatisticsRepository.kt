@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 
 class StatisticsRepository @Inject constructor(
-    private val networkManager: NetworkManager,
+    val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
     private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
@@ -46,12 +46,12 @@ class StatisticsRepository @Inject constructor(
     fun readStoredUid() = uidFlow
     fun readStoredRefreshDate() = refreshDateFlow
 
-    fun sendMatchRequest(
+    inline fun sendMatchRequest(
         uid: String,
         start: Long,
-        onSuccess: (List<MatchModels.Match>) -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+        crossinline onSuccess: (List<MatchModels.Match>) -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchMatch(KEY_API, uid, start, Int.MAX_VALUE).enqueue(object :
             Callback<JsonArray> {
@@ -73,7 +73,7 @@ class StatisticsRepository @Inject constructor(
         })
     }
 
-    private fun setDamageAndKill(jsonArray: JsonArray): ArrayList<MatchModels.Match> {
+    fun setDamageAndKill(jsonArray: JsonArray): ArrayList<MatchModels.Match> {
 
         val matchList = ArrayList<MatchModels.Match>()
 
@@ -173,9 +173,9 @@ class StatisticsRepository @Inject constructor(
     private fun getPieChart(
         matchList: List<MatchModels.Match>
     ): PieData {
-        val mostLegendMap = HashMap<String, Int>().also { map ->
+        val mostLegendMap = HashMap<String, Int>().apply {
             enumValues<LegendNames>().forEach {
-                map[it.name] = 0
+                this[it.name] = 0
             }
         }
 

@@ -17,10 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: MainRepository,
+    val repository: MainRepository,
     dispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    private val scope = CoroutineScope(dispatcher)
+    val scope = CoroutineScope(dispatcher)
 
     private val user = MutableLiveData<User>()
     private val mapList = MutableLiveData<List<Map>>()
@@ -102,7 +102,7 @@ class MainViewModel @Inject constructor(
         contentsCount.postValue(contentsCount.value?.plus(1))
     }
 
-    fun removeAccount(onFinished: () -> Unit) {
+    inline fun removeAccount(crossinline onFinished: () -> Unit) {
         scope.launch {
             repository.getPlatformFlow().collect { platform ->
                 repository.getIdFlow().collect { id ->
@@ -120,7 +120,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun deleteStoredMatches(onSuccess: () -> Unit) {
+    inline fun deleteStoredMatches(crossinline onSuccess: () -> Unit) {
         scope.launch {
             withContext(Dispatchers.Default) {
                 repository.clearDatabase()

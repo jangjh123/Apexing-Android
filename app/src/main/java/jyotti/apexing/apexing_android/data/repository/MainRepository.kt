@@ -1,10 +1,12 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
@@ -23,11 +25,11 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
-    private val networkManager: NetworkManager,
+    val networkManager: NetworkManager,
+    val databaseRef: DatabaseReference,
     private val dataStore: DataStore<Preferences>,
     private val matchDao: MatchDao,
-    dispatcher: CoroutineDispatcher,
-    private val databaseRef: DatabaseReference
+    dispatcher: CoroutineDispatcher
 ) {
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
@@ -40,12 +42,12 @@ class MainRepository @Inject constructor(
     fun getPlatformFlow() = platformFlow
     fun getIdFlow() = idFlow
 
-    fun sendUserRequest(
+    inline fun sendUserRequest(
         platform: String,
         id: String,
-        onSuccess: (User) -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+        crossinline onSuccess: (User) -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchUser(platform, id, KEY_API)
             .enqueue(object : Callback<User> {
@@ -66,10 +68,10 @@ class MainRepository @Inject constructor(
             })
     }
 
-    fun sendMapRequest(
-        onSuccess: (Maps) -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+    inline fun sendMapRequest(
+        crossinline onSuccess: (Maps) -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchMap(KEY_API).enqueue(object : Callback<Maps> {
             override fun onResponse(call: Call<Maps>, response: Response<Maps>) {
@@ -89,10 +91,10 @@ class MainRepository @Inject constructor(
         })
     }
 
-    fun sendCraftingRequest(
-        onSuccess: (List<Crafting>) -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+    inline fun sendCraftingRequest(
+        crossinline onSuccess: (List<Crafting>) -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchCrafting(KEY_API)
             .enqueue(object : Callback<List<Crafting>> {
@@ -116,10 +118,10 @@ class MainRepository @Inject constructor(
             })
     }
 
-    fun sendNewsRequest(
-        onSuccess: (List<News>) -> Unit,
-        onError: () -> Unit,
-        onFailure: () -> Unit
+    inline fun sendNewsRequest(
+        crossinline onSuccess: (List<News>) -> Unit,
+        crossinline onError: () -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         networkManager.getClient().fetchNews("ko", KEY_API).enqueue(object : Callback<List<News>> {
             override fun onResponse(call: Call<List<News>>, response: Response<List<News>>) {
@@ -158,10 +160,10 @@ class MainRepository @Inject constructor(
         }
     }
 
-    fun removeFirebaseUser(
+    inline fun removeFirebaseUser(
         platform: String,
         id: String,
-        onSuccess: () -> Unit
+        crossinline onSuccess: () -> Unit
     ) {
         databaseRef.child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
             ValueEventListener {
