@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.ThumbnailLoader
+import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
 
 class NewsAdapter(private val onClickNews: (String) -> Unit) :
     ListAdapter<News, RecyclerView.ViewHolder>(GenericDiffUtil()) {
@@ -40,7 +40,7 @@ class NewsAdapter(private val onClickNews: (String) -> Unit) :
                 Glide.with(root)
                     .load(news.img)
                     .thumbnail(
-                        ThumbnailLoader.getThumbnail(root.context, news.img)
+                        getThumbnail(root.context, news.img)
                     )
                     .into(ivNewsImage)
 

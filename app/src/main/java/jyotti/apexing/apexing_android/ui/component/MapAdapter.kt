@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.ThumbnailLoader
 import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnailWithCenterCrop
 import jyotti.apexing.apexing_android.util.UnixConverter
 
@@ -48,7 +47,7 @@ class MapAdapter :
                 Glide.with(root)
                     .load(map.current.asset)
                     .thumbnail(
-                        ThumbnailLoader.getThumbnailWithCenterCrop(root.context, map.current.asset)
+                        getThumbnailWithCenterCrop(root.context, map.current.asset)
                     )
                     .centerCrop()
                     .into(ivMap)
