@@ -9,7 +9,10 @@ import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
+import jyotti.apexing.apexing_android.util.ThumbnailLoader
+import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnailWithCenterCrop
 import jyotti.apexing.apexing_android.util.UnixConverter
+
 
 class MapAdapter :
     ListAdapter<Map, RecyclerView.ViewHolder>(
@@ -37,16 +40,18 @@ class MapAdapter :
 
     inner class ViewHolder(private val binding: ItemMapBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+
         @SuppressLint("SetTextI18n")
         fun bind(map: Map) {
             with(binding) {
                 Glide.with(root)
                     .load(map.current.asset)
-                    .fitCenter()
+                    .thumbnail(
+                        ThumbnailLoader.getThumbnailWithCenterCrop(root.context, map.current.asset)
+                    )
                     .centerCrop()
-                    .thumbnail(0.1f)
                     .into(ivMap)
-
                 tvMapType.text = map.type
                 tvMapName.text = map.current.map
 

@@ -29,6 +29,8 @@ import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
+import jyotti.apexing.apexing_android.util.ThumbnailLoader
+import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnailWithCenterCrop
 import java.lang.Exception
 import kotlin.system.exitProcess
 
@@ -152,22 +154,28 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                 pbLevel.progress = user.global.toNextLevelPercent
             }
 
-            Glide.with(this)
+            Glide.with(requireContext())
                 .load(user.legends.selected.imageAsset.banner)
                 .centerCrop()
-                .thumbnail(0.1f)
+                .thumbnail(
+                    ThumbnailLoader.getThumbnailWithCenterCrop(requireContext(), user.legends.selected.imageAsset.banner)
+                )
                 .listener(imageLoadingListener())
                 .into(binding.ivBanner)
 
-            Glide.with(this)
+            Glide.with(requireContext())
                 .load(user.global.rank.rankImg)
-                .thumbnail(0.1f)
+                .thumbnail(
+                    ThumbnailLoader.getThumbnail(requireContext(), user.global.rank.rankImg)
+                )
                 .listener(imageLoadingListener())
                 .into(binding.ivBrRank)
 
-            Glide.with(this)
+            Glide.with(requireContext())
                 .load(user.global.arena.rankImg)
-                .thumbnail(0.1f)
+                .thumbnail(
+                    ThumbnailLoader.getThumbnail(requireContext(), user.global.arena.rankImg)
+                )
                 .listener(imageLoadingListener())
                 .into(binding.ivArRank)
         } catch (exception: Exception) {
@@ -185,28 +193,40 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     private fun setCraftingView(craftingList: List<Crafting>) {
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(craftingList[0].bundleContents[0].itemType.asset)
             .centerCrop()
-            .thumbnail(0.1f)
+            .thumbnail(
+                ThumbnailLoader.getThumbnailWithCenterCrop(requireContext(),
+                craftingList[0].bundleContents[0].itemType.asset)
+            )
             .listener(imageLoadingListener())
             .into(binding.ivCraft0)
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(craftingList[0].bundleContents[1].itemType.asset)
             .centerCrop()
-            .thumbnail(0.1f)
+            .thumbnail(
+                ThumbnailLoader.getThumbnailWithCenterCrop(requireContext(),
+                    craftingList[0].bundleContents[1].itemType.asset)
+            )
             .listener(imageLoadingListener())
             .into(binding.ivCraft1)
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(craftingList[1].bundleContents[0].itemType.asset)
             .centerCrop()
-            .thumbnail(0.1f)
+            .thumbnail(
+                ThumbnailLoader.getThumbnailWithCenterCrop(requireContext(),
+                    craftingList[1].bundleContents[0].itemType.asset)
+            )
             .listener(imageLoadingListener())
             .into(binding.ivCraft2)
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(craftingList[1].bundleContents[1].itemType.asset)
             .centerCrop()
-            .thumbnail(0.1f)
+            .thumbnail(
+                ThumbnailLoader.getThumbnailWithCenterCrop(requireContext(),
+                    craftingList[1].bundleContents[1].itemType.asset)
+            )
             .listener(imageLoadingListener())
             .into(binding.ivCraft3)
 
