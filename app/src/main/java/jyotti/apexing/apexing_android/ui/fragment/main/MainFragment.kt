@@ -182,9 +182,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setMapView(mapList: List<Map>) {
         mapList[0].type = getString(R.string.battle_royal)
-        mapList[1].type = getString(R.string.rank) + " " + getString(R.string.battle_royal)
+        mapList[1].type = "${getString(R.string.rank)} ${getString(R.string.battle_royal)}"
         mapList[2].type = getString(R.string.arena)
-        mapList[3].type = getString(R.string.rank) + " " + getString(R.string.arena)
+        mapList[3].type = "${getString(R.string.rank)} ${getString(R.string.arena)}"
         mapAdapter.submitList(mapList)
     }
 

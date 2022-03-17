@@ -224,19 +224,23 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 if (killIncrease > 0) {
                     tvKillIncrease.setTextColor(Color.BLUE)
+                    tvKillIncrease.text = String.format("(전체 평균 대비 +%.2f)", killIncrease)
                 } else {
                     tvKillIncrease.setTextColor(Color.RED)
+                    tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
                 }
-                tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
+
 
                 val damageIncrease = item.damageRvgRecent - item.damageRvgAll
 
                 if (damageIncrease > 0) {
                     tvDamageIncrease.setTextColor(Color.BLUE)
+                    tvDamageIncrease.text = String.format("(전체 평균 대비 +%.2f)", damageIncrease)
                 } else {
                     tvDamageIncrease.setTextColor(Color.RED)
+                    tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
                 }
-                tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
+
 
 //                RadarChart
                 chartRadar.apply {
