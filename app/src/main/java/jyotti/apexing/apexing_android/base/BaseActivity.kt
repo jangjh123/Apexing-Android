@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import jyotti.apexing.apexing_android.ui.component.DialogFragment
+import jyotti.apexing.apexing_android.ui.component.ProgressFragment
 import java.lang.Exception
 
 abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : AppCompatActivity() {
     lateinit var binding: VB
-    private val progressFragment = DialogFragment()
+    private val progressFragment = ProgressFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

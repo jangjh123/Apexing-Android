@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import jyotti.apexing.apexing_android.ui.component.DialogFragment
+import jyotti.apexing.apexing_android.ui.component.ProgressFragment
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
     lateinit var binding: VB
-    private val progressFragment = DialogFragment()
+    private val progressFragment = ProgressFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,

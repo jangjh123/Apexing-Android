@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.ktx.Firebase
@@ -26,7 +25,8 @@ class SplashRepository @Inject constructor(
     fun readStoredPlatform(): Flow<String> = platformFlow
 
     inline fun fetchVersion(
-        crossinline onSuccess: (Boolean) -> Unit
+        crossinline onSuccess: (Boolean) -> Unit,
+        crossinline onFailure: () -> Unit
     ) {
         val remoteConfig = Firebase.remoteConfig.apply {
             setConfigSettingsAsync(remoteConfigSettings
@@ -36,11 +36,16 @@ class SplashRepository @Inject constructor(
             setDefaultsAsync(mapOf("REMOTE_KEY_APP_VERSION" to 0))
         }
 
-        remoteConfig.fetchAndActivate().addOnSuccessListener {
-            if (remoteConfig.getString("current_version") != BuildConfig.VERSION_NAME) {
-                onSuccess(true)
-            } else {
-                onSuccess(false)
+        remoteConfig.fetchAndActivate().apply {
+            addOnSuccessListener {
+                if (remoteConfig.getString("current_version") != BuildConfig.VERSION_NAME) {
+                    onSuccess(true)
+                } else {
+                    onSuccess(false)
+                }
+            }
+            addOnFailureListener {
+                onFailure()
             }
         }
     }

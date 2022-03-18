@@ -14,6 +14,12 @@
     <string name="network_error">네트워크 오류입니다.\n연결 상태를 확인하고 다시 시도하세요.</string>
     <string name="retry">재시도</string>
 
+    <!--    SplashActivity-->
+    <string name="new_version">새로운 버전이 있습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.</string>
+    <string name="play_store">플레이스토어 이동</string>
+    <string name="not_connected_to_internet">인터넷에 연결되어 있지 않습니다.\n연결 상태를 확인해주세요.</string>
+    <string name="quit">종료</string>
+
     <!--    AccountActivity-->
     <string name="set_id">서비스 이용을 위해\nID를 등록해주세요.</string>
     <string name="type_id">ID 입력</string>

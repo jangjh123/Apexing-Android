@@ -32,8 +32,12 @@ class SplashViewModel @Inject constructor(
     }
 
     fun getNewVersionCode() {
-        repository.fetchVersion {
-            version.postValue(it)
-        }
+        repository.fetchVersion(
+            onSuccess = {
+                version.postValue(it)
+            },
+            onFailure = {
+                networkMessage.call()
+            })
     }
 }
