@@ -53,7 +53,7 @@ class StatisticsRepository @Inject constructor(
         crossinline onError: () -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        networkManager.getClient().fetchMatch(KEY_API, uid, start, Int.MAX_VALUE).enqueue(object :
+        networkManager.getClient().fetchMatch(KEY_API, uid, start, 9999).enqueue(object :
             Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 when (response.code()) {

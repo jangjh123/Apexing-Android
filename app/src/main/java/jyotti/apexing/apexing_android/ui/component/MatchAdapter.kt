@@ -98,6 +98,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MatchModels.Match) {
             with(binding) {
+                val context = root.context
                 val imageName = item.legendPlayed.lowercase(Locale.getDefault())
                 val imageId: Int = when (item.legendPlayed) {
 
@@ -119,7 +120,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 Glide.with(root)
                     .load(imageId)
-                    .thumbnail(getThumbnail(root.context, imageId))
+                    .thumbnail(getThumbnail(context, imageId))
                     .into(ivLegend)
 
                 tvDate.text =
@@ -134,10 +135,10 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 when (item.gameMode) {
                     "BATTLE_ROYALE" -> {
-                        tvMode.text = "배틀로얄"
+                        tvMode.text = root.context.getString(R.string.battle_royal)
                     }
                     "ARENAS" -> {
-                        tvMode.text = "아레나"
+                        tvMode.text = root.context.getString(R.string.arena)
                     }
                     else -> {
                         tvMode.text = item.gameMode
@@ -173,14 +174,14 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                         add(
                             0,
                             ContextCompat.getColor(
-                                root.context,
+                                context,
                                 R.color.pie0
                             )
                         )
-                        add(1, ContextCompat.getColor(root.context, R.color.pie1))
-                        add(2, ContextCompat.getColor(root.context, R.color.pie2))
-                        add(3, ContextCompat.getColor(root.context, R.color.pie3))
-                        add(4, ContextCompat.getColor(root.context, R.color.pie4))
+                        add(1, ContextCompat.getColor(context, R.color.pie1))
+                        add(2, ContextCompat.getColor(context, R.color.pie2))
+                        add(3, ContextCompat.getColor(context, R.color.pie3))
+                        add(4, ContextCompat.getColor(context, R.color.pie4))
                     }
 
                     centerText = "Most 5"
@@ -208,11 +209,26 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     tvPie3.text = it.data.dataSets[0].getEntryForIndex(3).label
                     tvPie4.text = it.data.dataSets[0].getEntryForIndex(4).label
 
-                    tvPieValue0.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(0).value)
-                    tvPieValue1.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(1).value)
-                    tvPieValue2.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(2).value)
-                    tvPieValue3.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(3).value)
-                    tvPieValue4.text = getPercentage(it.data.yValueSum.toInt(), it.data.dataSets[0].getEntryForIndex(4).value)
+                    tvPieValue0.text = getPercentage(
+                        it.data.yValueSum.toInt(),
+                        it.data.dataSets[0].getEntryForIndex(0).value
+                    )
+                    tvPieValue1.text = getPercentage(
+                        it.data.yValueSum.toInt(),
+                        it.data.dataSets[0].getEntryForIndex(1).value
+                    )
+                    tvPieValue2.text = getPercentage(
+                        it.data.yValueSum.toInt(),
+                        it.data.dataSets[0].getEntryForIndex(2).value
+                    )
+                    tvPieValue3.text = getPercentage(
+                        it.data.yValueSum.toInt(),
+                        it.data.dataSets[0].getEntryForIndex(3).value
+                    )
+                    tvPieValue4.text = getPercentage(
+                        it.data.yValueSum.toInt(),
+                        it.data.dataSets[0].getEntryForIndex(4).value
+                    )
                 }
 
 //                Basic Statistics
@@ -250,13 +266,13 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                     val radarData = RadarData(item.radarDataSet.apply {
                         color = ContextCompat.getColor(
-                            root.context,
+                            context,
                             R.color.main
                         )
                         lineWidth = 2f
                         setDrawFilled(true)
                         fillColor = ContextCompat.getColor(
-                            root.context,
+                            context,
                             R.color.lighter
                         )
                     })
@@ -289,8 +305,8 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     legend.isEnabled = false
                     description.isEnabled = false
                     webLineWidthInner = 1f
-                    webColor = ContextCompat.getColor(root.context, R.color.radar_line)
-                    webColorInner = ContextCompat.getColor(root.context, R.color.radar_line)
+                    webColor = ContextCompat.getColor(context, R.color.radar_line)
+                    webColorInner = ContextCompat.getColor(context, R.color.radar_line)
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
                     invalidate()
                 }
@@ -301,18 +317,18 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                     data = BarData(item.barDataSet)
 
                     item.barDataSet[0].apply {
-                        color = ContextCompat.getColor(root.context, R.color.main)
+                        color = ContextCompat.getColor(context, R.color.main)
                         valueTextSize = 9f
                     }
                     item.barDataSet[1].apply {
-                        color = ContextCompat.getColor(root.context, R.color.main)
+                        color = ContextCompat.getColor(context, R.color.main)
                         valueTextSize = 12f
                         setValueTextColors(
                             listOf(
                                 ContextCompat.getColor(
-                                    root.context,
+                                    context,
                                     R.color.transparent
-                                ), ContextCompat.getColor(root.context, R.color.white)
+                                ), ContextCompat.getColor(context, R.color.white)
                             )
                         )
                     }
@@ -336,12 +352,13 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
                 }
 
                 val refreshedDate = mUnixConverter.getTimestampToDate(item.refreshedDate.toString())
-                tvRefreshedDate.text = "$refreshedDate 갱신됨"
+                tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
             }
         }
     }
 
-    private fun getPercentage(ySum: Int, yValue: Float) = String.format("%.1f", (yValue / ySum) * 100) + "%"
+    private fun getPercentage(ySum: Int, yValue: Float) =
+        String.format("%.1f", (yValue / ySum) * 100) + "%"
 
     inner class FooterViewHolder(private val binding: ItemStatisticsFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {

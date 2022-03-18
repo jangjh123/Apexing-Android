@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +10,6 @@ import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.repository.MainRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

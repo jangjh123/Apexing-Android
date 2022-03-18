@@ -1,13 +1,11 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import com.google.gson.JsonObject
+import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_PLATFORM
@@ -15,9 +13,6 @@ import jyotti.apexing.data_store.KEY_UID
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
-import java.lang.NullPointerException
-import java.util.HashMap
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(

@@ -3,8 +3,8 @@ package jyotti.apexing.apexing_android.util
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 
-class CustomBarDataSet(yVals: List<BarEntry?>?, label: String?) :
-    BarDataSet(yVals, label) {
+class CustomBarDataSet(yValues: List<BarEntry?>?, label: String?) :
+    BarDataSet(yValues, label) {
     override fun getEntryIndex(e: BarEntry?): Int {
         return getEntryIndex(e)
     }

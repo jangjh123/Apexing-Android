@@ -60,5 +60,6 @@
     <string name="survival_duration">생존 시간</string>
     <string name="bar_chart_description">막대 위 숫자는 가한 대미지, 아래의 숫자는 킬을 나타냅니다.</string>
     <string name="kill_damage_description">킬과 대미지가 표시되도록 하는 방법</string>
+    <string name="refreshed_at">%s 갱신됨</string>
 
 </resources>
