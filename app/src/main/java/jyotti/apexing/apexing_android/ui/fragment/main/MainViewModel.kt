@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val newsList = MutableLiveData<List<News>>()
     private val contentsCount = MutableLiveData(0)
     private val networkMessage = SingleLiveEvent<Unit>()
-    private val timeOut = SingleLiveEvent<Unit>()
+    private val timeOutMessage = SingleLiveEvent<Unit>()
 
     fun getUserLiveData() = user
     fun getMapLiveData() = mapList
@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
     fun getNewsLiveData() = newsList
     fun getContentsCount() = contentsCount
     fun getNetworkMessage() = networkMessage
-    fun getTimeOut() = timeOut
+    fun getTimeOutMessage() = timeOutMessage
 
     fun getUser() {
         scope.launch {
@@ -130,7 +130,7 @@ class MainViewModel @Inject constructor(
     fun setTimeOut() {
         scope.launch {
             delay(5000)
-            timeOut.call()
+            timeOutMessage.call()
         }
     }
 }

@@ -19,11 +19,11 @@ class StatisticsViewModel @Inject constructor(
     private val scope = CoroutineScope(dispatcher)
     private val networkMessage = SingleLiveEvent<Unit>()
     private val databaseMessage = SingleLiveEvent<Unit>()
-    private val timeOut = SingleLiveEvent<Unit>()
+    private val timeOutMessage = SingleLiveEvent<Unit>()
 
     fun getNetworkMessage() = networkMessage
     fun getDatabaseMessage() = databaseMessage
-    fun getTimeOut() = timeOut
+    fun getTimeOutMessage() = timeOutMessage
 
     fun updateMatch() {
         scope.launch {
@@ -55,7 +55,7 @@ class StatisticsViewModel @Inject constructor(
     fun setTimeOut() {
         scope.launch {
             delay(5000)
-            timeOut.call()
+            timeOutMessage.call()
         }
     }
 }

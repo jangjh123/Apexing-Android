@@ -4,11 +4,10 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import jyotti.apexing.apexing_android.R
-import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
-import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
+import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
 import kotlinx.coroutines.launch
 
@@ -33,7 +32,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     override fun setObservers() {
-        viewModel.getTimeOut().observe(viewLifecycleOwner) {
+        viewModel.getTimeOutMessage().observe(viewLifecycleOwner) {
             if (isProgressShowing()) {
                 dismissProgress()
                 setOnFailureView(failureView = binding.layoutNull, successView = binding.layoutView)

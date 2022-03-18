@@ -53,7 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     override fun setObservers() {
-        viewModel.getTimeOut().observe(viewLifecycleOwner) {
+        viewModel.getTimeOutMessage().observe(viewLifecycleOwner) {
             if (isProgressShowing()) {
                 dismissProgress()
                 setOnFailureView(failureView = binding.layoutNull, successView = binding.layoutView)
