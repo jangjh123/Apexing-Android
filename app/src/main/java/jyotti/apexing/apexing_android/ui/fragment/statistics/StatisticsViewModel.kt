@@ -33,10 +33,9 @@ class StatisticsViewModel @Inject constructor(
                 onSuccess = {
                     scope.launch {
                         repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
-                        withContext(Dispatchers.Default) {
+                        withContext(scope.coroutineContext) {
                             repository.storeMatch(it)
                         }
-
                         databaseMessage.call()
                     }
                 },

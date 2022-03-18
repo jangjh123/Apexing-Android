@@ -1,7 +1,6 @@
 package jyotti.apexing.apexing_android.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import jyotti.apexing.apexing_android.ui.component.DialogFragment
-import java.lang.Exception
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
     lateinit var binding: VB
