@@ -523,12 +523,6 @@
 
             </LinearLayout>
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_bar"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginHorizontal="5dp" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -536,6 +530,31 @@
                 android:gravity="center"
                 android:text="@string/bar_chart_description"
                 android:textColor="@color/gray" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart_bar"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginHorizontal="5dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/box_gradient"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_kill_damage_description"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:textSize="17sp"
+                    android:text="@string/how_to_record"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
