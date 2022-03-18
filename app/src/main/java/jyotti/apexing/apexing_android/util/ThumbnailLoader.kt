@@ -15,4 +15,8 @@ object ThumbnailLoader {
     fun getThumbnail(context: Context, imageUrl: String) = Glide.with(context)
         .load(imageUrl)
         .sizeMultiplier(0.1f)
+
+    fun getThumbnail(context: Context, imageUrl: Int) = Glide.with(context)
+        .load(imageUrl)
+        .sizeMultiplier(0.1f)
 }

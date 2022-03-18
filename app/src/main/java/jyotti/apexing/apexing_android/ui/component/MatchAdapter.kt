@@ -20,10 +20,10 @@ import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
+import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
 import jyotti.apexing.apexing_android.util.UnixConverter
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.absoluteValue
 
 
 class MatchAdapter(private val onClickRefresh: () -> Unit) :
@@ -119,6 +119,7 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 Glide.with(root)
                     .load(imageId)
+                    .thumbnail(getThumbnail(root.context, imageId))
                     .into(ivLegend)
 
                 tvDate.text =
