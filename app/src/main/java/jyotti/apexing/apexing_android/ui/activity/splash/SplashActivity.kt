@@ -16,16 +16,32 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private val viewModel: SplashViewModel by viewModels()
 
     override fun startProcess() {
-        checkAccount()
+        checkVersion()
     }
 
     private fun checkAccount() {
         viewModel.getStoredPlatform()
     }
 
+    private fun checkVersion() {
+        viewModel.getNewVersionCode()
+    }
+
     override fun setObservers() {
-        viewModel.getPlatformLiveData().observe(this) { platform ->
-            val intent: Intent = if (platform.isEmpty()) {
+        viewModel.getVersionLiveData().observe(this) {
+            if (it) {
+
+            } else {
+                checkAccount()
+            }
+        }
+
+        viewModel.getNetworkMessage().observe(this) {
+
+        }
+
+        viewModel.getPlatformLiveData().observe(this) {
+            val intent: Intent = if (it.isEmpty()) {
                 Intent(this, AccountActivity::class.java)
             } else {
                 Intent(this, HomeActivity::class.java)
