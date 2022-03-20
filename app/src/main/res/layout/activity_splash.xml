@@ -18,7 +18,7 @@
             android:layout_above="@+id/view_center"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:src="@drawable/triangle_icon"/>
+            android:src="@drawable/apexing_icon"/>
 
         <View
             android:id="@+id/view_center"
