@@ -10,6 +10,10 @@ import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.ui.component.CustomDialogFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -61,14 +65,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         }
 
         viewModel.getPlatformLiveData().observe(this) {
-            val intent: Intent = if (it.isEmpty()) {
-                Intent(this, AccountActivity::class.java)
-            } else {
-                Intent(this, HomeActivity::class.java)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1500)
+
+                val intent: Intent = if (it.isEmpty()) {
+                    Intent(this@SplashActivity, AccountActivity::class.java)
+                } else {
+                    Intent(this@SplashActivity, HomeActivity::class.java)
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
         }
     }
 }
