@@ -8,6 +8,7 @@
     </data>
 
     <RelativeLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="jyotti.apexing.apexing_android.ui.activity.splash.SplashActivity">
@@ -17,7 +18,7 @@
             android:layout_above="@+id/view_center"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/triangle_icon"/>
 
         <View
             android:id="@+id/view_center"
