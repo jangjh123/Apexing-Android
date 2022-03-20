@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -97,7 +98,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun addContentsCount() {
-        contentsCount.postValue(contentsCount.value?.plus(1))
+        contentsCount.postValue(contentsCount.value!! + 1)
     }
 
     inline fun removeAccount(crossinline onFinished: () -> Unit) {
