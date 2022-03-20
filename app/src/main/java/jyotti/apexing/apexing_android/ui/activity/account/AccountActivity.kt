@@ -40,7 +40,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     }
 
     fun onClickHelp(view: View) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.account_help_web)))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_help)))
         startActivity(intent)
     }
 

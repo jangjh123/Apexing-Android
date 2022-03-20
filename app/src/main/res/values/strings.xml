@@ -13,6 +13,8 @@
     <string name="games_played">플레이한 게임</string>
     <string name="network_error">네트워크 오류입니다.\n연결 상태를 확인하고 다시 시도하세요.</string>
     <string name="retry">재시도</string>
+    <string name="web_help">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-PC-%EC%9C%A0%EC%A0%80-%EC%95%84%EC%9D%B4%EB%94%94-%EB%93%B1%EB%A1%9D</string>
+    <string name="web_recording">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-%ED%82%AC-%EB%B0%8F-%EB%8C%80%EB%AF%B8%EC%A7%80-%EA%B8%B0%EB%A1%9D-%EB%B0%A9%EB%B2%95</string>
 
     <!--    SplashActivity-->
     <string name="new_version">새로운 버전이 있습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.</string>
@@ -34,7 +36,6 @@
     <string name="please_retry">일시적인 오류입니다. 다시 시도해주세요.</string>
     <string name="account_error">ID를 확인하고 다시 시도해주세요.</string>
     <string name="help">도와주세요!</string>
-    <string name="account_help_web">https://github.com/</string>
 
     <!--    HomeActivity-->
     <string name="main">메인</string>

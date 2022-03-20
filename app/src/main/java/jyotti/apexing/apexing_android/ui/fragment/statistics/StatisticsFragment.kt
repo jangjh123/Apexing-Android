@@ -1,5 +1,7 @@
 package jyotti.apexing.apexing_android.ui.fragment.statistics
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         onClickRefresh = {
             showProgress()
             startProcess()
+        },
+        onClickRecordingDesc = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
+            startActivity(intent)
         })
 
     override fun onStart() {

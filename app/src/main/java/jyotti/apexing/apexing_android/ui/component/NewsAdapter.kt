@@ -10,7 +10,7 @@ import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
 
-class NewsAdapter(private val onClickNews: (String) -> Unit) :
+class NewsAdapter(private inline val onClickNews: (String) -> Unit) :
     ListAdapter<News, RecyclerView.ViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

@@ -26,7 +26,7 @@ import java.text.DecimalFormat
 import java.util.*
 
 
-class MatchAdapter(private val onClickRefresh: () -> Unit) :
+class MatchAdapter(private inline val onClickRefresh: () -> Unit, private inline val onClickRecordingDesc: () -> Unit) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
     private val mUnixConverter = UnixConverter()
 
@@ -353,6 +353,10 @@ class MatchAdapter(private val onClickRefresh: () -> Unit) :
 
                 val refreshedDate = mUnixConverter.getTimestampToDate(item.refreshedDate.toString())
                 tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
+
+                btnKillDamageDescription.setOnClickListener {
+                    onClickRecordingDesc()
+                }
             }
         }
     }
