@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
+import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 
 class NewsAdapter(private inline val onClickNews: (String) -> Unit) :
     ListAdapter<News, RecyclerView.ViewHolder>(GenericDiffUtil()) {

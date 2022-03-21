@@ -74,7 +74,7 @@
             app:spinner_popup_elevation="14dp" />
 
         <TextView
-            android:id="@+id/tv_help"
+            android:id="@+id/btn_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/et_wrapper"
@@ -82,8 +82,6 @@
             android:layout_marginTop="20dp"
             android:onClick="@{activity::onClickHelp}"
             android:text="@string/help"
-            gradientStartColor="@{@color/main}"
-            gradientEndColor="@{@color/lighter}"
             android:textSize="17sp"
             android:textStyle="bold" />
 

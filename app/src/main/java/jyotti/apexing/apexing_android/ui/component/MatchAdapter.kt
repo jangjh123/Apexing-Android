@@ -20,8 +20,9 @@ import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
+import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.UnixConverter
+import jyotti.apexing.apexing_android.util.Utils
 import java.text.DecimalFormat
 import java.util.*
 
@@ -362,12 +363,24 @@ class MatchAdapter(
                     onClickRecordingDesc()
                 }
 
+                Utils.setGradientText(
+                    btnForceRefreshing,
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.deeper
+                    ),
+                    ContextCompat.getColor(
+                        root.context,
+                        R.color.lighter
+                    )
+                )
                 btnForceRefreshing.setOnClickListener {
                     onClickForceRefreshing()
                 }
             }
         }
     }
+
 
     private fun getPercentage(ySum: Int, yValue: Float) =
         String.format("%.1f", (yValue / ySum) * 100) + "%"

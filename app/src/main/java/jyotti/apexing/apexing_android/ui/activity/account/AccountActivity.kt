@@ -5,12 +5,14 @@ import android.net.Uri
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityAccountBinding
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
+import jyotti.apexing.apexing_android.util.Utils
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_account) {
@@ -35,8 +37,20 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         binding.tvTitle.animation = fadeIn1
         binding.etWrapper.animation = fadeIn2
         binding.spinnerPlatform.animation = fadeIn2
-        binding.tvHelp.animation = fadeIn2
+        binding.btnHelp.animation = fadeIn2
         binding.btnEnroll.animation = fadeIn3
+
+        Utils.setGradientText(
+            binding.btnHelp,
+            ContextCompat.getColor(
+                this,
+                R.color.deeper
+            ),
+            ContextCompat.getColor(
+                this,
+                R.color.lighter
+            )
+        )
     }
 
     fun onClickHelp(view: View) {

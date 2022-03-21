@@ -26,8 +26,8 @@ import jyotti.apexing.apexing_android.databinding.FragmentMainBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
-import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnail
-import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnailWithCenterCrop
+import jyotti.apexing.apexing_android.util.Utils.getThumbnail
+import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint

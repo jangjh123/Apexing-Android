@@ -25,27 +25,6 @@ object BindingAdapter {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     @JvmStatic
-    @BindingAdapter(
-        "gradientStartColor",
-        "gradientEndColor"
-    )
-    fun setGradient(
-        view: TextView,
-        startColor: Int,
-        endColor: Int
-    ) {
-        val paint = view.paint
-        val width = paint.measureText(view.text as String?)
-        val shader = LinearGradient(
-            0f, 0f, width, view.textSize,
-            listOf(startColor, endColor).toIntArray(),
-            null,
-            Shader.TileMode.CLAMP
-        )
-        view.paint.shader = shader
-    }
-
-    @JvmStatic
     @BindingAdapter("setAdapter")
     fun setAdapter(
         view: RecyclerView,

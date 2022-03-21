@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.ThumbnailLoader.getThumbnailWithCenterCrop
+import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
 import jyotti.apexing.apexing_android.util.UnixConverter
 
 
