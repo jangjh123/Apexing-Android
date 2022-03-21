@@ -2,6 +2,8 @@ package jyotti.apexing.apexing_android.ui.activity.home
 
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
@@ -9,6 +11,10 @@ import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
@@ -16,6 +22,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     private val statisticsFragment by lazy {
         StatisticsFragment()
     }
+    private var backKeyPressedTime: Long = 0
 
     override fun startProcess() {
         initView()
@@ -78,5 +85,20 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
             .beginTransaction()
             .replace(binding.layoutFrame.id, fragment)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 1000) {
+            backKeyPressedTime = System.currentTimeMillis()
+            Snackbar.make(
+                binding.root,
+                getString(R.string.back_button_double_tap),
+                Snackbar.LENGTH_SHORT
+            ).show()
+        } else if (System.currentTimeMillis() <= backKeyPressedTime + 1000) {
+            moveTaskToBack(true)
+            finishAndRemoveTask()
+            android.os.Process.killProcess(android.os.Process.myPid())
+        }
     }
 }

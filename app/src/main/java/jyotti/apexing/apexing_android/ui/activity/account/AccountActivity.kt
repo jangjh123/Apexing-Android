@@ -95,4 +95,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     private fun showSnackBar(text: String) =
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
 
+    override fun onBackPressed() {
+
+    }
 }

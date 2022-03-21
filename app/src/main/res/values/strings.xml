@@ -41,6 +41,7 @@
     <string name="main">메인</string>
     <string name="statistics">통계</string>
     <string name="enroll">등록</string>
+    <string name="back_button_double_tap">뒤로 가기 버튼을 빠르게 두 번 탭하면 종료됩니다.</string>
 
     <!--    MainFragment-->
     <string name="korean_nickname">한글 닉네임은\n표시되지 않습니다.</string>
