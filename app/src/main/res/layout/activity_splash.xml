@@ -32,7 +32,7 @@
             android:text="@string/app"
             android:layout_below="@+id/view_center"
             android:textStyle="bold"
-            android:textColor="@color/deep_gray"
+            android:textColor="@color/main"
             android:layout_centerHorizontal="true"
             android:textSize="40sp"/>
 

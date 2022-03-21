@@ -1,8 +1,12 @@
 package jyotti.apexing.apexing_android.binding
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +23,27 @@ import kotlinx.coroutines.launch
 object BindingAdapter {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    @JvmStatic
+    @BindingAdapter(
+        "gradientStartColor",
+        "gradientEndColor"
+    )
+    fun setGradient(
+        view: TextView,
+        startColor: Int,
+        endColor: Int
+    ) {
+        val paint = view.paint
+        val width = paint.measureText(view.text as String?)
+        val shader = LinearGradient(
+            0f, 0f, width, view.textSize,
+            listOf(startColor, endColor).toIntArray(),
+            null,
+            Shader.TileMode.CLAMP
+        )
+        view.paint.shader = shader
+    }
 
     @JvmStatic
     @BindingAdapter("setAdapter")

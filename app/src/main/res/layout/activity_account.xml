@@ -82,7 +82,8 @@
             android:layout_marginTop="20dp"
             android:onClick="@{activity::onClickHelp}"
             android:text="@string/help"
-            android:textColor="@color/lighter"
+            gradientStartColor="@{@color/main}"
+            gradientEndColor="@{@color/lighter}"
             android:textSize="17sp"
             android:textStyle="bold" />
 

@@ -561,11 +561,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:gravity="center"
+                gradientStartColor="@{@color/main}"
+                gradientEndColor="@{@color/lighter}"
                 android:text="@string/force_refreshing"
-                android:textColor="@color/lighter"
+                android:textStyle="bold"
                 android:textSize="17sp" />
-
-
         </LinearLayout>
 
     </ScrollView>
