@@ -25,6 +25,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         onClickRecordingDesc = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
             startActivity(intent)
+        },
+        onClickForceRefreshing = {
+            showProgress()
+            showMatch(true)
         })
 
     override fun onStart() {
@@ -33,7 +37,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     override fun startProcess() {
-        showMatch()
+        showMatch(false)
         viewModel.setTimeOut()
     }
 
@@ -79,7 +83,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         binding.rvMatch.smoothScrollToPosition(0)
     }
 
-    private fun showMatch() {
-        viewModel.updateMatch()
+    private fun showMatch(isForceRefreshing: Boolean) {
+        viewModel.updateMatch(isForceRefreshing)
     }
 }

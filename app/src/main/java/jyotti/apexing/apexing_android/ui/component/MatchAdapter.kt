@@ -26,7 +26,11 @@ import java.text.DecimalFormat
 import java.util.*
 
 
-class MatchAdapter(private inline val onClickRefresh: () -> Unit, private inline val onClickRecordingDesc: () -> Unit) :
+class MatchAdapter(
+    private inline val onClickRefresh: () -> Unit,
+    private inline val onClickRecordingDesc: () -> Unit,
+    private inline val onClickForceRefreshing: () -> Unit
+) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
     private val mUnixConverter = UnixConverter()
 
@@ -356,6 +360,10 @@ class MatchAdapter(private inline val onClickRefresh: () -> Unit, private inline
 
                 btnKillDamageDescription.setOnClickListener {
                     onClickRecordingDesc()
+                }
+
+                btnForceRefreshing.setOnClickListener {
+                    onClickForceRefreshing()
                 }
             }
         }

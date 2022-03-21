@@ -25,22 +25,37 @@ class StatisticsViewModel @Inject constructor(
     fun getDatabaseMessage() = databaseMessage
     fun getTimeOutMessage() = timeOutMessage
 
-    fun updateMatch() {
+    fun updateMatch(isForceRefreshing: Boolean) {
         scope.launch {
             repository.sendMatchRequest(
                 repository.readStoredUid().first(),
-                repository.readStoredRefreshDate().first(),
-                onSuccess = {
+                when (isForceRefreshing) {
+                    true -> {
+                        0
+                    }
+                    false -> {
+                        repository.readStoredRefreshDate().first()
+                    }
+                },
+                onSuccess = { list ->
                     scope.launch {
                         repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
-                        withContext(scope.coroutineContext) {
-                            repository.storeMatch(it)
+                        withContext(Dispatchers.Default) {
+                            when (isForceRefreshing) {
+                                true -> {
+                                    repository.clearDatabase()
+                                    repository.storeMatch(list)
+                                }
+                                false -> {
+                                    repository.storeMatch(list)
+                                }
+                            }
                         }
                         databaseMessage.call()
                     }
                 },
                 onError = {
-                    updateMatch()
+                    updateMatch(isForceRefreshing)
                 },
                 onFailure = {
                     networkMessage.call()

@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -59,7 +60,6 @@ class StatisticsRepository @Inject constructor(
                 when (response.code()) {
                     200 -> {
                         onSuccess(setDamageAndKill(response.body()!!))
-
                     }
                     else -> {
                         onError()
@@ -139,6 +139,10 @@ class StatisticsRepository @Inject constructor(
         matchList.forEach {
             matchDao.insert(it)
         }
+    }
+
+    suspend fun clearDatabase() {
+        matchDao.deleteAll()
     }
 
     fun readMatch() = Pager(

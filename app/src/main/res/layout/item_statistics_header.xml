@@ -135,8 +135,8 @@
                                 android:textSize="15sp" />
 
                             <TextView
-                                android:layout_width="0dp"
                                 android:id="@+id/tv_pie_value0"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:gravity="end|center_vertical"
@@ -539,21 +539,31 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:background="@drawable/box_gradient"
-                android:layout_height="wrap_content"
                 android:id="@+id/btn_kill_damage_description"
-                android:layout_margin="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/box_gradient">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:textSize="17sp"
                     android:text="@string/how_to_record"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/btn_force_refreshing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="@string/force_refreshing"
+                android:textColor="@color/lighter"
+                android:textSize="17sp" />
 
 
         </LinearLayout>
