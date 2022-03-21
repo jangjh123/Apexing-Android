@@ -67,7 +67,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         viewModel.getPlatformLiveData().observe(this) {
 
             CoroutineScope(Dispatchers.Main).launch {
-                delay(1500)
+                delay(1000)
 
                 val intent: Intent = if (it.isEmpty()) {
                     Intent(this@SplashActivity, AccountActivity::class.java)
