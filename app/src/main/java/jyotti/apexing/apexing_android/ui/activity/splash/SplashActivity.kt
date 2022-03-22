@@ -3,6 +3,7 @@ package jyotti.apexing.apexing_android.ui.activity.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
@@ -10,6 +11,7 @@ import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.ui.component.CustomDialogFragment
+import jyotti.apexing.apexing_android.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,6 +24,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private val viewModel: SplashViewModel by viewModels()
 
     override fun startProcess() {
+        Utils.setGradientText(binding.tvAppName,
+        ContextCompat.getColor(this@SplashActivity, R.color.main),
+        ContextCompat.getColor(this@SplashActivity, R.color.lighter))
         checkVersion()
     }
 
