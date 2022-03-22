@@ -8,6 +8,7 @@ import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,10 +21,12 @@ class StatisticsViewModel @Inject constructor(
     private val networkMessage = SingleLiveEvent<Unit>()
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val timeOutMessage = SingleLiveEvent<Unit>()
+    private val ratingMessage = SingleLiveEvent<Unit>()
 
     fun getNetworkMessage() = networkMessage
     fun getDatabaseMessage() = databaseMessage
     fun getTimeOutMessage() = timeOutMessage
+    fun getRatingMessage() = ratingMessage
 
     fun updateMatch(isForceRefreshing: Boolean) {
         scope.launch {
@@ -71,6 +74,12 @@ class StatisticsViewModel @Inject constructor(
         scope.launch {
             delay(5000)
             timeOutMessage.call()
+        }
+    }
+
+    fun suggestRating() {
+        if (Random().nextInt(25) == 10) {
+            ratingMessage.call()
         }
     }
 }

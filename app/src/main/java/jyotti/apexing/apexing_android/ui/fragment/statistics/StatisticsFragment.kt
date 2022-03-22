@@ -6,11 +6,13 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
 import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
+import jyotti.apexing.apexing_android.ui.component.SuggestDialogFragment
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -67,7 +69,19 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                 successView = binding.layoutView,
                 failureView = binding.layoutNull
             )
+            viewModel.suggestRating()
             dismissProgress()
+        }
+
+        viewModel.getRatingMessage().observe(viewLifecycleOwner) {
+            val ratingDialog = SuggestDialogFragment(
+                getString(R.string.rating_suggestion),
+                onClickConfirm = {
+                    // go to playStore
+                }
+            ).also {
+                it.show(childFragmentManager, "rating_dialog")
+            }
         }
     }
 
