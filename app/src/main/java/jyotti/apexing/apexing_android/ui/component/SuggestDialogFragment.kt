@@ -28,7 +28,7 @@ class SuggestDialogFragment(
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_suggest_dialog, container, false)
-        isCancelable = true
+        isCancelable = false
         binding.root.background = ColorDrawable(Color.TRANSPARENT)
 
         initView()
