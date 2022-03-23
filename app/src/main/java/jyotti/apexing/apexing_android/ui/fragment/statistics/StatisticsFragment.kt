@@ -39,17 +39,9 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
 
     override fun startProcess() {
         showMatch(false)
-        viewModel.setTimeOut()
     }
 
     override fun setObservers() {
-        viewModel.getTimeOutMessage().observe(viewLifecycleOwner) {
-            if (isProgressShowing()) {
-                dismissProgress()
-                setOnFailureView(failureView = binding.layoutNull, successView = binding.layoutView)
-            }
-        }
-
         viewModel.getNetworkMessage().observe(viewLifecycleOwner) {
             setOnFailureView(
                 failureView = binding.layoutNull,

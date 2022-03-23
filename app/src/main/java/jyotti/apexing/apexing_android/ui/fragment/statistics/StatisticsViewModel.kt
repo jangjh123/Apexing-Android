@@ -20,12 +20,10 @@ class StatisticsViewModel @Inject constructor(
     private val scope = CoroutineScope(dispatcher)
     private val networkMessage = SingleLiveEvent<Unit>()
     private val databaseMessage = SingleLiveEvent<Unit>()
-    private val timeOutMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()
 
     fun getNetworkMessage() = networkMessage
     fun getDatabaseMessage() = databaseMessage
-    fun getTimeOutMessage() = timeOutMessage
     fun getRatingMessage() = ratingMessage
 
     fun updateMatch(isForceRefreshing: Boolean) {
@@ -77,13 +75,6 @@ class StatisticsViewModel @Inject constructor(
     }
 
     fun getMatch() = repository.readMatch().cachedIn(viewModelScope)
-
-    fun setTimeOut() {
-        scope.launch {
-            delay(5000)
-            timeOutMessage.call()
-        }
-    }
 
     fun suggestRating() {
         if (Random().nextInt(25) == 10) {
