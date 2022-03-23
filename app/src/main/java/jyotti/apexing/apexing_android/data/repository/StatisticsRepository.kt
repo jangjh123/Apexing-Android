@@ -145,7 +145,7 @@ class StatisticsRepository @Inject constructor(
     }
 
     fun readMatch() = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        config = PagingConfig(pageSize = 4, enablePlaceholders = false),
         pagingSourceFactory = {
             MatchPagingSource(matchDao)
         }
