@@ -10,7 +10,10 @@ interface MatchDao {
     @Query("SELECT * FROM `match`")
     suspend fun getAll(): List<MatchModels.Match>
 
-    @Query("SELECT * FROM `match` ORDER BY id LIMIT :loadSize OFFSET :index * :loadSize")
+    @Query("SELECT * FROM 'match' ORDER BY gameStartTimestamp DESC LIMIT 20")
+    suspend fun getRecent(): List<MatchModels.Match>
+
+    @Query("SELECT * FROM `match` ORDER BY gameStartTimestamp DESC LIMIT :loadSize OFFSET :index * :loadSize")
     suspend fun getPage(index: Int, loadSize: Int): List<MatchModels.Match>
 
     @Insert

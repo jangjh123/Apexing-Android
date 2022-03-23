@@ -154,22 +154,23 @@ class StatisticsRepository @Inject constructor(
             .insertHeaderItem(
                 item = setHeaderValue(
                     matchDao.getAll(),
+                    matchDao.getRecent(),
                     refreshedDate = System.currentTimeMillis() / 1000
                 )
             )
             .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
     }
 
-    private fun setHeaderValue(matchList: List<MatchModels.Match>, refreshedDate: Long) =
+    private fun setHeaderValue(matchList: List<MatchModels.Match>, recentMatchList: List<MatchModels.Match>, refreshedDate: Long) =
         MatchModels.Header(
             pieData = getPieChart(matchList),
             killRvgAll = getKillRvgAll(matchList),
             damageRvgAll = getDamageRvgAll(matchList),
-            killRvgRecent = getKillRvgRecent(matchList),
-            damageRvgRecent = getDamageRvgRecent(matchList),
+            killRvgRecent = getKillRvgRecent(recentMatchList),
+            damageRvgRecent = getDamageRvgRecent(recentMatchList),
             refreshedDate = refreshedDate,
             radarDataSet = getRadarChart(matchList),
-            barDataSet = getLineChartValue(matchList)
+            barDataSet = getBarChartValue(recentMatchList)
         )
 
     // PieChart
@@ -218,28 +219,30 @@ class StatisticsRepository @Inject constructor(
         return damages / matchList.size
     }
 
-    private fun getKillRvgRecent(matchList: List<MatchModels.Match>): Double {
+    private fun getKillRvgRecent(recentMatchList: List<MatchModels.Match>): Double {
         var kills = 0.0
-        if (matchList.size > 19) {
+        if (recentMatchList.size > 19) {
 
             for (i in 0..19) {
-                kills += matchList[i].kill
+                kills += recentMatchList[i].kill
             }
         }
         return kills / 20
     }
 
-    private fun getDamageRvgRecent(matchList: List<MatchModels.Match>): Double {
+    private fun getDamageRvgRecent(recentMatchList: List<MatchModels.Match>): Double {
         var damages = 0.0
-        if (matchList.size > 19) {
+        if (recentMatchList.size > 19) {
 
             for (i in 0..19) {
-                damages += matchList[i].damage
+                damages += recentMatchList[i].damage
             }
         }
         return damages / 20
     }
 
+
+    // RadarChart
     private fun getRadarChart(
         matchList: List<MatchModels.Match>
     ): RadarDataSet {
@@ -287,14 +290,15 @@ class StatisticsRepository @Inject constructor(
         return data
     }
 
-    private fun getLineChartValue(matchList: List<MatchModels.Match>): List<BarDataSet> {
+    // BarChart
+    private fun getBarChartValue(recentMatchList: List<MatchModels.Match>): List<BarDataSet> {
         val dealList = ArrayList<BarEntry>()
         val killList = ArrayList<BarEntry>()
 
-        if (matchList.size > 19) {
+        if (recentMatchList.size > 19) {
             for (i in 0..19) {
-                dealList.add(BarEntry(i.toFloat(), matchList[i].damage.toFloat()))
-                killList.add(BarEntry(i.toFloat(), matchList[i].kill.toFloat()))
+                dealList.add(BarEntry(i.toFloat(), recentMatchList[i].damage.toFloat()))
+                killList.add(BarEntry(i.toFloat(), recentMatchList[i].kill.toFloat()))
             }
         }
 
