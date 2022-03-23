@@ -31,8 +31,8 @@ class StatisticsViewModel @Inject constructor(
     fun updateMatch(isForceRefreshing: Boolean) {
         scope.launch {
             repository.sendMatchRequest(
-                repository.readStoredUid().first(),
-                when (isForceRefreshing) {
+                uid = repository.readStoredUid().first(),
+                start = when (isForceRefreshing) {
                     true -> {
                         0
                     }
@@ -41,20 +41,29 @@ class StatisticsViewModel @Inject constructor(
                     }
                 },
                 onSuccess = { list ->
-                    scope.launch {
-                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
-                        withContext(Dispatchers.Default) {
-                            when (isForceRefreshing) {
-                                true -> {
+                    when (isForceRefreshing) {
+                        true -> {
+                            scope.launch {
+                                withContext(Dispatchers.IO) {
                                     repository.clearDatabase()
+                                }
+                                withContext(Dispatchers.IO) {
                                     repository.storeMatch(list)
                                 }
-                                false -> {
-                                    repository.storeMatch(list)
-                                }
+                                databaseMessage.call()
                             }
                         }
-                        databaseMessage.call()
+                        false -> {
+                            scope.launch {
+                                withContext(Dispatchers.IO) {
+                                    repository.storeMatch(list)
+                                }
+                                databaseMessage.call()
+                            }
+                        }
+                    }
+                    scope.launch {
+                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
                     }
                 },
                 onError = {
@@ -63,7 +72,6 @@ class StatisticsViewModel @Inject constructor(
                 onFailure = {
                     networkMessage.call()
                 }
-
             )
         }
     }

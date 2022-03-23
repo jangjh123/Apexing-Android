@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
@@ -74,7 +73,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         }
 
         viewModel.getRatingMessage().observe(viewLifecycleOwner) {
-            val ratingDialog = SuggestDialogFragment(
+            SuggestDialogFragment(
                 getString(R.string.rating_suggestion),
                 onClickConfirm = {
                     // go to playStore
