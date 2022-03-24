@@ -56,6 +56,8 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                     matchAdapter.submitData(lifecycle, it)
                 }
             }
+
+            binding.layoutView.invalidate()
             setOnSuccessView(
                 successView = binding.layoutView,
                 failureView = binding.layoutNull
@@ -69,6 +71,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                 getString(R.string.rating_suggestion),
                 onClickConfirm = {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))))
+                    viewModel.setRatingState()
                 }
             ).also {
                 it.show(childFragmentManager, "rating_dialog")

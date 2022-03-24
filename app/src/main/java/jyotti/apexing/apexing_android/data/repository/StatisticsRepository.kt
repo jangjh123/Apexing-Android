@@ -167,7 +167,11 @@ class StatisticsRepository @Inject constructor(
             .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
     }
 
-    private fun setHeaderValue(matchList: List<MatchModels.Match>, recentMatchList: List<MatchModels.Match>, refreshedDate: Long) =
+    private fun setHeaderValue(
+        matchList: List<MatchModels.Match>,
+        recentMatchList: List<MatchModels.Match>,
+        refreshedDate: Long
+    ) =
         MatchModels.Header(
             pieData = getPieChart(matchList),
             killRvgAll = getKillRvgAll(matchList),
@@ -309,5 +313,11 @@ class StatisticsRepository @Inject constructor(
         }
 
         return listOf(BarDataSet(dealList, "딜"), CustomBarDataSet(killList, "킬"))
+    }
+
+    suspend fun storeRatingState() {
+        dataStore.edit {
+            it[KEY_IS_RATED] = true
+        }
     }
 }

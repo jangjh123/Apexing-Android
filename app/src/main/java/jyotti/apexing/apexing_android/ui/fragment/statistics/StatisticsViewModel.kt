@@ -85,4 +85,10 @@ class StatisticsViewModel @Inject constructor(
             }
         }
     }
+
+    fun setRatingState() {
+        scope.launch {
+            repository.storeRatingState()
+        }
+    }
 }
