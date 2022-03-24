@@ -16,6 +16,7 @@ import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
+import jyotti.apexing.data_store.KEY_IS_RATED
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
 import jyotti.apexing.data_store.KEY_UID
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,8 +44,13 @@ class StatisticsRepository @Inject constructor(
         it[KEY_REFRESH_DATE] ?: 0
     }.flowOn(dispatcher)
 
+    private val isRatedFlow: Flow<Boolean> = dataStore.data.map {
+        it[KEY_IS_RATED] ?: false
+    }.flowOn(dispatcher)
+
     fun readStoredUid() = uidFlow
     fun readStoredRefreshDate() = refreshDateFlow
+    fun readStoredRatingState() = isRatedFlow
 
     inline fun sendMatchRequest(
         uid: String,

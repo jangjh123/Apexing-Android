@@ -77,8 +77,12 @@ class StatisticsViewModel @Inject constructor(
     fun getMatch() = repository.readMatch().cachedIn(viewModelScope)
 
     fun suggestRating() {
-        if (Random().nextInt(25) == 10) {
-            ratingMessage.call()
+        scope.launch {
+            if (!repository.readStoredRatingState().first()) {
+                if (Random().nextInt(25) == 10) {
+                    ratingMessage.call()
+                }
+            }
         }
     }
 }

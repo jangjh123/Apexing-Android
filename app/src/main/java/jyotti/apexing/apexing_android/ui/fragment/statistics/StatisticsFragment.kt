@@ -68,7 +68,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             SuggestDialogFragment(
                 getString(R.string.rating_suggestion),
                 onClickConfirm = {
-                    // go to playStore
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))))
                 }
             ).also {
                 it.show(childFragmentManager, "rating_dialog")
