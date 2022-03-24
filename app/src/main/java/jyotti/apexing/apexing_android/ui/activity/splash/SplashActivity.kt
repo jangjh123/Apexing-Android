@@ -2,6 +2,7 @@ package jyotti.apexing.apexing_android.ui.activity.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                         getString(R.string.new_version),
                         getString(R.string.play_store),
                         onClickButton = {
-                            // go to playStore
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))))
                         }).also { dialog ->
                         dialog.show(supportFragmentManager, "new_version_dialog")
                     }
