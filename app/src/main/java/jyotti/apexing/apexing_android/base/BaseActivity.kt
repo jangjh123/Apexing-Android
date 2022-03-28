@@ -18,6 +18,10 @@ abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : A
         startProcess()
     }
 
+    protected open fun isProgressShowing(): Boolean {
+        return progressFragment.isVisible
+    }
+
     protected open fun setObservers() {
 
     }

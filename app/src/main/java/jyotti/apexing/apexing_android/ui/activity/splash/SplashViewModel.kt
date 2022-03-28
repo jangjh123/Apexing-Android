@@ -33,7 +33,7 @@ class SplashViewModel @Inject constructor(
 
     fun getNewVersionCode() {
         repository.fetchVersion(
-            onSuccess = {
+            isNewVersionExist = {
                 version.postValue(it)
             },
             onFailure = {

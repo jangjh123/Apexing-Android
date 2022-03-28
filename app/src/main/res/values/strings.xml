@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Apexing-Android</string>
     <string name="app">APEXING.</string>
-    <string name="app_url">https://play.google.com/console/u/0/developers/5876571692430107715/app/4976202545343425152/app-dashboard?timespan=thirtyDays</string>
+    <string name="app_url">market://details?id=jyotti.apexing.apexing_android</string>
 
     <!--    Common-->
     <string name="no">아니요</string>
