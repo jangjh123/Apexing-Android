@@ -3,6 +3,10 @@ package jyotti.apexing.apexing_android.data.repository
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -18,6 +22,7 @@ class SplashRepository @Inject constructor(
     dataStore: DataStore<Preferences>,
     dispatcher: CoroutineDispatcher
 ) {
+    val reference = FirebaseDatabase.getInstance().getReference("VERSION")
 
     private val platformFlow: Flow<String> = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
@@ -25,29 +30,31 @@ class SplashRepository @Inject constructor(
 
     fun readStoredPlatform(): Flow<String> = platformFlow
 
-    fun fetchVersion(
-         isNewVersionExist: (Boolean) -> Unit,
-         onFailure: () -> Unit
-    ) {
-        val remoteConfig = Firebase.remoteConfig.apply {
-            setConfigSettingsAsync(remoteConfigSettings
-            {
-                minimumFetchIntervalInSeconds = 0
-            })
-            setDefaultsAsync(mapOf("REMOTE_KEY_APP_VERSION" to 0))
-        }
 
-        remoteConfig.fetchAndActivate().apply {
-            addOnSuccessListener {
-                if (remoteConfig.getString("current_version") != BuildConfig.VERSION_NAME) {
+
+    inline fun fetchVersion(
+        crossinline isNewVersionExist: (Boolean) -> Unit,
+        crossinline onFailure: () -> Unit
+    ) {
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val newestVersion = snapshot.child("current").value as String
+
+                Log.d("remote", newestVersion)
+                Log.d("local", BuildConfig.VERSION_NAME)
+
+                if (newestVersion != BuildConfig.VERSION_NAME) {
                     isNewVersionExist(true)
                 } else {
                     isNewVersionExist(false)
                 }
             }
-            addOnFailureListener {
+
+            override fun onCancelled(error: DatabaseError) {
                 onFailure()
             }
-        }
+        })
+
     }
 }
