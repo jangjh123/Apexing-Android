@@ -7,9 +7,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import jyotti.apexing.apexing_android.BuildConfig
 import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
