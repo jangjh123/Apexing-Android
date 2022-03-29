@@ -47,14 +47,7 @@ class AccountRepository @Inject constructor(
                         when {
                             errorMessage.contains("Slow down") -> {
                                 onError()
-                            }
-                            errorMessage.contains("wrong username") -> {
-                                onNull()
-                            }
-                            errorMessage.contains("exists but") -> {
-                                onNull()
-                            }
-                            else -> {
+                            } else -> {
                                 onNull()
                             }
                         }
