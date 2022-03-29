@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.repository.AccountRepository
-import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,10 +16,8 @@ class AccountViewModel @Inject constructor(
 ) : ViewModel() {
     private val scope = CoroutineScope(dispatcher)
     private val message = MutableLiveData<AccountMessage>()
-    private val timeOutMessage = SingleLiveEvent<Unit>()
 
     fun getMessageLiveData() = message
-    fun getTimeOutMessage() = timeOutMessage
 
     fun checkAccount(platform: String, id: String) {
         repository.sendAccountRequest(platform, id,
@@ -35,18 +31,11 @@ class AccountViewModel @Inject constructor(
                 message.postValue(AccountMessage.Null)
             },
             onError = {
-                message.postValue(AccountMessage.Error)
+                checkAccount(platform, id)
             },
             onFailure = {
                 message.postValue(AccountMessage.NetworkError)
             })
-    }
-
-    fun setTimeOut() {
-        scope.launch {
-            delay(5000)
-            timeOutMessage.call()
-        }
     }
 }
 

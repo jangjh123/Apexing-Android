@@ -70,7 +70,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
             showSnackBar(getString(R.string.please_set_all))
         } else {
             showProgress()
-            viewModel.setTimeOut()
             checkAccount()
 
         }
@@ -103,13 +102,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
                 AccountMessage.NetworkError -> {
                     showSnackBar(getString(R.string.network_error))
                 }
-            }
-        }
-
-        viewModel.getTimeOutMessage().observe(this) {
-            if (isProgressShowing()) {
-                dismissProgress()
-                showSnackBar(getString(R.string.please_retry))
             }
         }
     }

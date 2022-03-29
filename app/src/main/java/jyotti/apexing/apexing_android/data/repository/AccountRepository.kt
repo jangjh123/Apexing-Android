@@ -32,26 +32,34 @@ class AccountRepository @Inject constructor(
         networkManager.getClient().fetchAccount(platform, id, KEY_API).enqueue(object :
             Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                when (response.code()) {
-                    200 -> {
-                        try {
-                            onSuccess(
-                                response.body()!!.get("global").asJsonObject.get("uid").asString
-                            )
-                        } catch (exception: Exception) {
-                            if (exception is NullPointerException) {
+                if (response.code() == 404) {
+                    onNull()
+                }
+
+                try {
+                    response.body()!!.get("global").asJsonObject.get("uid").toString().let {
+                        onSuccess(it)
+                    }
+                } catch (exception: Exception) {
+                    try {
+                        val errorMessage = response.body()!!.get("Error").toString()
+
+                        when {
+                            errorMessage.contains("Slow down") -> {
+                                onError()
+                            }
+                            errorMessage.contains("wrong username") -> {
+                                onNull()
+                            }
+                            errorMessage.contains("exists but") -> {
+                                onNull()
+                            }
+                            else -> {
                                 onNull()
                             }
                         }
-                    }
-                    102 -> {
+                    } catch (exception: Exception) {
                         onNull()
-                    }
-                    405 -> {
-                        onNull()
-                    }
-                    else -> {
-                        onError()
                     }
                 }
             }
@@ -59,7 +67,6 @@ class AccountRepository @Inject constructor(
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 onFailure()
             }
-
         })
     }
 
