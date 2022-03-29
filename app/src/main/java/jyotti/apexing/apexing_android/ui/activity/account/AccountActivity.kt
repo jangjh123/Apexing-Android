@@ -100,7 +100,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
                     showSnackBar(getString(R.string.please_retry))
                 }
                 AccountMessage.NetworkError -> {
-                    showSnackBar(getString(R.string.network_error))
+                    showSnackBar(getString(R.string.server_error))
                 }
             }
         }

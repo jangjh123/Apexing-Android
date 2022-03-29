@@ -28,6 +28,7 @@ import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
+import java.lang.Exception
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
@@ -77,7 +78,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         }
 
         viewModel.getContentsCount().observe(viewLifecycleOwner) {
-            if (it > 1) {
+            if (it > 2) {
                 setOnSuccessView(
                     successView = binding.layoutView,
                     failureView = binding.layoutNull
@@ -118,66 +119,70 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     @SuppressLint("SetTextI18n")
     private fun setUserView(user: User) {
-        try {
-            with(binding) {
-                if (user.global.name.isNotEmpty()) {
-                    tvName.text = user.global.name
-                } else {
-                    tvName.text = getString(R.string.korean_nickname)
-                }
-                tvBrPoint.text = user.global.rank.rankScore.toString()
-                tvArPoint.text = user.global.arena.rankScore.toString()
+//        try {
+        with(binding) {
+            if (user.global.name.isNotEmpty()) {
+                tvName.text = user.global.name
+            } else {
+                tvName.text = getString(R.string.korean_nickname)
+            }
+            tvBrPoint.text = user.global.rank.rankScore.toString()
+            tvArPoint.text = user.global.arena.rankScore.toString()
 
-                if (user.global.level <= 500) {
-                    tvLevel.text = "Lv. ${user.global.level}"
-                } else {
-                    tvLevel.text = 500.toString()
-                }
+            if (user.global.level <= 500) {
+                tvLevel.text = "Lv. ${user.global.level}"
+            } else {
+                tvLevel.text = 500.toString()
+            }
 
+            try {
                 tvRecordValue0.text = user.total.damage.value.toString()
                 tvRecordValue1.text = user.total.kills.value.toString()
                 tvRecordValue2.text = user.total.kd.value.toString()
                 tvRecordValue3.text = user.total.gamesPlayed?.value.toString()
+            } catch (exception: Exception) {
 
-                pbLevel.progressDrawable.colorFilter =
-                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.main
-                        ), BlendModeCompat.SRC_ATOP
-                    )
-
-                pbLevel.progress = user.global.toNextLevelPercent
             }
 
-            Glide.with(requireContext())
-                .load(user.legends.selected.imageAsset.banner)
-                .centerCrop()
-                .thumbnail(
-                    getThumbnailWithCenterCrop(requireContext(), user.legends.selected.imageAsset.banner)
-                )
-                .listener(imageLoadingListener())
-                .into(binding.ivBanner)
 
-            Glide.with(requireContext())
-                .load(user.global.rank.rankImg)
-                .thumbnail(
-                    getThumbnail(requireContext(), user.global.rank.rankImg)
+            pbLevel.progressDrawable.colorFilter =
+                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.main
+                    ), BlendModeCompat.SRC_ATOP
                 )
-                .listener(imageLoadingListener())
-                .into(binding.ivBrRank)
 
-            Glide.with(requireContext())
-                .load(user.global.arena.rankImg)
-                .thumbnail(
-                    getThumbnail(requireContext(), user.global.arena.rankImg)
-                )
-                .listener(imageLoadingListener())
-                .into(binding.ivArRank)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            dismissProgress()
+            pbLevel.progress = user.global.toNextLevelPercent
         }
+
+        Glide.with(requireContext())
+            .load(user.legends.selected.imageAsset.banner)
+            .centerCrop()
+            .thumbnail(
+                getThumbnailWithCenterCrop(
+                    requireContext(),
+                    user.legends.selected.imageAsset.banner
+                )
+            )
+            .listener(imageLoadingListener())
+            .into(binding.ivBanner)
+
+        Glide.with(requireContext())
+            .load(user.global.rank.rankImg)
+            .thumbnail(
+                getThumbnail(requireContext(), user.global.rank.rankImg)
+            )
+            .listener(imageLoadingListener())
+            .into(binding.ivBrRank)
+
+        Glide.with(requireContext())
+            .load(user.global.arena.rankImg)
+            .thumbnail(
+                getThumbnail(requireContext(), user.global.arena.rankImg)
+            )
+            .listener(imageLoadingListener())
+            .into(binding.ivArRank)
     }
 
     private fun setMapView(mapList: List<Map>) {
@@ -193,8 +198,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .load(craftingList[0].bundleContents[0].itemType.asset)
             .centerCrop()
             .thumbnail(
-                getThumbnailWithCenterCrop(requireContext(),
-                craftingList[0].bundleContents[0].itemType.asset)
+                getThumbnailWithCenterCrop(
+                    requireContext(),
+                    craftingList[0].bundleContents[0].itemType.asset
+                )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft0)
@@ -202,8 +209,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .load(craftingList[0].bundleContents[1].itemType.asset)
             .centerCrop()
             .thumbnail(
-                getThumbnailWithCenterCrop(requireContext(),
-                    craftingList[0].bundleContents[1].itemType.asset)
+                getThumbnailWithCenterCrop(
+                    requireContext(),
+                    craftingList[0].bundleContents[1].itemType.asset
+                )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft1)
@@ -211,8 +220,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .load(craftingList[1].bundleContents[0].itemType.asset)
             .centerCrop()
             .thumbnail(
-                getThumbnailWithCenterCrop(requireContext(),
-                    craftingList[1].bundleContents[0].itemType.asset)
+                getThumbnailWithCenterCrop(
+                    requireContext(),
+                    craftingList[1].bundleContents[0].itemType.asset
+                )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft2)
@@ -220,8 +231,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .load(craftingList[1].bundleContents[1].itemType.asset)
             .centerCrop()
             .thumbnail(
-                getThumbnailWithCenterCrop(requireContext(),
-                    craftingList[1].bundleContents[1].itemType.asset)
+                getThumbnailWithCenterCrop(
+                    requireContext(),
+                    craftingList[1].bundleContents[1].itemType.asset
+                )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft3)

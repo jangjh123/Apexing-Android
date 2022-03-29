@@ -31,12 +31,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         checkVersion()
     }
 
-    private fun checkAccount() {
-        viewModel.getStoredPlatform()
-    }
-
     private fun checkVersion() {
         viewModel.getNewVersionCode()
+    }
+
+    private fun checkAccount() {
+        viewModel.getStoredPlatform()
     }
 
     override fun setObservers() {
@@ -66,7 +66,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                     finish()
                 }
             ).also { dialog ->
-                dialog.show(supportFragmentManager, "network_error_dialog")
+                dialog.show(supportFragmentManager, "server_error_dialog")
             }
         }
 
