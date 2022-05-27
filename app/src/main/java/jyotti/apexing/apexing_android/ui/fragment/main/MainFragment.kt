@@ -18,7 +18,6 @@ import com.bumptech.glide.request.target.Target
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
-import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
@@ -26,7 +25,6 @@ import jyotti.apexing.apexing_android.databinding.FragmentMainBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
-import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
 import kotlin.system.exitProcess
 
@@ -53,13 +51,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     override fun setObservers() {
-        viewModel.getTimeOutMessage().observe(viewLifecycleOwner) {
-            if (isProgressShowing()) {
-                dismissProgress()
-                setOnFailureView(failureView = binding.layoutNull, successView = binding.layoutView)
-            }
-        }
-
         viewModel.getUserLiveData().observe(viewLifecycleOwner) {
             setUserView(it)
         }
@@ -77,27 +68,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         }
 
         viewModel.getContentsCount().observe(viewLifecycleOwner) {
-            if (it > 2) {
-                setOnSuccessView(
-                    successView = binding.layoutView,
-                    failureView = binding.layoutNull
-                )
-                dismissProgress()
-            }
-        }
-
-        viewModel.getNetworkMessage().observe(viewLifecycleOwner) {
-            setOnFailureView(
-                failureView = binding.layoutNull,
-                successView = binding.layoutView
-            )
             dismissProgress()
         }
-    }
-
-    fun onClickRetry(view: View) {
-        showProgress()
-        startProcess()
     }
 
     private fun showUser() {
@@ -120,39 +92,39 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private fun setUserView(user: User) {
 //        try {
         with(binding) {
-            if (user.global.name.isNotEmpty()) {
-                tvName.text = user.global.name
-            } else {
-                tvName.text = getString(R.string.korean_nickname)
-            }
-            tvBrPoint.text = user.global.rank.rankScore.toString()
-            tvArPoint.text = user.global.arena.rankScore.toString()
+//            if (user.global.name.isNotEmpty()) {
+//                tvName.text = user.global.name
+//            } else {
+//                tvName.text = getString(R.string.korean_nickname)
+//            }
+//            tvBrPoint.text = user.global.rank.rankScore.toString()
+//            tvArPoint.text = user.global.arena.rankScore.toString()
+//
+//            if (user.global.level <= 500) {
+//                tvLevel.text = "Lv. ${user.global.level}"
+//            } else {
+//                tvLevel.text = 500.toString()
+//            }
+//
+//            try {
+//                tvRecordValue0.text = user.total.damage.value.toString()
+//                tvRecordValue1.text = user.total.kills.value.toString()
+//                tvRecordValue2.text = user.total.kd.value.toString()
+//                tvRecordValue3.text = user.total.gamesPlayed?.value.toString()
+//            } catch (exception: Exception) {
+//
+//            }
 
-            if (user.global.level <= 500) {
-                tvLevel.text = "Lv. ${user.global.level}"
-            } else {
-                tvLevel.text = 500.toString()
-            }
-
-            try {
-                tvRecordValue0.text = user.total.damage.value.toString()
-                tvRecordValue1.text = user.total.kills.value.toString()
-                tvRecordValue2.text = user.total.kd.value.toString()
-                tvRecordValue3.text = user.total.gamesPlayed?.value.toString()
-            } catch (exception: Exception) {
-
-            }
-
-
-            pbLevel.progressDrawable.colorFilter =
-                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.main
-                    ), BlendModeCompat.SRC_ATOP
-                )
-
-            pbLevel.progress = user.global.toNextLevelPercent
+//
+//            pbLevel.progressDrawable.colorFilter =
+//                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.main
+//                    ), BlendModeCompat.SRC_ATOP
+//                )
+//
+//            pbLevel.progress = user.global.toNextLevelPercent
         }
 
         Glide.with(requireContext())
@@ -167,79 +139,72 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .listener(imageLoadingListener())
             .into(binding.ivBanner)
 
-        Glide.with(requireContext())
-            .load(user.global.rank.rankImg)
-            .thumbnail(
-                getThumbnail(requireContext(), user.global.rank.rankImg)
-            )
-            .listener(imageLoadingListener())
-            .into(binding.ivBrRank)
-
-        Glide.with(requireContext())
-            .load(user.global.arena.rankImg)
-            .thumbnail(
-                getThumbnail(requireContext(), user.global.arena.rankImg)
-            )
-            .listener(imageLoadingListener())
-            .into(binding.ivArRank)
+//        Glide.with(requireContext())
+//            .load(user.global.rank.rankImg)
+//            .thumbnail(
+//                getThumbnail(requireContext(), user.global.rank.rankImg)
+//            )
+//            .listener(imageLoadingListener())
+//            .into(binding.ivBrRank)
+//
+//        Glide.with(requireContext())
+//            .load(user.global.arena.rankImg)
+//            .thumbnail(
+//                getThumbnail(requireContext(), user.global.arena.rankImg)
+//            )
+//            .listener(imageLoadingListener())
+//            .into(binding.ivArRank)
     }
 
     private fun setMapView(mapList: List<Map>) {
         mapAdapter.submitList(mapList)
     }
 
-    private fun setCraftingView(craftingList: List<Crafting>) {
+    private fun setCraftingView(craftingList: List<String>) {
         Glide.with(requireContext())
-            .load(craftingList[0].asset)
+            .load(craftingList[0])
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[0].asset
+                    craftingList[0]
                 )
             )
             .listener(imageLoadingListener())
-            .into(binding.ivCraft0)
+            .into(binding.ivCraftDaily0)
         Glide.with(requireContext())
-            .load(craftingList[1].asset)
+            .load(craftingList[1])
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[1].asset
+                    craftingList[1]
                 )
             )
             .listener(imageLoadingListener())
-            .into(binding.ivCraft1)
+            .into(binding.ivCraftDaily1)
         Glide.with(requireContext())
-            .load(craftingList[2].asset)
+            .load(craftingList[2])
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[2].asset
+                    craftingList[2]
                 )
             )
             .listener(imageLoadingListener())
-            .into(binding.ivCraft2)
+            .into(binding.ivCraftWeekly0)
         Glide.with(requireContext())
-            .load(craftingList[3].asset)
+            .load(craftingList[3])
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[3].asset
+                    craftingList[3]
                 )
             )
             .listener(imageLoadingListener())
-            .into(binding.ivCraft3)
-
-        with(binding) {
-            tvCraftingCost0.text = craftingList[0].cost
-            tvCraftingCost1.text = craftingList[1].cost
-            tvCraftingCost2.text = craftingList[2].cost
-            tvCraftingCost3.text = craftingList[3].cost
-        }
+            .into(binding.ivCraftWeekly1)
     }
 
     private fun setNewsView(newsList: List<News>) {

@@ -10,740 +10,154 @@
             type="jyotti.apexing.apexing_android.ui.fragment.main.MainFragment" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/layout_null"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="100dp"
-                android:gravity="center"
-                android:text="@string/server_error"
-                android:textColor="@color/main"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_retry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/main"
-                android:onClick="@{fragment::onClickRetry}"
-                android:elevation="5dp"
-                android:text="@string/retry"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-        </LinearLayout>
-
-        <ScrollView
-            android:id="@+id/layout_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:visibility="invisible"
-            tools:context=".ui.main.MainFragment">
+            android:layout_height="wrap_content">
 
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_map"
+                setAdapter="@{fragment.mapAdapter}"
+                setAutoScroll="@{true}"
+                setLayoutManager="@{0}"
+                setSnapHelper="@{true}"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.85"
+                android:elevation="20dp"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--            <View-->
+            <!--                android:id="@+id/divider1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="16dp"-->
+            <!--                android:background="@color/divider"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/rv_map" />-->
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/map"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_map"
-                        setAdapter="@{fragment.mapAdapter}"
-                        setAutoScroll="@{true}"
-                        setLayoutManager="@{0}"
-                        setSnapHelper="@{true}"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:overScrollMode="never" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/white"
-                    android:elevation="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/crafting"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="1">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_marginVertical="5dp"
-                                app:cardCornerRadius="10dp"
-                                app:cardElevation="5dp">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/iv_craft0"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-
-                                    <TextView
-                                        android:id="@+id/tv_crafting_cost0"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_margin="5dp"
-                                        android:shadowColor="@color/crafting"
-                                        android:shadowDx="0"
-                                        android:shadowDy="0"
-                                        android:shadowRadius="5.0"
-                                        android:textColor="@color/white"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-
-                                </RelativeLayout>
-
-
-                            </androidx.cardview.widget.CardView>
-
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="1">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_marginVertical="5dp"
-                                app:cardCornerRadius="10dp"
-                                app:cardElevation="5dp">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/iv_craft1"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-
-                                    <TextView
-                                        android:id="@+id/tv_crafting_cost1"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_margin="5dp"
-                                        android:shadowColor="@color/crafting"
-                                        android:shadowDx="0"
-                                        android:shadowDy="0"
-                                        android:shadowRadius="5.0"
-                                        android:textColor="@color/white"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                            </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="1">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_marginVertical="5dp"
-                                app:cardCornerRadius="10dp"
-                                app:cardElevation="5dp">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/iv_craft2"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-
-                                    <TextView
-                                        android:id="@+id/tv_crafting_cost2"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_margin="5dp"
-                                        android:shadowColor="@color/crafting"
-                                        android:shadowDx="0"
-                                        android:shadowDy="0"
-                                        android:shadowRadius="5.0"
-                                        android:textColor="@color/white"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                            </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="1">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_marginVertical="5dp"
-                                app:cardCornerRadius="10dp"
-                                app:cardElevation="5dp">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/iv_craft3"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-
-                                    <TextView
-                                        android:id="@+id/tv_crafting_cost3"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_margin="5dp"
-                                        android:shadowColor="@color/crafting"
-                                        android:shadowDx="0"
-                                        android:shadowDy="0"
-                                        android:shadowRadius="5.0"
-                                        android:textColor="@color/white"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                            </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/daily"
-                            android:textColor="@color/black"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/weekly"
-                            android:textColor="@color/black"
-                            android:textSize="17sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/user"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_level"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="100dp"
-                            android:layout_weight="3">
-
-                            <ImageView
-                                android:id="@+id/iv_banner"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:alpha="0.4"
-                                android:scaleType="fitStart" />
-
-                            <TextView
-                                android:id="@+id/tv_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:gravity="center"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-
-                        </RelativeLayout>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/to_the_nex_level"
-                            android:textColor="@color/black"
-                            android:textSize="17sp" />
-
-                        <ProgressBar
-                            android:id="@+id/pb_level"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="5dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:indeterminateTint="@color/main" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/battle_royal"
-                                android:textColor="@color/black"
-                                android:textSize="17sp" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/arena"
-                                android:textColor="@color/black"
-                                android:textSize="17sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/iv_br_rank"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:scaleType="fitCenter" />
-
-                            <ImageView
-                                android:id="@+id/iv_ar_rank"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:scaleType="fitCenter" />
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="20dp">
-
-                        <TextView
-                            android:id="@+id/tv_br_point"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_ar_point"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="5dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:id="@+id/tv_record_name0"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="5dp"
-                                    android:gravity="center"
-                                    android:text="@string/damage"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_record_value0"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:textColor="@color/main"
-                                    android:textSize="25sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="5dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:id="@+id/tv_record_name1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="5dp"
-                                    android:gravity="center"
-                                    android:text="@string/kill"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_record_value1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:textColor="@color/main"
-                                    android:textSize="25sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="5dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:id="@+id/tv_record_name2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="5dp"
-                                    android:gravity="center"
-                                    android:text="@string/kd"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_record_value2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:textColor="@color/main"
-                                    android:textSize="25sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="5dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:id="@+id/tv_record_name3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="5dp"
-                                    android:gravity="center"
-                                    android:text="@string/games_played"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_record_value3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:textColor="@color/main"
-                                    android:textSize="25sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_news"
-                    setAdapter="@{fragment.newsAdapter}"
-                    setIndicator="@{true}"
-                    setLayoutManager="@{0}"
-                    setSnapHelper="@{true}"
-                    android:layout_width="match_parent"
-                    android:layout_height="380dp"
-                    android:overScrollMode="never"
-                    app:context="@{context}"
-                    app:indicator0="@{ivIndicator0}"
-                    app:indicator1="@{ivIndicator1}"
-                    app:indicator2="@{ivIndicator2}"
-                    app:indicator3="@{ivIndicator3}"
-                    app:indicator4="@{ivIndicator4}" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal">
+                android:layout_margin="20dp"
+                android:background="@drawable/box_radius"
+                android:elevation="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_map">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView8"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView7"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_indicator0"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:src="@drawable/circle"
-                        app:tint="@color/deep_gray" />
+                        android:id="@+id/iv_craft_daily_0"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView7"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView9"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/cardView8"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_indicator1"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:src="@drawable/circle"
-                        app:tint="@color/gray" />
+                        android:id="@+id/iv_craft_daily_1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView9"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView10"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/cardView7"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_indicator2"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:src="@drawable/circle"
-                        app:tint="@color/gray" />
+                        android:id="@+id/iv_craft_weekly_0"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView10"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_indicator3"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:src="@drawable/circle"
-                        app:tint="@color/gray" />
+                        android:id="@+id/iv_craft_weekly_1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp" />
 
-                    <ImageView
-                        android:id="@+id/iv_indicator4"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:src="@drawable/circle"
-                        app:tint="@color/gray" />
+                </androidx.cardview.widget.CardView>
 
-                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="1000dp"
+                android:background="@drawable/box_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:text="@string/tab_to_detail"
-                    android:textColor="@color/gray" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="128dp"
                     android:layout_margin="10dp"
-                    android:background="@drawable/box_gradient"
-                    android:clickable="true"
-                    android:onClick="@{fragment::onClickChangeAccount}"
-                    android:elevation="5dp"
-                    android:focusable="true"
-                    android:orientation="horizontal">
+                    android:background="@drawable/box_radius"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/iv_banner"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:paddingVertical="10dp"
-                        android:text="@string/change_id"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </LinearLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

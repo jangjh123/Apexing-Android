@@ -6,21 +6,6 @@
         <item name="fontFamily">@font/noto_sans_bold</item>
     </style>
 
-    <style name="textViewFont" parent="@android:style/Widget.DeviceDefault.TextView">
-        <item name="fontFamily">@font/noto_sans_medium</item>
-        <item name="android:letterSpacing">-0.05</item>
-    </style>
-
-    <style name="buttonFont" parent="@android:style/Widget.DeviceDefault.Button">
-        <item name="fontFamily">@font/noto_sans_medium</item>
-        <item name="android:letterSpacing">-0.05</item>
-    </style>
-
-    <style name="editTextFont" parent="@android:style/Widget.DeviceDefault.EditText">
-        <item name="fontFamily">@font/noto_sans_medium</item>
-        <item name="android:letterSpacing">-0.05</item>
-    </style>
-
     <style name="spinnerFont" parent="@style/DropDown_PowerSpinner">
         <item name="fontFamily">@font/noto_sans_medium</item>
         <item name="android:letterSpacing">-0.05</item>
