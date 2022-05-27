@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
-import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
+import jyotti.apexing.apexing_android.databinding.FragmentStatisticsUpdatedBinding
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
 import jyotti.apexing.apexing_android.ui.component.SuggestDialogFragment
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.fragment_statistics) {
+class StatisticsFragment : BaseFragment<FragmentStatisticsUpdatedBinding>(R.layout.fragment_statistics_updated) {
     private val viewModel: StatisticsViewModel by viewModels()
 
     val matchAdapter = MatchAdapter(
@@ -42,14 +42,6 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     override fun setObservers() {
-        viewModel.getNetworkMessage().observe(viewLifecycleOwner) {
-            setOnFailureView(
-                failureView = binding.layoutNull,
-                successView = binding.layoutView
-            )
-            dismissProgress()
-        }
-
         viewModel.getDatabaseMessage().observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 viewModel.getMatch().collect {
@@ -57,11 +49,6 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                 }
             }
 
-            binding.layoutView.invalidate()
-            setOnSuccessView(
-                successView = binding.layoutView,
-                failureView = binding.layoutNull
-            )
             viewModel.suggestRating()
             dismissProgress()
         }
@@ -77,11 +64,6 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                 it.show(childFragmentManager, "rating_dialog")
             }
         }
-    }
-
-    fun onClickRetry(view: View) {
-        showProgress()
-        startProcess()
     }
 
     fun onClickGoUp(view: View) {

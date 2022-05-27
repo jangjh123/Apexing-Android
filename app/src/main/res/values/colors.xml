@@ -28,4 +28,11 @@
     <color name="pie4">#00498c</color>
 
     <color name="radar_line">#d97a75</color>
+
+
+
+<!--    ui QA-->
+    <color name="background">#1c2023</color>
+
+
 </resources>
