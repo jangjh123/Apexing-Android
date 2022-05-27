@@ -40,7 +40,5 @@
             android:gravity="bottom|center_horizontal"
             android:textColor="@color/white"
             android:textSize="17sp" />
-
-
     </RelativeLayout>
 </layout>

@@ -1,7 +1,10 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.common.internal.ServiceSpecificExtraArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
@@ -53,47 +56,37 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getMap() {
-        repository.sendMapRequest(
+        repository.fetchGameInfo("MAPS",
             onSuccess = {
-                val list = listOf(it.battleRoyal, it.ranked, it.arenas, it.arenasRanked)
-                mapList.postValue(list)
-            },
-            onError = {
-                getMap()
+                mapList.postValue(it as List<Map>?)
             },
             onFailure = {
-                networkMessage.call()
-            }
-        )
+
+            })
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getCrafting() {
-        repository.sendCraftingRequest(
+        repository.fetchGameInfo("Craftings",
             onSuccess = {
-                craftingList.postValue(it)
-            },
-            onError = {
-                getCrafting()
+                craftingList.postValue(it as List<Crafting>)
             },
             onFailure = {
-                networkMessage.call()
-            }
-        )
+
+            })
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getNews() {
-        repository.sendNewsRequest(
+        repository.fetchGameInfo("News",
             onSuccess = {
-                newsList.postValue(it)
-            },
-            onError = {
-                getNews()
+                newsList.postValue(it as List<News>)
             },
             onFailure = {
-                networkMessage.call()
-            }
-        )
+
+            })
     }
 
     fun addContentsCount() {

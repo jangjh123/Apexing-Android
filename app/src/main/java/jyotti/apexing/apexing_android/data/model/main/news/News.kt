@@ -6,6 +6,5 @@ data class News(
     val title: String,
     val link: String,
     val img: String,
-    @SerializedName(value = "short_desc")
     val shortDescription: String
 )
