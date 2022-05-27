@@ -28,7 +28,6 @@ import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
-import java.lang.Exception
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
@@ -186,64 +185,60 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     private fun setMapView(mapList: List<Map>) {
-        mapList[0].type = getString(R.string.battle_royal)
-        mapList[1].type = "${getString(R.string.rank)} ${getString(R.string.battle_royal)}"
-        mapList[2].type = getString(R.string.arena)
-        mapList[3].type = "${getString(R.string.rank)} ${getString(R.string.arena)}"
         mapAdapter.submitList(mapList)
     }
 
     private fun setCraftingView(craftingList: List<Crafting>) {
         Glide.with(requireContext())
-            .load(craftingList[0].bundleContents[0].itemType.asset)
+            .load(craftingList[0].asset)
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[0].bundleContents[0].itemType.asset
+                    craftingList[0].asset
                 )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft0)
         Glide.with(requireContext())
-            .load(craftingList[0].bundleContents[1].itemType.asset)
+            .load(craftingList[1].asset)
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[0].bundleContents[1].itemType.asset
+                    craftingList[1].asset
                 )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft1)
         Glide.with(requireContext())
-            .load(craftingList[1].bundleContents[0].itemType.asset)
+            .load(craftingList[2].asset)
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[1].bundleContents[0].itemType.asset
+                    craftingList[2].asset
                 )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft2)
         Glide.with(requireContext())
-            .load(craftingList[1].bundleContents[1].itemType.asset)
+            .load(craftingList[3].asset)
             .centerCrop()
             .thumbnail(
                 getThumbnailWithCenterCrop(
                     requireContext(),
-                    craftingList[1].bundleContents[1].itemType.asset
+                    craftingList[3].asset
                 )
             )
             .listener(imageLoadingListener())
             .into(binding.ivCraft3)
 
         with(binding) {
-            tvCraftingCost0.text = craftingList[0].bundleContents[0].cost.toString()
-            tvCraftingCost1.text = craftingList[0].bundleContents[1].cost.toString()
-            tvCraftingCost2.text = craftingList[1].bundleContents[0].cost.toString()
-            tvCraftingCost3.text = craftingList[1].bundleContents[1].cost.toString()
+            tvCraftingCost0.text = craftingList[0].cost
+            tvCraftingCost1.text = craftingList[1].cost
+            tvCraftingCost2.text = craftingList[2].cost
+            tvCraftingCost3.text = craftingList[3].cost
         }
     }
 

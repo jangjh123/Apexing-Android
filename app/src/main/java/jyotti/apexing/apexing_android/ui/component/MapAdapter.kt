@@ -1,6 +1,7 @@
 package jyotti.apexing.apexing_android.ui.component
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -45,19 +46,15 @@ class MapAdapter :
         fun bind(map: Map) {
             with(binding) {
                 Glide.with(root)
-                    .load(map.current.asset)
+                    .load(map.asset)
                     .thumbnail(
-                        getThumbnailWithCenterCrop(root.context, map.current.asset)
+                        getThumbnailWithCenterCrop(root.context, map.asset)
                     )
                     .centerCrop()
                     .into(ivMap)
                 tvMapType.text = map.type
-                tvMapName.text = map.current.map
-
-                if (map.current.end > 0) {
-                    tvMapTime.text =
-                        unixConverter.getTimestampToDate(map.current.end.toString()) + " 까지"
-                }
+                tvMapName.text = map.name
+                tvMapTime.text = unixConverter.getTimestampToDate(map.endTime) + " 까지"
             }
         }
     }

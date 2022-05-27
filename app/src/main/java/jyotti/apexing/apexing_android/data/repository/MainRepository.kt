@@ -1,16 +1,14 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
-import jyotti.apexing.apexing_android.data.model.main.map.Maps
+import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
@@ -31,6 +29,8 @@ class MainRepository @Inject constructor(
     private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
+    val reference = FirebaseDatabase.getInstance()
+
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
     }.flowOn(dispatcher)
@@ -41,6 +41,130 @@ class MainRepository @Inject constructor(
 
     fun getPlatformFlow() = platformFlow
     fun getIdFlow() = idFlow
+
+    inline fun fetchGameInfo(
+        child: String,
+        crossinline onSuccess: (List<Any>) -> Unit,
+        crossinline onFailure: () -> Unit
+    ) {
+        reference.getReference(child).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = ArrayList<Any>()
+                when (child) {
+                    "Craftings" -> {
+                        list.add(
+                            Crafting(
+                                snapshot.child("Daily_0").child("asset").value.toString(),
+                                snapshot.child("Daily_0").child("cost").value.toString()
+                            )
+                        )
+                        list.add(
+                            Crafting(
+                                snapshot.child("Daily_1").child("asset").value.toString(),
+                                snapshot.child("Daily_1").child("cost").value.toString()
+                            )
+                        )
+                        list.add(
+                            Crafting(
+                                snapshot.child("Weekly_0").child("asset").value.toString(),
+                                snapshot.child("Weekly_0").child("cost").value.toString()
+                            )
+                        )
+                        list.add(
+                            Crafting(
+                                snapshot.child("Weekly_1").child("asset").value.toString(),
+                                snapshot.child("Weekly_1").child("cost").value.toString()
+                            )
+                        )
+                        onSuccess(list)
+                    }
+                    "MAPS" -> {
+                        list.add(
+                            Map(
+                                type = "배틀로얄 (노말)",
+                                snapshot.child("BR_normal").child("asset").value.toString(),
+                                snapshot.child("BR_normal").child("map").value.toString(),
+                                snapshot.child("BR_normal").child("end").value.toString()
+                            )
+                        )
+                        Log.d("TEST", snapshot.child("BR_normal").child("map").value.toString())
+                        list.add(
+                            Map(
+                                "배틀로얄 (랭크)",
+                                snapshot.child("BR_rank").child("asset").value.toString(),
+                                snapshot.child("BR_rank").child("map").value.toString(),
+                                snapshot.child("BR_rank").child("end").value.toString()
+                            )
+                        )
+                        list.add(
+                            Map(
+                                "아레나 (노말)",
+                                snapshot.child("AR_normal").child("asset").value.toString(),
+                                snapshot.child("AR_normal").child("map").value.toString(),
+                                snapshot.child("AR_normal").child("end").value.toString()
+                            )
+                        )
+                        list.add(
+                            Map(
+                                "아레나 (랭크)",
+                                snapshot.child("AR_rank").child("asset").value.toString(),
+                                snapshot.child("AR_rank").child("map").value.toString(),
+                                snapshot.child("AR_rank").child("end").value.toString()
+                            )
+                        )
+                        onSuccess(list)
+                    }
+                    "News" -> {
+                        list.add(
+                            News(
+                                snapshot.child("News_0").child("title").value.toString(),
+                                snapshot.child("News_0").child("link").value.toString(),
+                                snapshot.child("News_0").child("img").value.toString(),
+                                snapshot.child("News_0").child("short_desc").value.toString()
+                            )
+                        )
+                        list.add(
+                            News(
+                                snapshot.child("News_1").child("title").value.toString(),
+                                snapshot.child("News_1").child("link").value.toString(),
+                                snapshot.child("News_1").child("img").value.toString(),
+                                snapshot.child("News_1").child("short_desc").value.toString()
+                            )
+                        )
+                        list.add(
+                            News(
+                                snapshot.child("News_2").child("title").value.toString(),
+                                snapshot.child("News_2").child("link").value.toString(),
+                                snapshot.child("News_2").child("img").value.toString(),
+                                snapshot.child("News_2").child("short_desc").value.toString()
+                            )
+                        )
+                        list.add(
+                            News(
+                                snapshot.child("News_3").child("title").value.toString(),
+                                snapshot.child("News_3").child("link").value.toString(),
+                                snapshot.child("News_3").child("img").value.toString(),
+                                snapshot.child("News_3").child("short_desc").value.toString()
+                            )
+                        )
+                        list.add(
+                            News(
+                                snapshot.child("News_4").child("title").value.toString(),
+                                snapshot.child("News_4").child("link").value.toString(),
+                                snapshot.child("News_4").child("img").value.toString(),
+                                snapshot.child("News_4").child("short_desc").value.toString()
+                            )
+                        )
+                        onSuccess(list)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onFailure()
+            }
+        })
+    }
 
     inline fun sendUserRequest(
         platform: String,
@@ -66,88 +190,6 @@ class MainRepository @Inject constructor(
                     onFailure()
                 }
             })
-    }
-
-    inline fun sendMapRequest(
-        crossinline onSuccess: (Maps) -> Unit,
-        crossinline onError: () -> Unit,
-        crossinline onFailure: () -> Unit
-    ) {
-        networkManager.getClient().fetchMap(KEY_API).enqueue(object : Callback<Maps> {
-            override fun onResponse(call: Call<Maps>, response: Response<Maps>) {
-                when (response.code()) {
-                    200 -> {
-                        onSuccess(response.body()!!)
-                    }
-                    else -> {
-                        onError()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Maps>, t: Throwable) {
-                onFailure()
-            }
-        })
-    }
-
-    inline fun sendCraftingRequest(
-        crossinline onSuccess: (List<Crafting>) -> Unit,
-        crossinline onError: () -> Unit,
-        crossinline onFailure: () -> Unit
-    ) {
-        networkManager.getClient().fetchCrafting(KEY_API)
-            .enqueue(object : Callback<List<Crafting>> {
-                override fun onResponse(
-                    call: Call<List<Crafting>>,
-                    response: Response<List<Crafting>>
-                ) {
-                    when (response.code()) {
-                        200 -> {
-                            onSuccess(response.body()!!)
-                        }
-                        else -> {
-                            onError()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<List<Crafting>>, t: Throwable) {
-                    onFailure()
-                }
-            })
-    }
-
-    inline fun sendNewsRequest(
-        crossinline onSuccess: (List<News>) -> Unit,
-        crossinline onError: () -> Unit,
-        crossinline onFailure: () -> Unit
-    ) {
-        networkManager.getClient().fetchNews("ko", KEY_API).enqueue(object : Callback<List<News>> {
-            override fun onResponse(call: Call<List<News>>, response: Response<List<News>>) {
-                when (response.code()) {
-                    200 -> {
-                        val newsList = ArrayList<News>()
-
-                        for (i in 0..4) {
-                            newsList.add(response.body()!![i])
-
-                            if (i == 4) {
-                                onSuccess(newsList)
-                            }
-                        }
-
-                    }
-                    else -> {
-                        onError()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<List<News>>, t: Throwable) {
-                onFailure()
-            }
-        })
     }
 
     suspend fun clearDatabase() {
