@@ -49,13 +49,11 @@
 
     <!--    MainFragment-->
     <string name="korean_nickname">한글 닉네임은\n표시되지 않습니다.</string>
-    <string name="map">맵</string>
-    <string name="crafting">제작</string>
-    <string name="user">유저</string>
-    <string name="daily">오늘</string>
-    <string name="weekly">이번 주</string>
-    <string name="to_the_nex_level">다음 레벨까지</string>
     <string name="tab_to_detail">탭하여 자세히 알아보기</string>
+    <string name="record_damage">전체 가한 대미지</string>
+    <string name="record_kill">전체 킬</string>
+    <string name="record_kd">매치 당 킬</string>
+    <string name="record_games">플레이한 게임</string>
 
     <!--    StatisticsFragment-->
     <string name="most_legend">모스트 레전드</string>

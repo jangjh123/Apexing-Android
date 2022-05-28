@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
+import android.view.ViewOutlineProvider
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -90,70 +91,57 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     @SuppressLint("SetTextI18n")
     private fun setUserView(user: User) {
-//        try {
         with(binding) {
-//            if (user.global.name.isNotEmpty()) {
-//                tvName.text = user.global.name
-//            } else {
-//                tvName.text = getString(R.string.korean_nickname)
-//            }
-//            tvBrPoint.text = user.global.rank.rankScore.toString()
-//            tvArPoint.text = user.global.arena.rankScore.toString()
-//
-//            if (user.global.level <= 500) {
-//                tvLevel.text = "Lv. ${user.global.level}"
-//            } else {
-//                tvLevel.text = 500.toString()
-//            }
-//
-//            try {
-//                tvRecordValue0.text = user.total.damage.value.toString()
-//                tvRecordValue1.text = user.total.kills.value.toString()
-//                tvRecordValue2.text = user.total.kd.value.toString()
-//                tvRecordValue3.text = user.total.gamesPlayed?.value.toString()
-//            } catch (exception: Exception) {
-//
-//            }
+            if (user.global.name.isNotEmpty()) {
+                tvUserId.text = user.global.name
+            } else {
+                tvUserId.text = getString(R.string.korean_nickname)
+            }
+            tvBrRankPoint.text = user.global.rank.rankScore.toString()
+            tvArenaRankPoint.text = user.global.arena.rankScore.toString()
 
-//
-//            pbLevel.progressDrawable.colorFilter =
-//                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-//                    ContextCompat.getColor(
-//                        requireContext(),
-//                        R.color.main
-//                    ), BlendModeCompat.SRC_ATOP
-//                )
-//
-//            pbLevel.progress = user.global.toNextLevelPercent
+            if (user.global.level <= 500) {
+                tvUserLevel.text = "Lv.${user.global.level}"
+                tvCurLevel.text = "Lv.${user.global.level}"
+                tvNextLevel.text = "Lv.${user.global.level + 1}"
+            } else {
+                tvUserLevel.text = 500.toString()
+            }
+
+            try {
+                tvRecordDeal.text = "${user.total.damage.value}"
+                tvRecordKill.text = "${user.total.kills.value}"
+                tvRecordKd.text = "${user.total.kd.value}"
+                tvRecordPlayedGames.text = "${user.total.gamesPlayed?.value}"
+            } catch (exception: Exception) {
+
+            }
+
+            Glide.with(requireContext())
+                .load(user.legends.selected.imageAsset.banner)
+                .centerCrop()
+                .into(binding.ivBanner)
+
+            pbLevel.progressDrawable.colorFilter =
+                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.main
+                    ), BlendModeCompat.SRC_ATOP
+                )
+
+            pbLevel.progress = user.global.toNextLevelPercent
         }
 
         Glide.with(requireContext())
-            .load(user.legends.selected.imageAsset.banner)
-            .centerCrop()
-            .thumbnail(
-                getThumbnailWithCenterCrop(
-                    requireContext(),
-                    user.legends.selected.imageAsset.banner
-                )
-            )
+            .load(user.global.rank.rankImg)
             .listener(imageLoadingListener())
-            .into(binding.ivBanner)
+            .into(binding.ivBrRank)
 
-//        Glide.with(requireContext())
-//            .load(user.global.rank.rankImg)
-//            .thumbnail(
-//                getThumbnail(requireContext(), user.global.rank.rankImg)
-//            )
-//            .listener(imageLoadingListener())
-//            .into(binding.ivBrRank)
-//
-//        Glide.with(requireContext())
-//            .load(user.global.arena.rankImg)
-//            .thumbnail(
-//                getThumbnail(requireContext(), user.global.arena.rankImg)
-//            )
-//            .listener(imageLoadingListener())
-//            .into(binding.ivArRank)
+        Glide.with(requireContext())
+            .load(user.global.arena.rankImg)
+            .listener(imageLoadingListener())
+            .into(binding.ivArenaRank)
     }
 
     private fun setMapView(mapList: List<Map>) {

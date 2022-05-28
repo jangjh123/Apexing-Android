@@ -9,10 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import jyotti.apexing.apexing_android.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,8 +39,19 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("setSnapHelper")
     fun setSnapHelper(view: RecyclerView, boolean: Boolean) {
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(view)
+        if (boolean) {
+            val snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(view)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setLinearSnapHelper")
+    fun setLinearSnapHelper(view: RecyclerView, boolean: Boolean) {
+        if (boolean) {
+            val snapHelper = LinearSnapHelper()
+            snapHelper.attachToRecyclerView(view)
+        }
     }
 
     @JvmStatic
