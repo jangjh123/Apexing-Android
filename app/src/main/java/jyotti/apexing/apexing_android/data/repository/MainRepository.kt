@@ -170,8 +170,7 @@ class MainRepository @Inject constructor(
         platform: String,
         id: String,
         crossinline onSuccess: (User) -> Unit,
-        crossinline onError: () -> Unit,
-        crossinline onFailure: () -> Unit
+        crossinline onError: () -> Unit
     ) {
         networkManager.getClient().fetchUser(platform, id, KEY_API)
             .enqueue(object : Callback<User> {
@@ -187,7 +186,8 @@ class MainRepository @Inject constructor(
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
-                    onFailure()
+                    onError()
+                    Log.d("onFailure", t.toString())
                 }
             })
     }

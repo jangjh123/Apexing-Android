@@ -46,15 +46,6 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("setLinearSnapHelper")
-    fun setLinearSnapHelper(view: RecyclerView, boolean: Boolean) {
-        if (boolean) {
-            val snapHelper = LinearSnapHelper()
-            snapHelper.attachToRecyclerView(view)
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("setAutoScroll")
     fun setAutoScroll(view: RecyclerView, boolean: Boolean) {
         if (boolean) {

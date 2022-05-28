@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -48,12 +50,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         showMap()
         showCrafting()
         showNews()
-        viewModel.setTimeOut()
     }
 
     override fun setObservers() {
         viewModel.getUserLiveData().observe(viewLifecycleOwner) {
             setUserView(it)
+            dismissProgress()
         }
 
         viewModel.getMapLiveData().observe(viewLifecycleOwner) {
@@ -66,10 +68,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
         viewModel.getNewsLiveData().observe(viewLifecycleOwner) {
             setNewsView(it)
-        }
-
-        viewModel.getContentsCount().observe(viewLifecycleOwner) {
-            dismissProgress()
         }
     }
 
@@ -135,12 +133,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
         Glide.with(requireContext())
             .load(user.global.rank.rankImg)
-            .listener(imageLoadingListener())
             .into(binding.ivBrRank)
 
         Glide.with(requireContext())
             .load(user.global.arena.rankImg)
-            .listener(imageLoadingListener())
             .into(binding.ivArenaRank)
     }
 
@@ -152,22 +148,18 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         Glide.with(requireContext())
             .load(craftingList[0].asset)
             .centerCrop()
-            .listener(imageLoadingListener())
             .into(binding.ivCraftDaily0)
         Glide.with(requireContext())
             .load(craftingList[1].asset)
             .centerCrop()
-            .listener(imageLoadingListener())
             .into(binding.ivCraftDaily1)
         Glide.with(requireContext())
             .load(craftingList[2].asset)
             .centerCrop()
-            .listener(imageLoadingListener())
             .into(binding.ivCraftWeekly0)
         Glide.with(requireContext())
             .load(craftingList[3].asset)
             .centerCrop()
-            .listener(imageLoadingListener())
             .into(binding.ivCraftWeekly1)
 
         with (binding) {
@@ -180,6 +172,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setNewsView(newsList: List<News>) {
         newsAdapter.submitList(newsList)
+        LinearSnapHelper().run {
+            attachToRecyclerView(binding.rvNews)
+            binding.indicator.attachToRecyclerView(binding.rvNews, this)
+        }
     }
 
     fun onClickChangeAccount(view: View) {
@@ -188,31 +184,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             val intent = Intent(requireContext(), AccountActivity::class.java)
             startActivity(intent)
             exitProcess(0)
-        }
-    }
-
-    private fun imageLoadingListener(): RequestListener<Drawable> {
-        return object : RequestListener<Drawable> {
-
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>?,
-                isFirstResource: Boolean
-            ): Boolean {
-                return false
-            }
-
-            override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean
-            ): Boolean {
-                viewModel.addContentsCount()
-                return false
-            }
         }
     }
 }

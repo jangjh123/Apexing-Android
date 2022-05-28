@@ -25,17 +25,11 @@ class MainViewModel @Inject constructor(
     private val craftingList = MutableLiveData<List<Crafting>>()
     private val newsList = MutableLiveData<List<News>>()
     private val contentsCount = MutableLiveData(0)
-    private val networkMessage = SingleLiveEvent<Unit>()
-    private val timeOutMessage = SingleLiveEvent<Unit>()
 
     fun getUserLiveData() = user
     fun getMapLiveData() = mapList
     fun getCraftingLiveData() = craftingList
     fun getNewsLiveData() = newsList
-    fun getContentsCount() = contentsCount
-    fun getNetworkMessage() = networkMessage
-    fun getTimeOutMessage() = timeOutMessage
-
     fun getUser() {
         scope.launch {
             repository.sendUserRequest(
@@ -46,9 +40,6 @@ class MainViewModel @Inject constructor(
                 },
                 onError = {
                     getUser()
-                },
-                onFailure = {
-                    networkMessage.call()
                 })
         }
     }
@@ -117,10 +108,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun setTimeOut() {
-        scope.launch {
-            delay(5000)
-            timeOutMessage.call()
-        }
-    }
+//    fun setTimeOut() {
+//        scope.launch {
+//            delay(5000)
+//            timeOutMessage.call()
+//        }
+//    }
 }
