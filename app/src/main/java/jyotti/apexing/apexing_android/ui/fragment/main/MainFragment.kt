@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
-import android.view.ViewOutlineProvider
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -19,6 +18,7 @@ import com.bumptech.glide.request.target.Target
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
+import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
@@ -148,51 +148,34 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         mapAdapter.submitList(mapList)
     }
 
-    private fun setCraftingView(craftingList: List<String>) {
+    private fun setCraftingView(craftingList: List<Crafting>) {
         Glide.with(requireContext())
-            .load(craftingList[0])
+            .load(craftingList[0].asset)
             .centerCrop()
-            .thumbnail(
-                getThumbnailWithCenterCrop(
-                    requireContext(),
-                    craftingList[0]
-                )
-            )
             .listener(imageLoadingListener())
             .into(binding.ivCraftDaily0)
         Glide.with(requireContext())
-            .load(craftingList[1])
+            .load(craftingList[1].asset)
             .centerCrop()
-            .thumbnail(
-                getThumbnailWithCenterCrop(
-                    requireContext(),
-                    craftingList[1]
-                )
-            )
             .listener(imageLoadingListener())
             .into(binding.ivCraftDaily1)
         Glide.with(requireContext())
-            .load(craftingList[2])
+            .load(craftingList[2].asset)
             .centerCrop()
-            .thumbnail(
-                getThumbnailWithCenterCrop(
-                    requireContext(),
-                    craftingList[2]
-                )
-            )
             .listener(imageLoadingListener())
             .into(binding.ivCraftWeekly0)
         Glide.with(requireContext())
-            .load(craftingList[3])
+            .load(craftingList[3].asset)
             .centerCrop()
-            .thumbnail(
-                getThumbnailWithCenterCrop(
-                    requireContext(),
-                    craftingList[3]
-                )
-            )
             .listener(imageLoadingListener())
             .into(binding.ivCraftWeekly1)
+
+        with (binding) {
+            tvCostDaily0.text = craftingList[0].cost
+            tvCostDaily1.text = craftingList[1].cost
+            tvCostWeekly0.text = craftingList[2].cost
+            tvCostWeekly1.text = craftingList[3].cost
+        }
     }
 
     private fun setNewsView(newsList: List<News>) {

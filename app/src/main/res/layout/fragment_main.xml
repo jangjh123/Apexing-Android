@@ -16,9 +16,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="20dp"
-            android:layout_height="wrap_content">
+            android:paddingBottom="20dp">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -44,82 +44,134 @@
                 android:elevation="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_map">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView8"
+                    android:id="@+id/cardView4"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_marginTop="10dp"
                     app:cardCornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView7"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView3"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_craft_daily_0"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp" />
-
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/tv_cost_daily_0"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView4"
+                    app:layout_constraintStart_toStartOf="@+id/cardView4"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView7"
+                    android:id="@+id/cardView3"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_marginTop="10dp"
                     app:cardCornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView9"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView5"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/cardView8"
+                    app:layout_constraintStart_toEndOf="@+id/cardView4"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_craft_daily_1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp" />
-
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/tv_cost_daily_1"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView9"
+                    android:id="@+id/cardView5"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_marginTop="10dp"
                     app:cardCornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView10"
+                    app:cardElevation="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView6"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/cardView7"
+                    app:layout_constraintStart_toEndOf="@+id/cardView3"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_craft_weekly_0"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp" />
-
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/tv_cost_weekly_0"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView5"
+                    app:layout_constraintStart_toStartOf="@+id/cardView5"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView10"
+                    android:id="@+id/cardView6"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_marginTop="10dp"
                     app:cardCornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:cardElevation="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintStart_toEndOf="@+id/cardView5"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_craft_weekly_1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_cost_weekly_1"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView6"
+                    app:layout_constraintStart_toStartOf="@+id/cardView6"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -493,7 +545,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-
                             android:layout_weight="6"
                             android:gravity="center"
                             android:textColor="@color/white"
