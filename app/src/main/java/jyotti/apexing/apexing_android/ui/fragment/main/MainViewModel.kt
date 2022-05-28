@@ -1,12 +1,8 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.common.internal.ServiceSpecificExtraArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
@@ -25,7 +21,7 @@ class MainViewModel @Inject constructor(
 
     private val user = MutableLiveData<User>()
     private val mapList = MutableLiveData<List<Map>>()
-    private val craftingList = MutableLiveData<List<Crafting>>()
+    private val craftingList = MutableLiveData<List<String>>()
     private val newsList = MutableLiveData<List<News>>()
     private val contentsCount = MutableLiveData(0)
     private val networkMessage = SingleLiveEvent<Unit>()
@@ -71,7 +67,7 @@ class MainViewModel @Inject constructor(
     fun getCrafting() {
         repository.fetchGameInfo("Craftings",
             onSuccess = {
-                craftingList.postValue(it as List<Crafting>)
+                craftingList.postValue(it as List<String>)
             },
             onFailure = {
 

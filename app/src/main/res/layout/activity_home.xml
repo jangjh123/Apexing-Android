@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@drawable/backgorund_gradient"
         tools:context=".ui.home.HomeActivity">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/app"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -28,10 +28,10 @@
             android:id="@+id/layout_tab"
             android:layout_width="match_parent"
             android:layout_height="40sp"
-            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorColor="@color/main"
             app:tabIndicatorHeight="2dp"
             app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/black"
+            app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/TabLayoutTextStyle"
             app:tabTextColor="@color/gray">
 

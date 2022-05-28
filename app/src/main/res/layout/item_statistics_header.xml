@@ -15,26 +15,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="@string/statistics_made_by_source"
-                android:textColor="@color/gray"
-                android:textSize="15sp" />
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:id="@+id/btn_refresh_match"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="@drawable/box_gradient"
+                app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:elevation="5dp"
                 android:focusable="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:cardBackgroundColor="@color/main">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -44,9 +35,9 @@
                     android:paddingVertical="10dp"
                     android:text="@string/match_refresh"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="14dp" />
 
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_refreshed_date"
@@ -562,8 +553,8 @@
                 android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="@string/force_refreshing"
-                android:textStyle="bold"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </ScrollView>

@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.edit
 import com.google.firebase.database.*
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
-import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
@@ -53,28 +52,16 @@ class MainRepository @Inject constructor(
                 when (child) {
                     "Craftings" -> {
                         list.add(
-                            Crafting(
-                                snapshot.child("Daily_0").child("asset").value.toString(),
-                                snapshot.child("Daily_0").child("cost").value.toString()
-                            )
+                            snapshot.child("Daily_0").child("asset").value.toString()
                         )
                         list.add(
-                            Crafting(
-                                snapshot.child("Daily_1").child("asset").value.toString(),
-                                snapshot.child("Daily_1").child("cost").value.toString()
-                            )
+                            snapshot.child("Daily_1").child("asset").value.toString()
                         )
                         list.add(
-                            Crafting(
-                                snapshot.child("Weekly_0").child("asset").value.toString(),
-                                snapshot.child("Weekly_0").child("cost").value.toString()
-                            )
+                            snapshot.child("Weekly_0").child("asset").value.toString()
                         )
                         list.add(
-                            Crafting(
-                                snapshot.child("Weekly_1").child("asset").value.toString(),
-                                snapshot.child("Weekly_1").child("cost").value.toString()
-                            )
+                            snapshot.child("Weekly_1").child("asset").value.toString()
                         )
                         onSuccess(list)
                     }

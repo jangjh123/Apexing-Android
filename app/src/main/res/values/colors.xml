@@ -12,8 +12,6 @@
 
     <color name="deep_gray">#2a2a2b</color>
     <color name="light_gray">#ececec</color>
-    <color name="gray">#9b9b9b</color>
-    <color name="main">#b93038</color>
     <color name="deeper">#94262d</color>
     <color name="lighter">#e88d8d</color>
     <color name="crafting">#B200FF</color>
@@ -28,4 +26,15 @@
     <color name="pie4">#00498c</color>
 
     <color name="radar_line">#d97a75</color>
+
+
+
+<!--    ui QA-->
+    <color name="main_background">#2b2e44</color>
+    <color name="sub_background">#0a1632</color>
+    <color name="main">#5e84de</color>
+    <color name="gray">#555769</color>
+    <color name="divider">#1a1c2a </color>
+
+
 </resources>

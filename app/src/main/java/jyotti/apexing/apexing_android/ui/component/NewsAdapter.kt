@@ -35,10 +35,10 @@ class NewsAdapter(private inline val onClickNews: (String) -> Unit) :
         fun bind(news: News) {
             with(binding) {
                 tvNewsTitle.text = news.title
-                tvShortDescription.text = news.shortDescription
 
                 Glide.with(root)
                     .load(news.img)
+                    .centerCrop()
                     .thumbnail(
                         getThumbnail(root.context, news.img)
                     )
