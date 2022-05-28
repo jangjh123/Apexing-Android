@@ -73,5 +73,6 @@
     <string name="refreshed_at">%s 갱신됨</string>
     <string name="how_to_record">킬과 대미지를 기록하는 방법</string>
     <string name="force_refreshing">전적이 추가로 기록되지 않았나요?</string>
+    <string name="store">스토어</string>
 
 </resources>
