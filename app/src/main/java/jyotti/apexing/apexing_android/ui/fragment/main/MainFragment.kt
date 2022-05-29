@@ -172,9 +172,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setNewsView(newsList: List<News>) {
         newsAdapter.submitList(newsList)
-        LinearSnapHelper().run {
-            attachToRecyclerView(binding.rvNews)
-            binding.indicator.attachToRecyclerView(binding.rvNews, this)
+        if (binding.rvNews.onFlingListener == null) {
+            LinearSnapHelper().run {
+                attachToRecyclerView(binding.rvNews)
+                binding.indicator.attachToRecyclerView(binding.rvNews, this)
+            }
         }
     }
 
