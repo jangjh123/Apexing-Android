@@ -6,7 +6,9 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
@@ -34,11 +36,14 @@ import kotlin.system.exitProcess
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private val viewModel: MainViewModel by viewModels()
+    private val linearSnapHelper = LinearSnapHelper()
+
     val mapAdapter = MapAdapter()
     val newsAdapter = NewsAdapter(onClickNews = {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
         startActivity(intent)
     })
+
 
     override fun onStart() {
         super.onStart()
@@ -172,11 +177,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setNewsView(newsList: List<News>) {
         newsAdapter.submitList(newsList)
-        if (binding.rvNews.onFlingListener == null) {
-            LinearSnapHelper().run {
+            linearSnapHelper.run {
                 attachToRecyclerView(binding.rvNews)
                 binding.indicator.attachToRecyclerView(binding.rvNews, this)
-            }
         }
     }
 
