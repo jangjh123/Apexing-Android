@@ -2,6 +2,7 @@ package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -12,7 +13,6 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModelType
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
@@ -20,17 +20,16 @@ import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.UnixConverter
 import jyotti.apexing.apexing_android.util.Utils
+import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import java.text.DecimalFormat
 import java.util.*
 
 
 class MatchAdapter(
     private inline val onClickRefresh: () -> Unit,
-    private inline val onClickRecordingDesc: () -> Unit,
-    private inline val onClickForceRefreshing: () -> Unit
+    private inline val onClickRecordingDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
     private val mUnixConverter = UnixConverter()
@@ -133,9 +132,8 @@ class MatchAdapter(
 
                 val minute = item.gameLengthSecs.div(60)
                 val second = item.gameLengthSecs.rem(60)
-                val length = "$minute 분 $second 초"
+                val length = "$minute 분 $second 초 생존"
 
-                tvLegend.text = item.legendPlayed
                 tvSurvivalDuration.text = length
 
                 when (item.gameMode) {
@@ -154,7 +152,7 @@ class MatchAdapter(
 
                 val dec = DecimalFormat("#,###")
 
-                tvDamage.text = dec.format(item.damage)
+                tvDamage.text = dec.format(item.damage).toString()
             }
         }
     }
@@ -162,11 +160,7 @@ class MatchAdapter(
     inner class HeaderViewHolder(private val binding: ItemStatisticsHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MatchModels.Header) {
-
-            item.pieData.setValueFormatter(PercentFormatter())
-
             with(binding) {
-
 //                PieChart
                 chartPie.apply {
                     setTouchEnabled(false)
@@ -180,60 +174,118 @@ class MatchAdapter(
                             0,
                             ContextCompat.getColor(
                                 context,
-                                R.color.pie0
+                                R.color.most0
                             )
                         )
-                        add(1, ContextCompat.getColor(context, R.color.pie1))
-                        add(2, ContextCompat.getColor(context, R.color.pie2))
-                        add(3, ContextCompat.getColor(context, R.color.pie3))
-                        add(4, ContextCompat.getColor(context, R.color.pie4))
+                        add(1, ContextCompat.getColor(context, R.color.most1))
+                        add(2, ContextCompat.getColor(context, R.color.most2))
+                        add(3, ContextCompat.getColor(context, R.color.most3))
+                        add(4, ContextCompat.getColor(context, R.color.most4))
                     }
 
-                    centerText = "Most 5"
+
                     setCenterTextSize(15f)
                     setCenterTextColor(Color.BLACK)
-
                     setUsePercentValues(true)
                     setDrawEntryLabels(false)
                     description.isEnabled = false
                     legend.isEnabled = false
                     isDrawHoleEnabled = true
+                    setHoleColor(Color.TRANSPARENT)
 
                     animateY(750, Easing.EaseInOutQuad)
                     setTransparentCircleAlpha(50)
                     setTransparentCircleColor(Color.WHITE)
                     holeRadius = 60F
-                    setHoleColor(Color.WHITE)
-                    invalidate()
+                    requestLayout()
                 }
 
                 chartPie.also {
-                    tvPie0.text = it.data.dataSets[0].getEntryForIndex(0).label
-                    tvPie1.text = it.data.dataSets[0].getEntryForIndex(1).label
-                    tvPie2.text = it.data.dataSets[0].getEntryForIndex(2).label
-                    tvPie3.text = it.data.dataSets[0].getEntryForIndex(3).label
-                    tvPie4.text = it.data.dataSets[0].getEntryForIndex(4).label
+                    val pieData = it.data
+                    tvPie0.text = pieData.dataSets[0].getEntryForIndex(0).label
+                    tvPie1.text = pieData.dataSets[0].getEntryForIndex(1).label
+                    tvPie2.text = pieData.dataSets[0].getEntryForIndex(2).label
+                    tvPie3.text = pieData.dataSets[0].getEntryForIndex(3).label
+                    tvPie4.text = pieData.dataSets[0].getEntryForIndex(4).label
 
                     tvPieValue0.text = getPercentage(
-                        it.data.yValueSum.toInt(),
-                        it.data.dataSets[0].getEntryForIndex(0).value
+                        pieData.yValueSum.toInt(),
+                        pieData.dataSets[0].getEntryForIndex(0).value
                     )
                     tvPieValue1.text = getPercentage(
-                        it.data.yValueSum.toInt(),
-                        it.data.dataSets[0].getEntryForIndex(1).value
+                        pieData.yValueSum.toInt(),
+                        pieData.dataSets[0].getEntryForIndex(1).value
                     )
                     tvPieValue2.text = getPercentage(
-                        it.data.yValueSum.toInt(),
-                        it.data.dataSets[0].getEntryForIndex(2).value
+                        pieData.yValueSum.toInt(),
+                        pieData.dataSets[0].getEntryForIndex(2).value
                     )
                     tvPieValue3.text = getPercentage(
-                        it.data.yValueSum.toInt(),
-                        it.data.dataSets[0].getEntryForIndex(3).value
+                        pieData.yValueSum.toInt(),
+                        pieData.dataSets[0].getEntryForIndex(3).value
                     )
                     tvPieValue4.text = getPercentage(
-                        it.data.yValueSum.toInt(),
-                        it.data.dataSets[0].getEntryForIndex(4).value
+                        pieData.yValueSum.toInt(),
+                        pieData.dataSets[0].getEntryForIndex(4).value
                     )
+
+                    val circleImageName0 = pieData.dataSets[0].getEntryForIndex(0).label.lowercase(Locale.getDefault())
+                    val circleImageName1 = pieData.dataSets[0].getEntryForIndex(1).label.lowercase(Locale.getDefault())
+                    val circleImageName2 = pieData.dataSets[0].getEntryForIndex(2).label.lowercase(Locale.getDefault())
+                    val circleImageName3 = pieData.dataSets[0].getEntryForIndex(3).label.lowercase(Locale.getDefault())
+                    val circleImageName4 = pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
+
+                    Log.d("TEST", pieData.dataSets[0].label.lowercase(Locale.getDefault()))
+
+                    Glide.with(root.context)
+                        .load(
+                            root.resources.getIdentifier(
+                                circleImageName0,
+                                "drawable",
+                                "jyotti.apexing.apexing_android"
+                            )
+                        )
+                        .into(civMost0)
+
+                    Glide.with(root.context)
+                        .load(
+                            root.resources.getIdentifier(
+                                circleImageName1,
+                                "drawable",
+                                "jyotti.apexing.apexing_android"
+                            )
+                        )
+                        .into(civMost1)
+
+                    Glide.with(root.context)
+                        .load(
+                            root.resources.getIdentifier(
+                                circleImageName2,
+                                "drawable",
+                                "jyotti.apexing.apexing_android"
+                            )
+                        )
+                        .into(civMost2)
+
+                    Glide.with(root.context)
+                        .load(
+                            root.resources.getIdentifier(
+                                circleImageName3,
+                                "drawable",
+                                "jyotti.apexing.apexing_android"
+                            )
+                        )
+                        .into(civMost3)
+
+                    Glide.with(root.context)
+                        .load(
+                            root.resources.getIdentifier(
+                                circleImageName4,
+                                "drawable",
+                                "jyotti.apexing.apexing_android"
+                            )
+                        )
+                        .into(civMost4)
                 }
 
 //                Basic Statistics
@@ -242,27 +294,10 @@ class MatchAdapter(
                 tvKillAvgRecent.text = String.format("%.2f", item.killRvgRecent)
                 tvDamageAvgRecent.text = String.format("%.2f", item.damageRvgRecent)
 
-                val killIncrease = item.killRvgRecent - item.killRvgAll
-
-                if (killIncrease > 0) {
-                    tvKillIncrease.setTextColor(Color.BLUE)
-                    tvKillIncrease.text = String.format("(전체 평균 대비 +%.2f)", killIncrease)
-                } else {
-                    tvKillIncrease.setTextColor(Color.RED)
-                    tvKillIncrease.text = String.format("(전체 평균 대비 %.2f)", killIncrease)
+                "기록된 ${item.matchCount} 매치 기준".run {
+                    tvAllGame0.text = this
+                    tvAllGame1.text = this
                 }
-
-
-                val damageIncrease = item.damageRvgRecent - item.damageRvgAll
-
-                if (damageIncrease > 0) {
-                    tvDamageIncrease.setTextColor(Color.BLUE)
-                    tvDamageIncrease.text = String.format("(전체 평균 대비 +%.2f)", damageIncrease)
-                } else {
-                    tvDamageIncrease.setTextColor(Color.RED)
-                    tvDamageIncrease.text = String.format("(전체 평균 대비 %.2f)", damageIncrease)
-                }
-
 
 //                RadarChart
                 chartRadar.apply {
@@ -278,12 +313,13 @@ class MatchAdapter(
                         setDrawFilled(true)
                         fillColor = ContextCompat.getColor(
                             context,
-                            R.color.lighter
+                            R.color.main
                         )
                     })
 
                     data = radarData.apply {
                         setValueTextSize(15f)
+                        setValueTextColor(ContextCompat.getColor(context, R.color.light_gray))
                     }
 
                     val valueList = ArrayList<String>().apply {
@@ -295,6 +331,7 @@ class MatchAdapter(
 
                     xAxis.apply {
                         valueFormatter = IndexAxisValueFormatter(valueList)
+                        textColor = ContextCompat.getColor(context, R.color.white)
                         textSize = 15f
                     }
 
@@ -306,51 +343,15 @@ class MatchAdapter(
                         setLabelCount(10, true)
                     }
 
-
                     legend.isEnabled = false
                     description.isEnabled = false
-                    webLineWidthInner = 1f
-                    webColor = ContextCompat.getColor(context, R.color.radar_line)
-                    webColorInner = ContextCompat.getColor(context, R.color.radar_line)
+                    webLineWidthInner = 0f
+                    webLineWidth = 0f
+                    webColor = ContextCompat.getColor(context, R.color.main)
+                    webColorInner = ContextCompat.getColor(context, R.color.divider)
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
-                    invalidate()
+                    requestLayout()
                 }
-
-//                BarChart
-                chartBar.apply {
-                    setTouchEnabled(false)
-                    data = BarData(item.barDataSet)
-
-                    item.barDataSet[0].apply {
-                        color = ContextCompat.getColor(context, R.color.main)
-                        valueTextSize = 9f
-                    }
-                    item.barDataSet[1].apply {
-                        color = ContextCompat.getColor(context, R.color.main)
-                        valueTextSize = 12f
-                        setValueTextColors(
-                            listOf(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.transparent
-                                ), ContextCompat.getColor(context, R.color.white)
-                            )
-                        )
-                    }
-
-                    axisLeft.setDrawGridLines(false)
-                    xAxis.setDrawGridLines(false)
-                    xAxis.setDrawAxisLine(false)
-                    xAxis.setDrawGridLinesBehindData(false)
-                    xAxis.setDrawLabels(false)
-                    xAxis.setDrawLimitLinesBehindData(false)
-
-                    legend.isEnabled = false
-                    description.isEnabled = false
-                    animateXY(0, 500, Easing.EaseInOutQuad)
-                    invalidate()
-                }
-
 
                 btnRefreshMatch.setOnClickListener {
                     onClickRefresh()
@@ -359,28 +360,12 @@ class MatchAdapter(
                 val refreshedDate = mUnixConverter.getTimestampToDate(item.refreshedDate.toString())
                 tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
 
-                btnKillDamageDescription.setOnClickListener {
+                btnHowToRecord.setOnClickListener {
                     onClickRecordingDesc()
-                }
-
-                Utils.setGradientText(
-                    btnForceRefreshing,
-                    ContextCompat.getColor(
-                        root.context,
-                        R.color.deeper
-                    ),
-                    ContextCompat.getColor(
-                        root.context,
-                        R.color.lighter
-                    )
-                )
-                btnForceRefreshing.setOnClickListener {
-                    onClickForceRefreshing()
                 }
             }
         }
     }
-
 
     private fun getPercentage(ySum: Int, yValue: Float) =
         String.format("%.1f", (yValue / ySum) * 100) + "%"

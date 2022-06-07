@@ -173,6 +173,7 @@ class StatisticsRepository @Inject constructor(
         refreshedDate: Long
     ) =
         MatchModels.Header(
+            matchCount = matchList.size,
             pieData = getPieChart(matchList),
             killRvgAll = getKillRvgAll(matchList),
             damageRvgAll = getDamageRvgAll(matchList),
@@ -281,7 +282,7 @@ class StatisticsRepository @Inject constructor(
         }
 
         var killCatchData = killCatch / matchList.size
-        killCatchData *= 20
+        killCatchData *= 40
         data[0] = killCatchData
 
         var survivalAbilityData = survivalAbility / matchList.size
@@ -293,6 +294,7 @@ class StatisticsRepository @Inject constructor(
         }
         var dealData = deal / matchList.size
         dealData /= 10
+
         data[2] = dealData
 
         data[3] = ((killCatchData + dealData) / survivalAbilityData) * 25

@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
-import jyotti.apexing.apexing_android.databinding.FragmentStatisticsUpdatedBinding
+import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
 import jyotti.apexing.apexing_android.ui.component.SuggestDialogFragment
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StatisticsFragment : BaseFragment<FragmentStatisticsUpdatedBinding>(R.layout.fragment_statistics_updated) {
+class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.fragment_statistics) {
     private val viewModel: StatisticsViewModel by viewModels()
 
     val matchAdapter = MatchAdapter(
@@ -26,10 +26,6 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsUpdatedBinding>(R.layo
         onClickRecordingDesc = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
             startActivity(intent)
-        },
-        onClickForceRefreshing = {
-            showProgress()
-            showMatch(true)
         })
 
     override fun onStart() {

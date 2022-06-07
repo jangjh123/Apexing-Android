@@ -20,6 +20,7 @@ sealed class MatchModels(var type: MatchModelType) {
     ) : MatchModels(MatchModelType.DATA)
 
     data class Header(
+        val matchCount: Int,
         val pieData: PieData,
         val killRvgAll: Double,
         val damageRvgAll: Double,

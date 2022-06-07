@@ -31,6 +31,7 @@ import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
+import java.text.DecimalFormat
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
@@ -112,10 +113,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             }
 
             try {
-                tvRecordDeal.text = "${user.total.damage.value}"
-                tvRecordKill.text = "${user.total.kills.value}"
+                val dec = DecimalFormat("###,###,###")
+                tvRecordDeal.text = dec.format(user.total.damage.value)
+                tvRecordKill.text = dec.format(user.total.kills.value)
                 tvRecordKd.text = "${user.total.kd.value}"
-                tvRecordPlayedGames.text = "${user.total.gamesPlayed?.value}"
+                tvRecordPlayedGames.text = dec.format(user.total.gamesPlayed?.value)
             } catch (exception: Exception) {
 
             }

@@ -79,6 +79,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
         supportFragmentManager
             .beginTransaction()
             .replace(binding.layoutFrame.id, fragment)
+            .addToBackStack(null)
             .commit()
     }
 

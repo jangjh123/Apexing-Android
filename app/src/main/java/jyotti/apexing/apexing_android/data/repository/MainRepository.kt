@@ -87,7 +87,6 @@ class MainRepository @Inject constructor(
                                 snapshot.child("BR_normal").child("end").value.toString()
                             )
                         )
-                        Log.d("TEST", snapshot.child("BR_normal").child("map").value.toString())
                         list.add(
                             Map(
                                 "배틀로얄 (랭크)",
