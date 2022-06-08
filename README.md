@@ -10,6 +10,9 @@
 관련 소식들도 살펴 볼 수 있습니다.
 
 
+---
+## 🛒 Download
+https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 
 ---
 ## 📷 ScreenShots
