@@ -37,6 +37,13 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("setGridLayoutManager")
+    fun setGridLayoutManager(view: RecyclerView, span: Int) {
+        view.layoutManager = GridLayoutManager(view.context, span, RecyclerView.VERTICAL, false)
+    }
+
+
+    @JvmStatic
     @BindingAdapter("setSnapHelper")
     fun setSnapHelper(view: RecyclerView, boolean: Boolean) {
         if (boolean) {

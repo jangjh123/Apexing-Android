@@ -22,7 +22,6 @@ class StatisticsViewModel @Inject constructor(
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()
 
-    fun getNetworkMessage() = networkMessage
     fun getDatabaseMessage() = databaseMessage
     fun getRatingMessage() = ratingMessage
 

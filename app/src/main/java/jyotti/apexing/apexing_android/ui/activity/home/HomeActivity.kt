@@ -10,12 +10,16 @@ import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
+import jyotti.apexing.apexing_android.ui.fragment.store.StoreFragment
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     private val mainFragment = MainFragment()
     private val statisticsFragment by lazy {
         StatisticsFragment()
+    }
+    private val storeFragment by lazy {
+        StoreFragment()
     }
     private var backKeyPressedTime: Long = 0
 
@@ -49,8 +53,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     0 -> {
                         showFragment(0)
                     }
-                    else -> {
+                    1 -> {
                         showFragment(1)
+                    }
+                    else -> {
+                        showFragment(2)
                     }
                 }
             }
@@ -73,6 +80,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
             }
             1 -> {
                 fragment = statisticsFragment
+            }
+            2 -> {
+                fragment = storeFragment
             }
         }
 

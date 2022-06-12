@@ -10,7 +10,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import jyotti.apexing.apexing_android.R
@@ -20,10 +19,9 @@ import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.UnixConverter
-import jyotti.apexing.apexing_android.util.Utils
+import jyotti.apexing.apexing_android.util.Utils.formatAmount
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
-import java.text.DecimalFormat
+import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
 import java.util.*
 
 
@@ -32,7 +30,6 @@ class MatchAdapter(
     private inline val onClickRecordingDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
-    private val mUnixConverter = UnixConverter()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
@@ -128,7 +125,7 @@ class MatchAdapter(
                     .into(ivLegend)
 
                 tvDate.text =
-                    mUnixConverter.getTimestampToDate(item.gameStartTimestamp.toString())
+                    getTimestampToDate(item.gameStartTimestamp.toString())
 
                 val minute = item.gameLengthSecs.div(60)
                 val second = item.gameLengthSecs.rem(60)
@@ -150,9 +147,7 @@ class MatchAdapter(
 
                 tvKill.text = item.kill.toString()
 
-                val dec = DecimalFormat("#,###")
-
-                tvDamage.text = dec.format(item.damage).toString()
+                tvDamage.text = formatAmount(item.damage).toString()
             }
         }
     }
@@ -357,7 +352,7 @@ class MatchAdapter(
                     onClickRefresh()
                 }
 
-                val refreshedDate = mUnixConverter.getTimestampToDate(item.refreshedDate.toString())
+                val refreshedDate = getTimestampToDate(item.refreshedDate.toString())
                 tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
 
                 btnHowToRecord.setOnClickListener {

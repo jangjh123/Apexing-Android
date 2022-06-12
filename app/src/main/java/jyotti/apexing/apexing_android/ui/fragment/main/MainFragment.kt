@@ -2,23 +2,15 @@ package jyotti.apexing.apexing_android.ui.fragment.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import androidx.core.app.ActivityCompat.finishAffinity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
@@ -30,8 +22,7 @@ import jyotti.apexing.apexing_android.databinding.FragmentMainBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
 import jyotti.apexing.apexing_android.ui.component.NewsAdapter
-import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
-import java.text.DecimalFormat
+import jyotti.apexing.apexing_android.util.Utils.formatAmount
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
@@ -44,7 +35,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
         startActivity(intent)
     })
-
 
     override fun onStart() {
         super.onStart()
@@ -101,8 +91,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             } else {
                 tvUserId.text = getString(R.string.korean_nickname)
             }
-            tvBrRankPoint.text = user.global.rank.rankScore.toString()
-            tvArenaRankPoint.text = user.global.arena.rankScore.toString()
+            tvBrRankPoint.text = formatAmount(user.global.rank.rankScore)
+            tvArenaRankPoint.text = formatAmount(user.global.arena.rankScore)
 
             if (user.global.level <= 500) {
                 tvUserLevel.text = "Lv.${user.global.level}"
@@ -113,11 +103,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             }
 
             try {
-                val dec = DecimalFormat("###,###,###")
-                tvRecordDeal.text = dec.format(user.total.damage.value)
-                tvRecordKill.text = dec.format(user.total.kills.value)
+                tvRecordDeal.text = formatAmount(user.total.damage.value)
+                tvRecordKill.text = formatAmount(user.total.kills.value)
                 tvRecordKd.text = "${user.total.kd.value}"
-                tvRecordPlayedGames.text = dec.format(user.total.gamesPlayed?.value)
+                tvRecordPlayedGames.text = user.total.gamesPlayed?.value?.let { formatAmount(it) }
             } catch (exception: Exception) {
 
             }

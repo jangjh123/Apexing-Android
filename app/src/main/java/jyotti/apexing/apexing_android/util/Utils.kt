@@ -3,12 +3,16 @@ package jyotti.apexing.apexing_android.util
 import android.content.Context
 import android.graphics.LinearGradient
 import android.graphics.Shader
-import android.view.View
 import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utils {
+
+    private val dec = DecimalFormat("###,###,###")
+
     fun getThumbnailWithCenterCrop(
         context: Context,
         imageUrl: String
@@ -39,5 +43,15 @@ object Utils {
             Shader.TileMode.CLAMP
         )
         textView.paint.shader = shader
+    }
+
+    fun formatAmount(amount: Int): String = dec.format(amount)
+
+    fun getTimestampToDate(timestampStr: String): String {
+        val timestamp = timestampStr.toLong()
+        val date = Date(timestamp * 1000L)
+        val sdf = SimpleDateFormat("MM월 dd일 HH시 mm분", Locale.KOREA)
+        sdf.timeZone = TimeZone.getTimeZone("GMT+9")
+        return sdf.format(date)
     }
 }

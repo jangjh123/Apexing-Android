@@ -1,7 +1,6 @@
 package jyotti.apexing.apexing_android.ui.component
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -11,15 +10,13 @@ import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
-import jyotti.apexing.apexing_android.util.UnixConverter
+import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
 
 
 class MapAdapter :
     ListAdapter<Map, RecyclerView.ViewHolder>(
         GenericDiffUtil()
     ) {
-
-    private val unixConverter = UnixConverter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
@@ -54,7 +51,7 @@ class MapAdapter :
                     .into(ivMap)
                 tvMapType.text = map.type
                 tvMapName.text = map.name
-                tvMapTime.text = unixConverter.getTimestampToDate(map.endTime) + " 까지"
+                tvMapTime.text = getTimestampToDate(map.endTime) + " 까지"
             }
         }
     }

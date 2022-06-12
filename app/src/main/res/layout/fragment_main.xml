@@ -64,6 +64,7 @@
                     <ImageView
                         android:id="@+id/iv_craft_daily_0"
                         android:layout_width="match_parent"
+                        android:scaleType="fitCenter"
                         android:layout_height="match_parent" />
                 </androidx.cardview.widget.CardView>
 
@@ -86,7 +87,7 @@
                     android:layout_height="36dp"
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="5dp"
+                    app:cardElevation="5dp"       android:scaleType="fitCenter"
                     app:layout_constraintEnd_toStartOf="@+id/cardView5"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/cardView4"
@@ -124,7 +125,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_craft_weekly_0"
+                        android:id="@+id/iv_craft_weekly_0"       android:scaleType="fitCenter"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </androidx.cardview.widget.CardView>
@@ -156,7 +157,7 @@
 
                     <ImageView
                         android:id="@+id/iv_craft_weekly_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="match_parent"       android:scaleType="fitCenter"
                         android:layout_height="match_parent" />
 
                 </androidx.cardview.widget.CardView>
