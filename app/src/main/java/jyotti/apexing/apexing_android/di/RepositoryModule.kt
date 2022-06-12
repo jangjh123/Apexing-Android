@@ -10,10 +10,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
-import jyotti.apexing.apexing_android.data.repository.AccountRepository
-import jyotti.apexing.apexing_android.data.repository.MainRepository
-import jyotti.apexing.apexing_android.data.repository.SplashRepository
-import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
+import jyotti.apexing.apexing_android.data.repository.*
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
@@ -54,4 +51,10 @@ object RepositoryModule {
         matchDao: MatchDao,
         dispatcher: CoroutineDispatcher
     ) = StatisticsRepository(networkManager, dataStore, matchDao, dispatcher)
+
+    @ViewModelScoped
+    @Provides
+    fun provideStoreRepository(
+        networkManager: NetworkManager
+    ) = StoreRepository(networkManager)
 }

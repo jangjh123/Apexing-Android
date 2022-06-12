@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AmbientLightView">
+        <attr name="setLightColor" format="color|reference"/>
+        <attr name="setLightLength" format="dimension"/>
+        <attr name="setRadius" format="dimension"/>
+        <attr name="setInsideColor" format="color|reference"/>
+    </declare-styleable>
+</resources>

@@ -76,4 +76,6 @@
     <string name="store">스토어</string>
     <string name="recent_by_20_matches">최근 20전 기준</string>
 
+    <!--    StoreFragment-->
+
 </resources>

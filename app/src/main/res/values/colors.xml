@@ -13,7 +13,7 @@
     <color name="deep_gray">#2a2a2b</color>
     <color name="deeper">#94262d</color>
     <color name="lighter">#e88d8d</color>
-    <color name="crafting">#B200FF</color>
+    <color name="crafting">#B200ff</color>
 
     <color name="red">#ff0000</color>
     <color name="blue">#0000ff</color>
@@ -36,4 +36,7 @@
     <color name="most2">#d2d468</color>
     <color name="most3">#3dffc7</color>
     <color name="most4">#ff0000</color>
+
+<!--    store-->
+    <color name="specials">#bba14f</color>
 </resources>
