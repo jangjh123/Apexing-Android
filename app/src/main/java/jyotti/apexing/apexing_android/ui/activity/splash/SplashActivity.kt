@@ -25,9 +25,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private val viewModel: SplashViewModel by viewModels()
 
     override fun startProcess() {
-        Utils.setGradientText(binding.tvAppName,
-        ContextCompat.getColor(this@SplashActivity, R.color.main),
-        ContextCompat.getColor(this@SplashActivity, R.color.lighter))
         checkVersion()
     }
 

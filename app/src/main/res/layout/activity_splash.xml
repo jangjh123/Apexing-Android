@@ -8,33 +8,40 @@
     </data>
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="jyotti.apexing.apexing_android.ui.activity.splash.SplashActivity">
+        android:background="@drawable/backgorund_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_above="@+id/view_center"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_above="@+id/center"
             android:layout_centerHorizontal="true"
-            android:layout_height="wrap_content"
-            android:src="@drawable/apexing_icon"/>
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/main_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/main" />
 
         <View
-            android:id="@+id/view_center"
-            android:layout_centerInParent="true"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:id="@+id/center"
+            android:layout_centerInParent="true"/>
 
         <TextView
-            android:id="@+id/tv_app_name"
-            android:layout_width="wrap_content"
+            style="@style/TextViewDefault"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app"
-            android:layout_below="@+id/view_center"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:textSize="40sp"/>
+            android:layout_below="@+id/center"
+            android:gravity="center"
+            android:text="APEXING."
+            android:textColor="@color/white"
+            android:textSize="50dp" />
 
     </RelativeLayout>
 </layout>
