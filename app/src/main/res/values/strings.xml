@@ -4,6 +4,9 @@
     <string name="app_url">market://details?id=jyotti.apexing.apexing_android</string>
 
     <!--    Common-->
+    <string name="pc">PC</string>
+    <string name="xbox">XBOX</string>
+    <string name="ps4">PlayStation</string>
     <string name="no">아니요</string>
     <string name="yes">좋아요!</string>
     <string name="notice">알림</string>
@@ -27,7 +30,7 @@
     <string name="quit">종료</string>
 
     <!--    AccountActivity-->
-    <string name="set_id">서비스 이용을 위해\nID를 등록해주세요.</string>
+    <string name="set_id">서비스 이용을 위해\n플랫폼 ID를 등록해주세요.</string>
     <string name="type_id">ID 입력</string>
     <string name="type_at_least_one">한 글자 이상 입력하여야 합니다.</string>
     <string name="id">ID</string>
@@ -39,7 +42,7 @@
     <string name="please_set_all">ID 입력과 플랫폼 선택이 필요합니다.</string>
     <string name="please_retry">일시적인 오류입니다. 다시 시도해주세요.</string>
     <string name="account_error">ID를 확인하고 다시 시도해주세요.</string>
-    <string name="help">도와주세요!</string>
+    <string name="help">도와주세요.</string>
 
     <!--    HomeActivity-->
     <string name="main">메인</string>

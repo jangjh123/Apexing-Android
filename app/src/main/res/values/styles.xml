@@ -6,11 +6,6 @@
         <item name="fontFamily">@font/noto_sans_bold</item>
     </style>
 
-    <style name="SpinnerFont" parent="@style/DropDown_PowerSpinner">
-        <item name="fontFamily">@font/noto_sans_medium</item>
-        <item name="android:letterSpacing">-0.05</item>
-    </style>
-
     <style name="TextViewDefault" parent="@android:style/Widget.TextView">
         <item name="android:letterSpacing">-0.05</item>
         <item name="android:includeFontPadding">false</item>

@@ -1,24 +1,23 @@
 package jyotti.apexing.apexing_android.ui.activity.account
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityAccountBinding
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
-import jyotti.apexing.apexing_android.util.Utils
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_account) {
     private val viewModel: AccountViewModel by viewModels()
-    private lateinit var platform: String
-    private lateinit var id: String
 
     override fun onStart() {
         super.onStart()
@@ -27,6 +26,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
 
     override fun startProcess() {
         showView()
+        initKeyboard(binding.etId)
     }
 
     private fun showView() {
@@ -35,22 +35,22 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         val fadeIn3 = AnimationUtils.loadAnimation(this, R.anim.fade_in3)
 
         binding.tvTitle.animation = fadeIn1
-        binding.etWrapper.animation = fadeIn2
-        binding.spinnerPlatform.animation = fadeIn2
+        binding.cardView12.animation = fadeIn2
+        binding.textView7.animation = fadeIn2
         binding.btnHelp.animation = fadeIn2
+        binding.cardView14.animation = fadeIn2
         binding.btnEnroll.animation = fadeIn3
+    }
 
-        Utils.setGradientText(
-            binding.btnHelp,
-            ContextCompat.getColor(
-                this,
-                R.color.deeper
-            ),
-            ContextCompat.getColor(
-                this,
-                R.color.lighter
-            )
-        )
+    private fun initKeyboard(view: View) {
+        view.setOnKeyListener { _, p1, _ ->
+            if (p1 == KeyEvent.KEYCODE_ENTER) {
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            return@setOnKeyListener false
+        }
     }
 
     fun onClickHelp(view: View) {
@@ -59,8 +59,22 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     }
 
     fun onClickEnroll(view: View) {
-        platform = binding.spinnerPlatform.text.toString()
-        id = binding.etId.text.toString()
+        val platform = when {
+            binding.rbPc.isChecked -> {
+                getString(R.string.pc)
+            }
+            binding.rbPs.isChecked -> {
+                getString(R.string.ps4)
+            }
+            binding.rbXbox.isChecked -> {
+                getString(R.string.xbox)
+            }
+            else -> {
+                ""
+            }
+        }
+
+        val id = binding.etId.text.toString()
 
         if (platform.isEmpty() && id.isNotEmpty()) {
             showSnackBar(getString(R.string.please_set_platform))
@@ -70,16 +84,8 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
             showSnackBar(getString(R.string.please_set_all))
         } else {
             showProgress()
-            checkAccount()
-
+            viewModel.checkAccount(id, platform)
         }
-    }
-
-    private fun checkAccount() {
-        viewModel.checkAccount(
-            binding.spinnerPlatform.text.toString(),
-            binding.etId.text.toString()
-        )
     }
 
     override fun setObservers() {
@@ -88,8 +94,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
             when (it) {
                 AccountMessage.Success -> {
                     val intent = Intent(this, HomeActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     finish()
                 }
