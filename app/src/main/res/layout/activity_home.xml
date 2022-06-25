@@ -21,13 +21,13 @@
             android:layout_margin="10dp"
             android:text="@string/app"
             android:textColor="@color/white"
-            android:textSize="23sp"
+            android:textSize="23dp"
             android:textStyle="bold" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/layout_tab"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="40dp"
             app:tabIndicatorColor="@color/main"
             app:tabIndicatorHeight="2dp"
             app:tabRippleColor="@null"

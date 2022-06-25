@@ -21,7 +21,7 @@
     <string name="retry">재시도</string>
     <string name="web_help">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-PC-%EC%9C%A0%EC%A0%80-%EC%95%84%EC%9D%B4%EB%94%94-%EB%93%B1%EB%A1%9D</string>
     <string name="web_recording">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-%ED%82%AC-%EB%B0%8F-%EB%8C%80%EB%AF%B8%EC%A7%80-%EA%B8%B0%EB%A1%9D-%EB%B0%A9%EB%B2%95</string>
-    <string name="rating_suggestion">앱은 잘 사용하고 계신가요?\n에이펙싱에 대한 리뷰를 남겨주세요!</string>
+    <string name="rating_suggestion">앱은 잘 사용하고 계신가요?\n에이펙싱에 대한 리뷰를 남겨주세요!\n개발자에게 큰 힘이 됩니다!</string>
 
     <!--    SplashActivity-->
     <string name="new_version">새로운 버전이 있습니다.\n원활한 서비스 이용을 위해\n업데이트가 필요합니다.</string>

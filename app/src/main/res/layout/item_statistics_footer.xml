@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:id="@+id/tv_footer"
         android:gravity="center"
-        android:textSize="17sp"
+        android:textSize="17dp"
         android:layout_margin="20dp"
         android:textColor="@color/deep_gray"
         android:layout_height="wrap_content">
