@@ -16,8 +16,8 @@ android {
         applicationId "jyotti.apexing.apexing_android"
         minSdk 23
         targetSdk 32
-        versionCode 5
-        versionName "1.0.1"
+        versionCode 6
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -83,14 +83,13 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation "com.github.skydoves:powerspinner:1.1.9"
     implementation 'me.relex:circleindicator:2.1.6'
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "com.google.android.material:material:1.6.1"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
