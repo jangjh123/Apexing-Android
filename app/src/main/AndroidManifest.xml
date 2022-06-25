@@ -9,7 +9,7 @@
         android:name="jyotti.apexing.apexing_android.HiltApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_apexing"
-        android:label="@string/app_name"
+        android:label="@string/app_name_installed"
         android:roundIcon="@mipmap/icon_apexing_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ApexingAndroid">

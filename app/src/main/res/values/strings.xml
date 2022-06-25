@@ -2,6 +2,7 @@
     <string name="app_name">Apexing-Android</string>
     <string name="app">APEXING.</string>
     <string name="app_url">market://details?id=jyotti.apexing.apexing_android</string>
+    <string name="app_name_installed">에이펙싱</string>
 
     <!--    Common-->
     <string name="pc">PC</string>
