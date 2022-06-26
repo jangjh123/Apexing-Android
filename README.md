@@ -49,8 +49,6 @@ for Storing Values
 for List Pagination
 ### Android-SpinKit(ybq)
 for Loading Image
-### powerspinner(skydoves)
-for Drop Down Spinner View
 ### MPAndroidChart(PhilJay)
 for Charting
 
