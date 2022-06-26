@@ -1,6 +1,6 @@
 # 🔫 Apexing-Android
 
-![graphic_image](https://user-images.githubusercontent.com/82919343/159918344-ae34f768-758f-4ac0-8260-89e4f369a332.png)
+![graphic](https://user-images.githubusercontent.com/82919343/175826091-6e020fb2-34db-47aa-a4af-d02a2ebe7a8c.png)
 
 ### 앱 **<에이펙싱.>은 Respawn 사의 게임 <에이펙스 레전드> 의 유저들을 위한 앱입니다.**
 
@@ -15,11 +15,14 @@
 https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 
 ---
-## 📷 ScreenShots
-![capture1](https://user-images.githubusercontent.com/82919343/159918626-6d19defe-3755-4580-bb08-42e62e4a4af2.png)
-![capture2](https://user-images.githubusercontent.com/82919343/159918633-1d6bb280-0cb7-4ff9-9639-8203b12bf10f.png)
-![capture3](https://user-images.githubusercontent.com/82919343/159918637-20a44f8a-e69e-49b3-9ee8-defd480f47fc.png)
-![capture6](https://user-images.githubusercontent.com/82919343/159918643-504f81f1-ac06-4072-836a-2d301d2b079c.png)
+## 📷 ScreenShots!
+![end](https://user-images.githubusercontent.com/82919343/175826164-259126e1-dcbb-4c23-bb63-4c98e162b128.png)
+![0](https://user-images.githubusercontent.com/82919343/175826141-e7e95657-026f-44ba-b863-ec643a6d8e96.png)
+![1](https://user-images.githubusercontent.com/82919343/175826142-94ef3652-edd3-457e-ab5b-7045a67ce321.png)
+![2](https://user-images.githubusercontent.com/82919343/175826143-688f5eaf-2da6-4c3a-a47d-64425945e0fd.png)
+![3](https://user-images.githubusercontent.com/82919343/175826145-199bd412-fb9c-41a0-bc5b-dcbc62a7309a.png)
+![4](https://user-images.githubusercontent.com/82919343/175826146-53c1b415-c401-48d2-a8c6-6fed13bc906b.png)
+
 ---
 
 
