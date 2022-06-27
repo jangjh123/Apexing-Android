@@ -67,7 +67,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
                 getString(R.string.ps4)
             }
             binding.rbXbox.isChecked -> {
-                getString(R.string.xbox)
+                "X1"
             }
             else -> {
                 ""
