@@ -16,52 +16,6 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/btn_refresh_match"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="10dp"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                android:orientation="horizontal"
-                app:cardBackgroundColor="@color/main"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/TextViewDefault"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal|bottom"
-                        android:paddingTop="5dp"
-                        android:text="@string/match_refresh"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/tv_refreshed_date"
-                        style="@style/TextViewDefault"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.4"
-                        android:gravity="center_horizontal|top"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
             <TextView
                 android:id="@+id/btn_how_to_record"
                 android:layout_width="match_parent"
@@ -74,7 +28,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/block_mosts"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_refresh_match" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/block_mosts"

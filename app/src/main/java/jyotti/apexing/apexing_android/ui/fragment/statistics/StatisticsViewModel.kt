@@ -25,51 +25,43 @@ class StatisticsViewModel @Inject constructor(
     fun getDatabaseMessage() = databaseMessage
     fun getRatingMessage() = ratingMessage
 
-    fun updateMatch(isForceRefreshing: Boolean) {
+    fun updateMatch() {
         scope.launch {
             repository.sendMatchRequest(
-                uid = repository.readStoredUid().first(),
-                start = when (isForceRefreshing) {
-                    true -> {
-                        0
-                    }
-                    false -> {
-                        repository.readStoredRefreshDate().first()
-                    }
-                },
+                id = repository.readStoredId().first(),
                 onSuccess = { list ->
-                    when (isForceRefreshing) {
-                        true -> {
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    repository.clearDatabase()
-                                }
-                                withContext(Dispatchers.IO) {
-                                    repository.storeMatch(list)
-                                }
-                                databaseMessage.call()
-                            }
-                        }
-                        false -> {
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    repository.storeMatch(list)
-                                }
-                                databaseMessage.call()
-                            }
-                        }
-                    }
+//                    when (isForceRefreshing) {
+//                        true -> {
+//                            scope.launch {
+//                                withContext(Dispatchers.IO) {
+//                                    repository.clearDatabase()
+//                                }
+//                                withContext(Dispatchers.IO) {
+//                                    repository.storeMatch(list)
+//                                }
+//                                databaseMessage.call()
+//                            }
+//                        }
+//                        false -> {
                     scope.launch {
-                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
+                        withContext(Dispatchers.IO) {
+                            repository.storeMatch(list)
+                        }
+                        databaseMessage.call()
                     }
-                },
-                onError = {
-                    updateMatch(isForceRefreshing)
+//                        }
                 },
                 onFailure = {
-                    networkMessage.call()
-                }
-            )
+
+                })
+//                    scope.launch {
+//                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
+//                    }
+//                },
+//                onFailure = {
+//                    networkMessage.call()
+//                }
+//            )
         }
     }
 

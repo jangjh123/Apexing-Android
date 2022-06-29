@@ -26,7 +26,6 @@ import java.util.*
 
 
 class MatchAdapter(
-    private inline val onClickRefresh: () -> Unit,
     private inline val onClickRecordingDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
@@ -230,8 +229,6 @@ class MatchAdapter(
                     val circleImageName3 = pieData.dataSets[0].getEntryForIndex(3).label.lowercase(Locale.getDefault())
                     val circleImageName4 = pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
 
-                    Log.d("TEST", pieData.dataSets[0].label.lowercase(Locale.getDefault()))
-
                     Glide.with(root.context)
                         .load(
                             root.resources.getIdentifier(
@@ -347,13 +344,6 @@ class MatchAdapter(
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
                     requestLayout()
                 }
-
-                btnRefreshMatch.setOnClickListener {
-                    onClickRefresh()
-                }
-
-                val refreshedDate = getTimestampToDate(item.refreshedDate.toString())
-                tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
 
                 btnHowToRecord.setOnClickListener {
                     onClickRecordingDesc()

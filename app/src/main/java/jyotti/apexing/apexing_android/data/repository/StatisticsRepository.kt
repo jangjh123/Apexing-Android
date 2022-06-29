@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -8,6 +9,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.github.mikephil.charting.data.*
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.gson.JsonArray
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
@@ -16,6 +19,7 @@ import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
+import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_IS_RATED
 import jyotti.apexing.data_store.KEY_REFRESH_DATE
 import jyotti.apexing.data_store.KEY_UID
@@ -35,109 +39,49 @@ class StatisticsRepository @Inject constructor(
     private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
-
-    private val uidFlow: Flow<String> = dataStore.data.map {
-        it[KEY_UID] ?: ""
-    }.flowOn(dispatcher)
-
-    private val refreshDateFlow: Flow<Long> = dataStore.data.map {
-        it[KEY_REFRESH_DATE] ?: 0
+    private val idFlow: Flow<String> = dataStore.data.map {
+        it[KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
     private val isRatedFlow: Flow<Boolean> = dataStore.data.map {
         it[KEY_IS_RATED] ?: false
     }.flowOn(dispatcher)
 
-    fun readStoredUid() = uidFlow
-    fun readStoredRefreshDate() = refreshDateFlow
+    val databaseInstance = FirebaseDatabase.getInstance()
+
+    fun readStoredId() = idFlow
     fun readStoredRatingState() = isRatedFlow
 
     inline fun sendMatchRequest(
-        uid: String,
-        start: Long,
+        id: String,
         crossinline onSuccess: (List<MatchModels.Match>) -> Unit,
-        crossinline onError: () -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        networkManager.getClient().fetchMatch(KEY_API, uid, start, Int.MAX_VALUE).enqueue(object :
-            Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                when (response.code()) {
-                    200 -> {
-                        onSuccess(setDamageAndKill(response.body()!!))
-                    }
-                    else -> {
-                        onError()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                onFailure()
-            }
-        })
-    }
-
-    fun setDamageAndKill(jsonArray: JsonArray): ArrayList<MatchModels.Match> {
-
-        val matchList = ArrayList<MatchModels.Match>()
-
-        if (!jsonArray.isEmpty) {
-            jsonArray.forEach {
-                with(it.asJsonObject) {
-                    var kill = 0
-                    var damage = 0
-
-                    try {
-                        if (this.get("gameData").asJsonArray.size() > 0) {
-                            for (i in 0..2) {
-                                if (get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"kills\"" ||
-                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"specialEvent_kills\""
-                                ) {
-                                    kill =
-                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
-                                } else if (get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"damage\"" ||
-                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"specialEvent_damage\""
-                                )
-                                    damage =
-                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
+        databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val matchList = ArrayList<MatchModels.Match>()
+                snapshot.children.forEach { match ->
                     matchList.add(
                         MatchModels.Match(
-                            legendPlayed = when (get("legendPlayed").asString) {
-                                "Mad Maggie" -> {
-                                    "MadMaggie"
-                                }
-                                else -> {
-                                    get("legendPlayed").asString
-                                }
-                            },
-                            gameMode = get("gameMode").asString,
-                            gameLengthSecs = get("gameLengthSecs").asInt,
-                            gameStartTimestamp = get("gameStartTimestamp").asLong,
-                            kill = kill,
-                            damage = damage
+                            0,
+                            match.child("legend").value.toString(),
+                            "배틀로얄", // 수정필
+                            match.child("secs").getValue<Int>()!!,
+                            match.child("date").value as Long,
+                            match.child("kill").getValue<Int>()!!,
+                            match.child("damage").getValue<Int>()!!,
                         )
                     )
                 }
+                onSuccess(matchList)
             }
-        }
-        return matchList
-    }
 
-    suspend fun storeRefreshDate(refreshDate: Long) {
-        dataStore.edit {
-            it[KEY_REFRESH_DATE] = refreshDate
-        }
+            override fun onCancelled(error: DatabaseError) {
+                onFailure()
+            }
+
+        })
     }
 
     fun storeMatch(matchList: List<MatchModels.Match>) {
