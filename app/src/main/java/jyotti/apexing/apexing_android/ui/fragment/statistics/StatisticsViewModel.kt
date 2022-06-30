@@ -30,38 +30,19 @@ class StatisticsViewModel @Inject constructor(
             repository.sendMatchRequest(
                 id = repository.readStoredId().first(),
                 onSuccess = { list ->
-//                    when (isForceRefreshing) {
-//                        true -> {
-//                            scope.launch {
-//                                withContext(Dispatchers.IO) {
-//                                    repository.clearDatabase()
-//                                }
-//                                withContext(Dispatchers.IO) {
-//                                    repository.storeMatch(list)
-//                                }
-//                                databaseMessage.call()
-//                            }
-//                        }
-//                        false -> {
                     scope.launch {
                         withContext(Dispatchers.IO) {
                             repository.storeMatch(list)
                         }
                         databaseMessage.call()
                     }
-//                        }
+                },
+                onComplete = {
+                    databaseMessage.call()
                 },
                 onFailure = {
 
                 })
-//                    scope.launch {
-//                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
-//                    }
-//                },
-//                onFailure = {
-//                    networkMessage.call()
-//                }
-//            )
         }
     }
 

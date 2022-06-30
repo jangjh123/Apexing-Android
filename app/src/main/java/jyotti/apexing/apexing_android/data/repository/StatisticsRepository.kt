@@ -9,10 +9,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.github.mikephil.charting.data.*
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.google.gson.JsonArray
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
@@ -21,22 +22,20 @@ import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
 import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_IS_RATED
-import jyotti.apexing.data_store.KEY_REFRESH_DATE
-import jyotti.apexing.data_store.KEY_UID
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class StatisticsRepository @Inject constructor(
     val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
-    private val matchDao: MatchDao,
+    val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
     private val idFlow: Flow<String> = dataStore.data.map {
@@ -55,26 +54,54 @@ class StatisticsRepository @Inject constructor(
     inline fun sendMatchRequest(
         id: String,
         crossinline onSuccess: (List<MatchModels.Match>) -> Unit,
+        crossinline onComplete: () -> Unit,
         crossinline onFailure: () -> Unit
     ) {
         databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val matchList = ArrayList<MatchModels.Match>()
-                snapshot.children.forEach { match ->
-                    matchList.add(
-                        MatchModels.Match(
-                            0,
-                            match.child("legend").value.toString(),
-                            "배틀로얄", // 수정필
-                            match.child("secs").getValue<Int>()!!,
-                            match.child("date").value as Long,
-                            match.child("kill").getValue<Int>()!!,
-                            match.child("damage").getValue<Int>()!!,
-                        )
-                    )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (matchDao.getAll().isEmpty()) {
+                        snapshot.children.forEach { match ->
+                            matchList.add(
+                                MatchModels.Match(
+                                    0,
+                                    match.child("legend").value.toString(),
+                                    "배틀로얄", // 수정필
+                                    match.child("secs").getValue<Int>()!!,
+                                    match.child("date").value as Long,
+                                    match.child("kill").getValue<Int>()!!,
+                                    match.child("damage").getValue<Int>()!!,
+                                )
+                            )
+                        }
+                        onSuccess(matchList)
+                    } else {
+                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child("0")
+                                .child("date").value as Long
+                        ) {
+                            onComplete()
+                        } else {
+                            clearDatabase()
+                            snapshot.children.forEach { match ->
+                                matchList.add(
+                                    MatchModels.Match(
+                                        0,
+                                        match.child("legend").value.toString(),
+                                        "배틀로얄", // 수정필
+                                        match.child("secs").getValue<Int>()!!,
+                                        match.child("date").value as Long,
+                                        match.child("kill").getValue<Int>()!!,
+                                        match.child("damage").getValue<Int>()!!,
+                                    )
+                                )
+                            }
+                            onSuccess(matchList)
+                        }
+                    }
                 }
-                onSuccess(matchList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -89,6 +116,7 @@ class StatisticsRepository @Inject constructor(
             matchDao.insert(it)
         }
     }
+
 
     suspend fun clearDatabase() {
         matchDao.deleteAll()
