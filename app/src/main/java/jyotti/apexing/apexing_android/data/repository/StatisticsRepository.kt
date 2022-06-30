@@ -69,7 +69,7 @@ class StatisticsRepository @Inject constructor(
                                 MatchModels.Match(
                                     0,
                                     match.child("legend").value.toString(),
-                                    "배틀로얄", // 수정필
+                                    match.child("mode").value.toString(),
                                     match.child("secs").getValue<Int>()!!,
                                     match.child("date").value as Long,
                                     match.child("kill").getValue<Int>()!!,
@@ -90,7 +90,7 @@ class StatisticsRepository @Inject constructor(
                                     MatchModels.Match(
                                         0,
                                         match.child("legend").value.toString(),
-                                        "배틀로얄", // 수정필
+                                        match.child("mode").value.toString(),
                                         match.child("secs").getValue<Int>()!!,
                                         match.child("date").value as Long,
                                         match.child("kill").getValue<Int>()!!,
