@@ -45,6 +45,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             dismissProgress()
         }
 
+        viewModel.refreshIndexLiveData.observe(viewLifecycleOwner) {
+            matchAdapter.setRefreshIndex(it)
+        }
+
         viewModel.getRatingMessage().observe(viewLifecycleOwner) {
             SuggestDialogFragment(
                 getString(R.string.rating_suggestion),

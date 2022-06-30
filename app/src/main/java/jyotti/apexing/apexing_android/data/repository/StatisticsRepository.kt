@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -18,6 +17,7 @@ import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
+import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
 import jyotti.apexing.data_store.KEY_ID
@@ -53,8 +53,8 @@ class StatisticsRepository @Inject constructor(
 
     inline fun sendMatchRequest(
         id: String,
-        crossinline onSuccess: (List<MatchModels.Match>) -> Unit,
-        crossinline onComplete: () -> Unit,
+        crossinline onSuccess: (Pair<List<MatchModels.Match>, RefreshIndex>) -> Unit,
+        crossinline onComplete: (RefreshIndex) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
         databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
@@ -76,12 +76,32 @@ class StatisticsRepository @Inject constructor(
                                 )
                             )
                         }
-                        onSuccess(matchList)
+                        getRefreshIndex {
+                            onSuccess(
+                                Pair(
+                                    matchList,
+                                    RefreshIndex(
+                                        it.first,
+                                        it.second,
+                                        snapshot.child("index").getValue<Int>()!!
+                                    )
+                                )
+                            )
+                        }
                     } else {
                         if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child("0")
                                 .child("date").value as Long
                         ) {
-                            onComplete()
+                            getRefreshIndex {
+                                onComplete(
+                                    RefreshIndex(
+                                        it.first,
+                                        it.second,
+                                        snapshot.child("index").getValue<Int>()!!
+                                    )
+                                )
+                            }
+
                         } else {
                             clearDatabase()
                             snapshot.children.forEach { match ->
@@ -97,7 +117,18 @@ class StatisticsRepository @Inject constructor(
                                     )
                                 )
                             }
-                            onSuccess(matchList)
+                            getRefreshIndex {
+                                onSuccess(
+                                    Pair(
+                                        matchList,
+                                        RefreshIndex(
+                                            it.first,
+                                            it.second,
+                                            snapshot.child("index").getValue<Int>()!!
+                                        )
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -110,12 +141,29 @@ class StatisticsRepository @Inject constructor(
         })
     }
 
+    inline fun getRefreshIndex(crossinline onComplete: (Pair<Int, Int>) -> Unit) {
+        databaseInstance.reference.child("CurrentIndex").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    onComplete(
+                        Pair(
+                            snapshot.child("index").getValue<Int>()!!,
+                            snapshot.child("size").getValue<Int>()!!
+                        )
+                    )
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
     fun storeMatch(matchList: List<MatchModels.Match>) {
         matchList.forEach {
             matchDao.insert(it)
         }
     }
-
 
     suspend fun clearDatabase() {
         matchDao.deleteAll()
@@ -137,8 +185,7 @@ class StatisticsRepository @Inject constructor(
             .insertHeaderItem(
                 item = setHeaderValue(
                     matchDao.getAll(),
-                    matchDao.getRecent(),
-                    refreshedDate = System.currentTimeMillis() / 1000
+                    matchDao.getRecent()
                 )
             )
             .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
@@ -146,8 +193,7 @@ class StatisticsRepository @Inject constructor(
 
     private fun setHeaderValue(
         matchList: List<MatchModels.Match>,
-        recentMatchList: List<MatchModels.Match>,
-        refreshedDate: Long
+        recentMatchList: List<MatchModels.Match>
     ) =
         MatchModels.Header(
             matchCount = matchList.size,
@@ -156,7 +202,6 @@ class StatisticsRepository @Inject constructor(
             damageRvgAll = getDamageRvgAll(matchList),
             killRvgRecent = getKillRvgRecent(recentMatchList),
             damageRvgRecent = getDamageRvgRecent(recentMatchList),
-            refreshedDate = refreshedDate,
             radarDataSet = getRadarChart(matchList),
             barDataSet = getBarChartValue(recentMatchList)
         )

@@ -15,6 +15,7 @@
     <string name="arena">아레나</string>
     <string name="rank">랭크</string>
     <string name="damage">대미지</string>
+    <string name="confirm">알겠어요.</string>
     <string name="kill">킬</string>
     <string name="kd">K/D</string>
     <string name="games_played">플레이한 게임</string>
@@ -79,7 +80,10 @@
     <string name="force_refreshing">전적이 추가로 기록되지 않았나요?</string>
     <string name="store">스토어</string>
     <string name="recent_by_20_matches">최근 20전 기준</string>
-
+    <string name="all_user">전체 유저</string>
+    <string name="current_index">현재 순번</string>
+    <string name="my_index">나의 순번</string>
+    <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.\n나의 순번이 변경되었다면 내 전적이 갱신된 것이며,\n현재 순번이 나의 순번에 도달할 때까지 전적이 갱신되지 않습니다.</string>
     <!--    StoreFragment-->
 
 </resources>

@@ -26,7 +26,6 @@ sealed class MatchModels(var type: MatchModelType) {
         val damageRvgAll: Double,
         val killRvgRecent: Double,
         val damageRvgRecent: Double,
-        val refreshedDate: Long,
         val radarDataSet: RadarDataSet,
         val barDataSet: List<BarDataSet>
     ) : MatchModels(MatchModelType.HEADER)

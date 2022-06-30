@@ -42,7 +42,8 @@ class SplashRepository @Inject constructor(
                 Log.d("local", BuildConfig.VERSION_NAME)
 
                 if (newestVersion != BuildConfig.VERSION_NAME) {
-                    isNewVersionExist(true)
+//                    isNewVersionExist(true) // onTrack
+                    isNewVersionExist(false) // test
                 } else {
                     isNewVersionExist(false)
                 }
