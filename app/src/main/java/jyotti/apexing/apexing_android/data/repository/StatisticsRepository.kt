@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -38,7 +39,7 @@ class StatisticsRepository @Inject constructor(
     val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
-    private val idFlow: Flow<String> = dataStore.data.map {
+    val idFlow: Flow<String> = dataStore.data.map {
         it[KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
@@ -76,30 +77,34 @@ class StatisticsRepository @Inject constructor(
                                 )
                             )
                         }
-                        getRefreshIndex {
-                            onSuccess(
-                                Pair(
-                                    matchList,
-                                    RefreshIndex(
-                                        it.first,
-                                        it.second,
-                                        snapshot.child("index").getValue<Int>()!!
+                        getRefreshIndex { pair ->
+                            getMyIndex { index ->
+                                onSuccess(
+                                    Pair(
+                                        matchList,
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                            )
                                     )
                                 )
-                            )
+                            }
                         }
                     } else {
                         if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child("0")
                                 .child("date").value as Long
                         ) {
-                            getRefreshIndex {
-                                onComplete(
-                                    RefreshIndex(
-                                        it.first,
-                                        it.second,
-                                        snapshot.child("index").getValue<Int>()!!
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onComplete(
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                        )
                                     )
-                                )
+                                }
                             }
 
                         } else {
@@ -117,17 +122,20 @@ class StatisticsRepository @Inject constructor(
                                     )
                                 )
                             }
-                            getRefreshIndex {
-                                onSuccess(
-                                    Pair(
-                                        matchList,
-                                        RefreshIndex(
-                                            it.first,
-                                            it.second,
-                                            snapshot.child("index").getValue<Int>()!!
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onSuccess(
+                                        Pair(
+                                            matchList,
+                                            RefreshIndex(
+                                                pair.first,
+                                                pair.second,
+                                                index
+                                            )
                                         )
                                     )
-                                )
+                                }
+
                             }
                         }
                     }
@@ -157,6 +165,21 @@ class StatisticsRepository @Inject constructor(
 
                 }
             })
+    }
+
+    inline fun getMyIndex(crossinline onComplete: (Int) -> Unit) {
+        databaseInstance.reference.child("Index").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    onComplete(snapshot.child(idFlow.first()).getValue<Int>()!!)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     fun storeMatch(matchList: List<MatchModels.Match>) {

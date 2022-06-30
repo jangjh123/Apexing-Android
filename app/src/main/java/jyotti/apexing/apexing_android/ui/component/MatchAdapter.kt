@@ -39,7 +39,8 @@ import java.util.*
 
 
 class MatchAdapter(
-    private inline val onClickRecordingDesc: () -> Unit
+    private inline val onClickRecordingDesc: () -> Unit,
+    private inline val onClickRefreshDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
     private val _curIndex = MutableLiveData<Int>()
@@ -186,16 +187,28 @@ class MatchAdapter(
                 itemView.doOnAttach {
                     val mLifecycleOwner = itemView.findViewTreeLifecycleOwner()
                     if (mLifecycleOwner != null) {
-                        myIndex.observe(mLifecycleOwner) {
-                            tvMyIndex.text = it.toString()
-                        }
-                        curIndex.observe(mLifecycleOwner) {
-                            tvCurIndex.text = it.toString()
-                        }
-                        curSize.observe(mLifecycleOwner) {
-                            tvSize.text = it.toString()
+                        myIndex.observe(mLifecycleOwner) { myIndex ->
+                            tvMyIndex.text = myIndex.toString()
+                            curIndex.observe(mLifecycleOwner) { curIndex ->
+                                tvCurIndex.text = curIndex.toString()
+                                curSize.observe(mLifecycleOwner) { curSize ->
+                                    tvSize.text = curSize.toString()
+
+                                    tvRefreshTime.append(
+                                        if (myIndex > curIndex) {
+                                            "\n나의 전적은 ${(myIndex - curIndex) / 45 + 1} 시간 뒤에 갱신됩니다."
+                                        } else {
+                                            "\n나의 전적은 ${(curSize - curIndex + myIndex) / 45} 시간 뒤에 갱신됩니다."
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
+                }
+
+                btnRefreshDesc.setOnClickListener {
+                    onClickRefreshDesc()
                 }
 
 //                PieChart

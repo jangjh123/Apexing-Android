@@ -23,6 +23,7 @@
     <string name="retry">재시도</string>
     <string name="web_help">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-PC-%EC%9C%A0%EC%A0%80-%EC%95%84%EC%9D%B4%EB%94%94-%EB%93%B1%EB%A1%9D</string>
     <string name="web_recording">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-%ED%82%AC-%EB%B0%8F-%EB%8C%80%EB%AF%B8%EC%A7%80-%EA%B8%B0%EB%A1%9D-%EB%B0%A9%EB%B2%95</string>
+    <string name="web_refresh">https://velog.io/@gn000123/%EC%97%90%EC%9D%B4%ED%8E%99%EC%8B%B1-%EA%B0%B1%EC%8B%A0%EC%9D%B4-%EC%A0%9C%ED%95%9C%EC%A0%81%EC%9D%B8-%EC%9D%B4%EC%9C%A0</string>
     <string name="rating_suggestion">앱은 잘 사용하고 계신가요?\n에이펙싱에 대한 리뷰를 남겨주세요!\n개발자에게 큰 힘이 됩니다!</string>
 
     <!--    SplashActivity-->
@@ -83,7 +84,7 @@
     <string name="all_user">전체 유저</string>
     <string name="current_index">현재 순번</string>
     <string name="my_index">나의 순번</string>
-    <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.\n나의 순번이 변경되었다면 내 전적이 갱신된 것이며,\n현재 순번이 나의 순번에 도달할 때까지 전적이 갱신되지 않습니다.</string>
+    <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.</string>
     <!--    StoreFragment-->
 
 </resources>

@@ -22,6 +22,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         onClickRecordingDesc = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
             startActivity(intent)
+        },
+        onClickRefreshDesc = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_refresh)))
+            startActivity(intent)
         })
 
     override fun onStart() {
