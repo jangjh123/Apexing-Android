@@ -61,7 +61,6 @@ class StatisticsRepository @Inject constructor(
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val matchList = ArrayList<MatchModels.Match>()
-
                 CoroutineScope(Dispatchers.IO).launch {
                     if (matchDao.getAll().isEmpty()) {
                         snapshot.children.forEach { match ->
