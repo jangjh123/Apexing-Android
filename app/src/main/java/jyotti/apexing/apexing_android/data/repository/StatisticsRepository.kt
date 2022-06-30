@@ -8,136 +8,178 @@ import androidx.paging.PagingConfig
 import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.github.mikephil.charting.data.*
-import com.google.gson.JsonArray
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
+import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
+import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_IS_RATED
-import jyotti.apexing.data_store.KEY_REFRESH_DATE
-import jyotti.apexing.data_store.KEY_UID
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class StatisticsRepository @Inject constructor(
     val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
-    private val matchDao: MatchDao,
+    val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
-
-    private val uidFlow: Flow<String> = dataStore.data.map {
-        it[KEY_UID] ?: ""
-    }.flowOn(dispatcher)
-
-    private val refreshDateFlow: Flow<Long> = dataStore.data.map {
-        it[KEY_REFRESH_DATE] ?: 0
+    val idFlow: Flow<String> = dataStore.data.map {
+        it[KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
     private val isRatedFlow: Flow<Boolean> = dataStore.data.map {
         it[KEY_IS_RATED] ?: false
     }.flowOn(dispatcher)
 
-    fun readStoredUid() = uidFlow
-    fun readStoredRefreshDate() = refreshDateFlow
+    val databaseInstance = FirebaseDatabase.getInstance()
+
+    fun readStoredId() = idFlow
     fun readStoredRatingState() = isRatedFlow
 
     inline fun sendMatchRequest(
-        uid: String,
-        start: Long,
-        crossinline onSuccess: (List<MatchModels.Match>) -> Unit,
-        crossinline onError: () -> Unit,
+        id: String,
+        crossinline onSuccess: (Pair<List<MatchModels.Match>, RefreshIndex>) -> Unit,
+        crossinline onComplete: (RefreshIndex) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        networkManager.getClient().fetchMatch(KEY_API, uid, start, Int.MAX_VALUE).enqueue(object :
-            Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                when (response.code()) {
-                    200 -> {
-                        onSuccess(setDamageAndKill(response.body()!!))
-                    }
-                    else -> {
-                        onError()
+        databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val matchList = ArrayList<MatchModels.Match>()
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (matchDao.getAll().isEmpty()) {
+                        snapshot.children.forEach { match ->
+                            matchList.add(
+                                MatchModels.Match(
+                                    0,
+                                    match.child("legend").value.toString(),
+                                    match.child("mode").value.toString(),
+                                    match.child("secs").getValue<Int>()!!,
+                                    match.child("date").value as Long,
+                                    match.child("kill").getValue<Int>()!!,
+                                    match.child("damage").getValue<Int>()!!,
+                                )
+                            )
+                        }
+                        getRefreshIndex { pair ->
+                            getMyIndex { index ->
+                                onSuccess(
+                                    Pair(
+                                        matchList,
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                            )
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child("0")
+                                .child("date").value as Long
+                        ) {
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onComplete(
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                        )
+                                    )
+                                }
+                            }
+
+                        } else {
+                            clearDatabase()
+                            snapshot.children.forEach { match ->
+                                matchList.add(
+                                    MatchModels.Match(
+                                        0,
+                                        match.child("legend").value.toString(),
+                                        match.child("mode").value.toString(),
+                                        match.child("secs").getValue<Int>()!!,
+                                        match.child("date").value as Long,
+                                        match.child("kill").getValue<Int>()!!,
+                                        match.child("damage").getValue<Int>()!!,
+                                    )
+                                )
+                            }
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onSuccess(
+                                        Pair(
+                                            matchList,
+                                            RefreshIndex(
+                                                pair.first,
+                                                pair.second,
+                                                index
+                                            )
+                                        )
+                                    )
+                                }
+
+                            }
+                        }
                     }
                 }
             }
 
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+            override fun onCancelled(error: DatabaseError) {
                 onFailure()
             }
+
         })
     }
 
-    fun setDamageAndKill(jsonArray: JsonArray): ArrayList<MatchModels.Match> {
-
-        val matchList = ArrayList<MatchModels.Match>()
-
-        if (!jsonArray.isEmpty) {
-            jsonArray.forEach {
-                with(it.asJsonObject) {
-                    var kill = 0
-                    var damage = 0
-
-                    try {
-                        if (this.get("gameData").asJsonArray.size() > 0) {
-                            for (i in 0..2) {
-                                if (get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"kills\"" ||
-                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"specialEvent_kills\""
-                                ) {
-                                    kill =
-                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
-                                } else if (get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"damage\"" ||
-                                    get("gameData").asJsonArray[i].asJsonObject.get("key")
-                                        .toString() == "\"specialEvent_damage\""
-                                )
-                                    damage =
-                                        get("gameData").asJsonArray[i].asJsonObject.get("value").asInt
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-                    matchList.add(
-                        MatchModels.Match(
-                            legendPlayed = when (get("legendPlayed").asString) {
-                                "Mad Maggie" -> {
-                                    "MadMaggie"
-                                }
-                                else -> {
-                                    get("legendPlayed").asString
-                                }
-                            },
-                            gameMode = get("gameMode").asString,
-                            gameLengthSecs = get("gameLengthSecs").asInt,
-                            gameStartTimestamp = get("gameStartTimestamp").asLong,
-                            kill = kill,
-                            damage = damage
+    inline fun getRefreshIndex(crossinline onComplete: (Pair<Int, Int>) -> Unit) {
+        databaseInstance.reference.child("CurrentIndex").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    onComplete(
+                        Pair(
+                            snapshot.child("index").getValue<Int>()!!,
+                            snapshot.child("size").getValue<Int>()!!
                         )
                     )
                 }
-            }
-        }
-        return matchList
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
     }
 
-    suspend fun storeRefreshDate(refreshDate: Long) {
-        dataStore.edit {
-            it[KEY_REFRESH_DATE] = refreshDate
-        }
+    inline fun getMyIndex(crossinline onComplete: (Int) -> Unit) {
+        databaseInstance.reference.child("Index").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    onComplete(snapshot.child(idFlow.first()).getValue<Int>()!!)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     fun storeMatch(matchList: List<MatchModels.Match>) {
@@ -166,8 +208,7 @@ class StatisticsRepository @Inject constructor(
             .insertHeaderItem(
                 item = setHeaderValue(
                     matchDao.getAll(),
-                    matchDao.getRecent(),
-                    refreshedDate = System.currentTimeMillis() / 1000
+                    matchDao.getRecent()
                 )
             )
             .insertFooterItem(item = MatchModels.Footer("마지막 매치입니다."))
@@ -175,8 +216,7 @@ class StatisticsRepository @Inject constructor(
 
     private fun setHeaderValue(
         matchList: List<MatchModels.Match>,
-        recentMatchList: List<MatchModels.Match>,
-        refreshedDate: Long
+        recentMatchList: List<MatchModels.Match>
     ) =
         MatchModels.Header(
             matchCount = matchList.size,
@@ -185,7 +225,6 @@ class StatisticsRepository @Inject constructor(
             damageRvgAll = getDamageRvgAll(matchList),
             killRvgRecent = getKillRvgRecent(recentMatchList),
             damageRvgRecent = getDamageRvgRecent(recentMatchList),
-            refreshedDate = refreshedDate,
             radarDataSet = getRadarChart(matchList),
             barDataSet = getBarChartValue(recentMatchList)
         )

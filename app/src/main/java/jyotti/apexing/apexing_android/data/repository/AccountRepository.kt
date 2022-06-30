@@ -48,8 +48,8 @@ class AccountRepository @Inject constructor(
                             errorMessage.contains("Slow down") -> {
                                 onError()
                             } else -> {
-                                onNull()
-                            }
+                            onNull()
+                        }
                         }
                     } catch (exception: Exception) {
                         onNull()

@@ -19,12 +19,12 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     private val viewModel: StatisticsViewModel by viewModels()
 
     val matchAdapter = MatchAdapter(
-        onClickRefresh = {
-            showProgress()
-            startProcess()
-        },
         onClickRecordingDesc = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
+            startActivity(intent)
+        },
+        onClickRefreshDesc = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_refresh)))
             startActivity(intent)
         })
 
@@ -34,7 +34,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
     }
 
     override fun startProcess() {
-        showMatch(false)
+        showMatch()
     }
 
     override fun setObservers() {
@@ -47,6 +47,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
 
             viewModel.suggestRating()
             dismissProgress()
+        }
+
+        viewModel.refreshIndexLiveData.observe(viewLifecycleOwner) {
+            matchAdapter.setRefreshIndex(it)
         }
 
         viewModel.getRatingMessage().observe(viewLifecycleOwner) {
@@ -69,7 +73,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         binding.rvMatch.smoothScrollToPosition(0)
     }
 
-    private fun showMatch(isForceRefreshing: Boolean) {
-        viewModel.updateMatch(isForceRefreshing)
+    private fun showMatch() {
+        viewModel.updateMatch()
     }
 }

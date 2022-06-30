@@ -2,11 +2,22 @@ package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.transition.TransitionManager
+import android.transition.TransitionManager.beginDelayedTransition
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnAttach
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
@@ -15,9 +26,11 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModelType
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
+import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.Utils.formatAmount
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
@@ -26,10 +39,19 @@ import java.util.*
 
 
 class MatchAdapter(
-    private inline val onClickRefresh: () -> Unit,
-    private inline val onClickRecordingDesc: () -> Unit
+    private inline val onClickRecordingDesc: () -> Unit,
+    private inline val onClickRefreshDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
+    private val _curIndex = MutableLiveData<Int>()
+    val curIndex: LiveData<Int>
+        get() = _curIndex
+    private val _curSize = MutableLiveData<Int>()
+    val curSize: LiveData<Int>
+        get() = _curSize
+    private val _myIndex = MutableLiveData<Int>()
+    val myIndex: LiveData<Int>
+        get() = _myIndex
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
@@ -93,6 +115,12 @@ class MatchAdapter(
         }
     }
 
+    fun setRefreshIndex(refreshIndex: RefreshIndex) {
+        _curIndex.postValue(refreshIndex.curIndex)
+        _curSize.postValue(refreshIndex.curSize)
+        _myIndex.postValue(refreshIndex.myIndex)
+    }
+
     inner class MatchViewHolder(
         private val binding: ItemMatchBinding
     ) :
@@ -147,7 +175,7 @@ class MatchAdapter(
 
                 tvKill.text = item.kill.toString()
 
-                tvDamage.text = formatAmount(item.damage).toString()
+                tvDamage.text = formatAmount(item.damage)
             }
         }
     }
@@ -156,6 +184,33 @@ class MatchAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MatchModels.Header) {
             with(binding) {
+                itemView.doOnAttach {
+                    val mLifecycleOwner = itemView.findViewTreeLifecycleOwner()
+                    if (mLifecycleOwner != null) {
+                        myIndex.observe(mLifecycleOwner) { myIndex ->
+                            tvMyIndex.text = myIndex.toString()
+                            curIndex.observe(mLifecycleOwner) { curIndex ->
+                                tvCurIndex.text = curIndex.toString()
+                                curSize.observe(mLifecycleOwner) { curSize ->
+                                    tvSize.text = curSize.toString()
+
+                                    tvRefreshTime.append(
+                                        if (myIndex > curIndex) {
+                                            "\n나의 전적은 ${(myIndex - curIndex) / 45 + 1} 시간 뒤에 갱신됩니다."
+                                        } else {
+                                            "\n나의 전적은 ${(curSize - curIndex + myIndex) / 45} 시간 뒤에 갱신됩니다."
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                btnRefreshDesc.setOnClickListener {
+                    onClickRefreshDesc()
+                }
+
 //                PieChart
                 chartPie.apply {
                     setTouchEnabled(false)
@@ -224,13 +279,16 @@ class MatchAdapter(
                         pieData.dataSets[0].getEntryForIndex(4).value
                     )
 
-                    val circleImageName0 = pieData.dataSets[0].getEntryForIndex(0).label.lowercase(Locale.getDefault())
-                    val circleImageName1 = pieData.dataSets[0].getEntryForIndex(1).label.lowercase(Locale.getDefault())
-                    val circleImageName2 = pieData.dataSets[0].getEntryForIndex(2).label.lowercase(Locale.getDefault())
-                    val circleImageName3 = pieData.dataSets[0].getEntryForIndex(3).label.lowercase(Locale.getDefault())
-                    val circleImageName4 = pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
-
-                    Log.d("TEST", pieData.dataSets[0].label.lowercase(Locale.getDefault()))
+                    val circleImageName0 =
+                        pieData.dataSets[0].getEntryForIndex(0).label.lowercase(Locale.getDefault())
+                    val circleImageName1 =
+                        pieData.dataSets[0].getEntryForIndex(1).label.lowercase(Locale.getDefault())
+                    val circleImageName2 =
+                        pieData.dataSets[0].getEntryForIndex(2).label.lowercase(Locale.getDefault())
+                    val circleImageName3 =
+                        pieData.dataSets[0].getEntryForIndex(3).label.lowercase(Locale.getDefault())
+                    val circleImageName4 =
+                        pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
 
                     Glide.with(root.context)
                         .load(
@@ -347,13 +405,6 @@ class MatchAdapter(
                     animateXY(1000, 1000, Easing.EaseInOutQuad)
                     requestLayout()
                 }
-
-                btnRefreshMatch.setOnClickListener {
-                    onClickRefresh()
-                }
-
-                val refreshedDate = getTimestampToDate(item.refreshedDate.toString())
-                tvRefreshedDate.text = root.context.getString(R.string.refreshed_at, refreshedDate)
 
                 btnHowToRecord.setOnClickListener {
                     onClickRecordingDesc()

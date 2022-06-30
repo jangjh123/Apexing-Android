@@ -21,4 +21,7 @@ interface MatchDao {
 
     @Query("DELETE FROM 'match'")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM `match` ORDER BY gameStartTimestamp DESC LIMIT 1")
+    suspend fun getLastMatch(): MatchModels.Match
 }

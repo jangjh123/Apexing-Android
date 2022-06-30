@@ -1,9 +1,13 @@
 package jyotti.apexing.apexing_android.ui.fragment.statistics
 
+import android.annotation.SuppressLint
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
@@ -18,58 +22,36 @@ class StatisticsViewModel @Inject constructor(
 ) :
     ViewModel() {
     private val scope = CoroutineScope(dispatcher)
-    private val networkMessage = SingleLiveEvent<Unit>()
+    private val _refreshIndexLiveData = MutableLiveData<RefreshIndex>()
+    val refreshIndexLiveData: LiveData<RefreshIndex>
+        get() = _refreshIndexLiveData
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()
 
     fun getDatabaseMessage() = databaseMessage
     fun getRatingMessage() = ratingMessage
 
-    fun updateMatch(isForceRefreshing: Boolean) {
+    @SuppressLint("NullSafeMutableLiveData")
+    fun updateMatch() {
         scope.launch {
             repository.sendMatchRequest(
-                uid = repository.readStoredUid().first(),
-                start = when (isForceRefreshing) {
-                    true -> {
-                        0
-                    }
-                    false -> {
-                        repository.readStoredRefreshDate().first()
-                    }
-                },
-                onSuccess = { list ->
-                    when (isForceRefreshing) {
-                        true -> {
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    repository.clearDatabase()
-                                }
-                                withContext(Dispatchers.IO) {
-                                    repository.storeMatch(list)
-                                }
-                                databaseMessage.call()
-                            }
-                        }
-                        false -> {
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    repository.storeMatch(list)
-                                }
-                                databaseMessage.call()
-                            }
-                        }
-                    }
+                id = repository.readStoredId().first(),
+                onSuccess = { pair ->
                     scope.launch {
-                        repository.storeRefreshDate(System.currentTimeMillis() / 1000L)
+                        withContext(Dispatchers.IO) {
+                            repository.storeMatch(pair.first)
+                        }
+                        databaseMessage.call()
+                        _refreshIndexLiveData.postValue(pair.second)
                     }
                 },
-                onError = {
-                    updateMatch(isForceRefreshing)
+                onComplete = {
+                    databaseMessage.call()
+                    _refreshIndexLiveData.postValue(it)
                 },
                 onFailure = {
-                    networkMessage.call()
-                }
-            )
+
+                })
         }
     }
 

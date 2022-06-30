@@ -29,7 +29,7 @@ class MainRepository @Inject constructor(
     private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
-    val reference = FirebaseDatabase.getInstance()
+    val databaseInstance = FirebaseDatabase.getInstance()
 
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
@@ -47,7 +47,7 @@ class MainRepository @Inject constructor(
         crossinline onSuccess: (List<Any>) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        reference.getReference(child).addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseInstance.getReference(child).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = ArrayList<Any>()
                 when (child) {
@@ -186,7 +186,6 @@ class MainRepository @Inject constructor(
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
                     onError()
-                    Log.d("onFailure", t.toString())
                 }
             })
     }
@@ -206,7 +205,7 @@ class MainRepository @Inject constructor(
         id: String,
         crossinline onSuccess: () -> Unit
     ) {
-        databaseRef.child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
+        databaseRef.child("USER").child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.ref.child(id).removeValue()
