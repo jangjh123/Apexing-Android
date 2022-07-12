@@ -16,6 +16,7 @@ class AccountViewModel @Inject constructor(
 ) : ViewModel() {
     private val scope = CoroutineScope(dispatcher)
     private val message = MutableLiveData<AccountMessage>()
+    private var retryCount = 0
 
     fun getMessageLiveData() = message
 
@@ -28,7 +29,11 @@ class AccountViewModel @Inject constructor(
                 }
             },
             onNull = {
-                message.postValue(AccountMessage.Null)
+                if (retryCount < 10) {
+                    checkAccount(platform, id)
+                } else {
+                    message.postValue(AccountMessage.Null)
+                }
             },
             onError = {
                 checkAccount(platform, id)

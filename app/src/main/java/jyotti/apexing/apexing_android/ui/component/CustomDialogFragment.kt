@@ -48,6 +48,7 @@ class CustomDialogFragment(
         binding.tvBtnText.text = buttonText
         binding.btnDialog.setOnClickListener {
             onClickButton()
+            dismiss()
         }
     }
 }

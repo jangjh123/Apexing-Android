@@ -85,55 +85,60 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     @SuppressLint("SetTextI18n")
     private fun setUserView(user: User) {
-        with(binding) {
-            if (user.global.name.isNotEmpty()) {
-                tvUserId.text = user.global.name
-            } else {
-                tvUserId.text = getString(R.string.korean_nickname)
-            }
-            tvBrRankPoint.text = formatAmount(user.global.rank.rankScore)
-            tvArenaRankPoint.text = formatAmount(user.global.arena.rankScore)
+        try {
+            with(binding) {
+                if (user.global.name.isNotEmpty()) {
+                    tvUserId.text = user.global.name
+                } else {
+                    tvUserId.text = getString(R.string.korean_nickname)
+                }
+                tvBrRankPoint.text = formatAmount(user.global.rank.rankScore)
+                tvArenaRankPoint.text = formatAmount(user.global.arena.rankScore)
 
-            if (user.global.level <= 500) {
-                tvUserLevel.text = "Lv.${user.global.level}"
-                tvCurLevel.text = "Lv.${user.global.level}"
-                tvNextLevel.text = "Lv.${user.global.level + 1}"
-            } else {
-                tvUserLevel.text = 500.toString()
-            }
+                if (user.global.level <= 500) {
+                    tvUserLevel.text = "Lv.${user.global.level}"
+                    tvCurLevel.text = "Lv.${user.global.level}"
+                    tvNextLevel.text = "Lv.${user.global.level + 1}"
+                } else {
+                    tvUserLevel.text = 500.toString()
+                }
 
-            try {
-                tvRecordDeal.text = formatAmount(user.total.damage.value)
-                tvRecordKill.text = formatAmount(user.total.kills.value)
-                tvRecordKd.text = "${user.total.kd.value}"
-                tvRecordPlayedGames.text = user.total.gamesPlayed?.value?.let { formatAmount(it) }
-            } catch (exception: Exception) {
+                try {
+                    tvRecordDeal.text = formatAmount(user.total.damage.value)
+                    tvRecordKill.text = formatAmount(user.total.kills.value)
+                    tvRecordKd.text = "${user.total.kd.value}"
+                    tvRecordPlayedGames.text =
+                        user.total.gamesPlayed?.value?.let { formatAmount(it) }
+                } catch (exception: Exception) {
 
+                }
+
+                Glide.with(requireContext())
+                    .load(user.legends.selected.imageAsset.banner)
+                    .centerCrop()
+                    .into(binding.ivBanner)
+
+                pbLevel.progressDrawable.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.main
+                        ), BlendModeCompat.SRC_ATOP
+                    )
+
+                pbLevel.progress = user.global.toNextLevelPercent
             }
 
             Glide.with(requireContext())
-                .load(user.legends.selected.imageAsset.banner)
-                .centerCrop()
-                .into(binding.ivBanner)
+                .load(user.global.rank.rankImg)
+                .into(binding.ivBrRank)
 
-            pbLevel.progressDrawable.colorFilter =
-                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.main
-                    ), BlendModeCompat.SRC_ATOP
-                )
+            Glide.with(requireContext())
+                .load(user.global.arena.rankImg)
+                .into(binding.ivArenaRank)
+        } catch(e: Exception) {
 
-            pbLevel.progress = user.global.toNextLevelPercent
         }
-
-        Glide.with(requireContext())
-            .load(user.global.rank.rankImg)
-            .into(binding.ivBrRank)
-
-        Glide.with(requireContext())
-            .load(user.global.arena.rankImg)
-            .into(binding.ivArenaRank)
     }
 
     private fun setMapView(mapList: List<Map>) {
