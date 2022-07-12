@@ -74,7 +74,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                 getString(R.string.confirm),
                 onClickButton = {
                     CustomDialogFragment(
-                        "한 시간당 45명씩 갱신됩니다.\n현재 순번 : ${it.first}\n나의 순번 : ${it.second + 1}",
+                        "한 시간당 45명의 전적이 갱신됩니다.\n현재 순번 : ${it.first}\n나의 순번 : ${it.second + 1}",
                         getString(R.string.confirm),
                         onClickButton = {
                             (activity as HomeActivity).backToMainTab()
