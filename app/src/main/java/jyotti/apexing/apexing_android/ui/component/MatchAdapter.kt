@@ -130,10 +130,9 @@ class MatchAdapter(
                 val context = root.context
                 val imageName = item.legendPlayed.lowercase(Locale.getDefault())
                 val imageId: Int = when (item.legendPlayed) {
-
-                    "MadMaggie" -> {
+                    "Mad Maggie" -> {
                         root.resources.getIdentifier(
-                            "mad_maggie",
+                            "madmaggie",
                             "drawable",
                             "jyotti.apexing.apexing_android"
                         )
@@ -277,6 +276,10 @@ class MatchAdapter(
                         pieData.yValueSum.toInt(),
                         pieData.dataSets[0].getEntryForIndex(4).value
                     )
+
+                    for (i in 0 until 5) {
+                        Log.d("로그", pieData.dataSets[0].getEntryForIndex(i).label.lowercase(Locale.getDefault()))
+                    }
 
                     val circleImageName0 =
                         pieData.dataSets[0].getEntryForIndex(0).label.lowercase(Locale.getDefault())

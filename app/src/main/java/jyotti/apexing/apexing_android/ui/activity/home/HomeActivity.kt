@@ -93,6 +93,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
             .commit()
     }
 
+    fun backToMainTab() {
+        binding.layoutTab.selectTab(binding.layoutTab.getTabAt(0))
+    }
+
     override fun onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 1000) {
             backKeyPressedTime = System.currentTimeMillis()
