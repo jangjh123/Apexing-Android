@@ -27,14 +27,18 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
     }
 
     protected open fun showProgress() {
-        progressFragment.show(childFragmentManager, "progress")
+        try {
+            progressFragment.show(childFragmentManager, "progress")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     protected open fun dismissProgress() {
         try {
             progressFragment.dismiss()
-        } catch (exception: Exception) {
-            exception.printStackTrace()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
     }
