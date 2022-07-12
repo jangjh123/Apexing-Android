@@ -193,13 +193,12 @@ class MatchAdapter(
                                 curSize.observe(mLifecycleOwner) { curSize ->
                                     tvSize.text = curSize.toString()
 
-                                    tvRefreshTime.append(
+                                    tvRefreshTime.text =
                                         if (myIndex > curIndex) {
-                                            "\n나의 전적은 ${(myIndex - curIndex) / 45 + 1} 시간 뒤에 갱신됩니다."
+                                            "${root.context.getString(R.string.refresh_desc)}\n나의 전적은 ${(myIndex - curIndex) / 45 + 1} 시간 뒤에 갱신됩니다."
                                         } else {
-                                            "\n나의 전적은 ${(curSize - curIndex + myIndex) / 45} 시간 뒤에 갱신됩니다."
+                                            "${root.context.getString(R.string.refresh_desc)}\n나의 전적은 ${(curSize - curIndex + myIndex) / 45} 시간 뒤에 갱신됩니다."
                                         }
-                                    )
                                 }
                             }
                         }
