@@ -24,16 +24,20 @@ class StoreRepository @Inject constructor(val firebaseDatabase: FirebaseDatabase
                             expireTimeStamp = storeItem.child("expireTimeStamp").value.toString().toLong(),
                             shopTime = storeItem.child("shopTime").value.toString(),
                             pricing = ArrayList<Payment>().apply {
-                                add(
-                                    Payment(
-                                        ref = storeItem.child("pricing1")
-                                            .child("ref").value.toString(),
-                                        quantity = storeItem.child("pricing1").child("quantity")
-                                            .getValue<Int>()!!
+                                if (storeItem.child("pricing1").child("quantity")
+                                        .value.toString() != "0") {
+                                    add(
+                                        Payment(
+                                            ref = storeItem.child("pricing1")
+                                                .child("ref").value.toString(),
+                                            quantity = storeItem.child("pricing1").child("quantity")
+                                                .getValue<Int>()!!
+                                        )
                                     )
-                                )
+                                }
+
                                 if (storeItem.child("pricing2").child("quantity")
-                                        .getValue<Int>()!! == 0
+                                        .value.toString() != "0"
                                 ) {
                                     add(
                                         Payment(
