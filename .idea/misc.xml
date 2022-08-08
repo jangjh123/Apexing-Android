@@ -34,7 +34,8 @@
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/activity_account.xml" value="0.33" />
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/activity_home.xml" value="0.35648148148148145" />
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/activity_splash.xml" value="0.25" />
-        <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/fragment_main.xml" value="0.15925925925925927" />
+        <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/fragment_custom_dialog.xml" value="0.35648148148148145" />
+        <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/fragment_main.xml" value="0.33" />
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/fragment_progress.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/fragment_statistics.xml" value="0.15925925925925927" />
         <entry key="..\:/Users/gn000/AndroidStudioProjects/Apexing-Android/app/src/main/res/layout/item_map.xml" value="0.14074074074074075" />

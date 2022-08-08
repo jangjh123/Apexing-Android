@@ -1,11 +1,10 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.database.*
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
+import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
@@ -17,9 +16,6 @@ import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -41,6 +37,26 @@ class MainRepository @Inject constructor(
 
     fun getPlatformFlow() = platformFlow
     fun getIdFlow() = idFlow
+
+    inline fun fetchUser(
+        userName: String,
+        crossinline onSuccess: (User) -> Unit
+    ) {
+        databaseInstance.getReference("USER_INFO").child(userName).get().addOnSuccessListener {
+            onSuccess(
+                User(
+                    arRankImg = it.child("arRankImg").value.toString(),
+                    arRankScore = it.child("arRankScore").getValue<Int>()!!,
+                    bannerImg = it.child("bannerImg").value.toString(),
+                    brRankImg = it.child("brRankImg").value.toString(),
+                    brRankScore = it.child("brRankScore").getValue<Int>()!!,
+                    level = it.child("level").getValue<Int>()!!,
+                    name = it.child("name").value.toString(),
+                    toNextLevelPercent = it.child("toNextLevelPercent").getValue<Int>()!!
+                )
+            )
+        }
+    }
 
     inline fun fetchGameInfo(
         child: String,
@@ -163,31 +179,6 @@ class MainRepository @Inject constructor(
                 onFailure()
             }
         })
-    }
-
-    inline fun sendUserRequest(
-        platform: String,
-        id: String,
-        crossinline onSuccess: (User) -> Unit,
-        crossinline onError: () -> Unit
-    ) {
-        networkManager.getClient().fetchUser(platform, id, KEY_API)
-            .enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
-                    when (response.code()) {
-                        200 -> {
-                            onSuccess(response.body()!!)
-                        }
-                        else -> {
-                            onError()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<User>, t: Throwable) {
-                    onError()
-                }
-            })
     }
 
     suspend fun clearDatabase() {
