@@ -44,7 +44,7 @@ class StoreAdapter :
                     .thumbnail(getThumbnail(root.context, storeItem.asset))
                     .into(ivItem)
 
-                when (storeItem.shopType) {
+                when (storeItem.shopTime) {
                     "specials" -> {
                         alv.setLightColor(ContextCompat.getColor(root.context, R.color.specials))
                     }
@@ -78,7 +78,7 @@ class StoreAdapter :
                     }
                 }
 
-                tvItemExpirationDate.text = "${getTimestampToDate(storeItem.expireTimestamp.toString())} 까지"
+                tvItemExpirationDate.text = "${getTimestampToDate(storeItem.expireTimeStamp.toString())} 까지"
             }
         }
     }

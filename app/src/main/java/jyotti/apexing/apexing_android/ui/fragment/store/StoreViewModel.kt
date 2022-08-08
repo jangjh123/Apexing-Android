@@ -22,12 +22,6 @@ class StoreViewModel @Inject constructor(private val repository: StoreRepository
         repository.fetchStoreData(
             onSuccess = {
                 storeData.postValue(it)
-            },
-            onError = {
-                getStoreData()
-            },
-            onFailure = {
-                getStoreData()
             }
         )
     }
