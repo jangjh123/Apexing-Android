@@ -8,7 +8,6 @@ import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.repository.MainRepository
-import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -32,15 +31,9 @@ class MainViewModel @Inject constructor(
     fun getNewsLiveData() = newsList
     fun getUser() {
         scope.launch {
-            repository.sendUserRequest(
-                repository.getPlatformFlow().first(),
-                repository.getIdFlow().first(),
-                onSuccess = {
-                    user.postValue(it)
-                },
-                onError = {
-                    getUser()
-                })
+            repository.fetchUser(repository.getIdFlow().first()) {
+                user.postValue(it)
+            }
         }
     }
 

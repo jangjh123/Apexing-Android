@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -327,6 +328,8 @@ class StatisticsRepository @Inject constructor(
             add(RadarEntry(getRadarChartValue(matchList)[2]))
             add(RadarEntry(getRadarChartValue(matchList)[3]))
         }
+
+        Log.d("로그", getRadarChartValue(matchList)[3].toString())
 
         return RadarDataSet(radarEntries, label)
     }

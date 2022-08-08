@@ -3,6 +3,7 @@ package jyotti.apexing.apexing_android.ui.fragment.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
@@ -85,60 +87,46 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     @SuppressLint("SetTextI18n")
     private fun setUserView(user: User) {
-        try {
-            with(binding) {
-                if (user.global.name.isNotEmpty()) {
-                    tvUserId.text = user.global.name
-                } else {
-                    tvUserId.text = getString(R.string.korean_nickname)
-                }
-                tvBrRankPoint.text = formatAmount(user.global.rank.rankScore)
-                tvArenaRankPoint.text = formatAmount(user.global.arena.rankScore)
+        with(binding) {
+            if (user.name.isNotEmpty()) {
+                tvUserId.text = user.name
+            } else {
+                tvUserId.text = getString(R.string.korean_nickname)
+            }
+            tvBrRankPoint.text = formatAmount(user.brRankScore)
+            tvArenaRankPoint.text = formatAmount(user.arRankScore)
 
-                if (user.global.level <= 500) {
-                    tvUserLevel.text = "Lv.${user.global.level}"
-                    tvCurLevel.text = "Lv.${user.global.level}"
-                    tvNextLevel.text = "Lv.${user.global.level + 1}"
-                } else {
-                    tvUserLevel.text = 500.toString()
-                }
-
-                try {
-                    tvRecordDeal.text = formatAmount(user.total.damage.value)
-                    tvRecordKill.text = formatAmount(user.total.kills.value)
-                    tvRecordKd.text = "${user.total.kd.value}"
-                    tvRecordPlayedGames.text =
-                        user.total.gamesPlayed?.value?.let { formatAmount(it) }
-                } catch (exception: Exception) {
-
-                }
-
-                Glide.with(requireContext())
-                    .load(user.legends.selected.imageAsset.banner)
-                    .centerCrop()
-                    .into(binding.ivBanner)
-
-                pbLevel.progressDrawable.colorFilter =
-                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.main
-                        ), BlendModeCompat.SRC_ATOP
-                    )
-
-                pbLevel.progress = user.global.toNextLevelPercent
+            if (user.level <= 500) {
+                tvUserLevel.text = "Lv.${user.level}"
+                tvCurLevel.text = "Lv.${user.level}"
+                tvNextLevel.text = "Lv.${user.level + 1}"
+            } else {
+                tvUserLevel.text = 500.toString()
             }
 
             Glide.with(requireContext())
-                .load(user.global.rank.rankImg)
-                .into(binding.ivBrRank)
+                .load(user.bannerImg.replace("\"", ""))
+                .centerCrop()
+                .into(binding.ivBanner)
 
-            Glide.with(requireContext())
-                .load(user.global.arena.rankImg)
-                .into(binding.ivArenaRank)
-        } catch(e: Exception) {
+            pbLevel.progressDrawable.colorFilter =
+                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.main
+                    ), BlendModeCompat.SRC_ATOP
+                )
 
+            pbLevel.progress = user.toNextLevelPercent
         }
+
+        Glide.with(requireContext())
+            .load(user.brRankImg)
+            .into(binding.ivBrRank)
+
+        Glide.with(requireContext())
+            .load(user.arRankImg)
+            .into(binding.ivArenaRank)
     }
 
     private fun setMapView(mapList: List<Map>) {
@@ -163,7 +151,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             .centerCrop()
             .into(binding.ivCraftWeekly1)
 
-        with (binding) {
+        with(binding) {
             tvCostDaily0.text = craftingList[0].cost
             tvCostDaily1.text = craftingList[1].cost
             tvCostWeekly0.text = craftingList[2].cost
@@ -173,9 +161,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setNewsView(newsList: List<News>) {
         newsAdapter.submitList(newsList)
-            linearSnapHelper.run {
-                attachToRecyclerView(binding.rvNews)
-                binding.indicator.attachToRecyclerView(binding.rvNews, this)
+        linearSnapHelper.run {
+            attachToRecyclerView(binding.rvNews)
+            binding.indicator.attachToRecyclerView(binding.rvNews, this)
         }
     }
 

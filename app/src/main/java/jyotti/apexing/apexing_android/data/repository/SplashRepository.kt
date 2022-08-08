@@ -28,7 +28,6 @@ class SplashRepository @Inject constructor(
     fun readStoredPlatform(): Flow<String> = platformFlow
 
 
-
     inline fun fetchVersion(
         crossinline isNewVersionExist: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
@@ -41,12 +40,14 @@ class SplashRepository @Inject constructor(
                 Log.d("remote", newestVersion)
                 Log.d("local", BuildConfig.VERSION_NAME)
 
-                if (newestVersion != BuildConfig.VERSION_NAME) {
-                    isNewVersionExist(true) // onTrack
-//                    isNewVersionExist(false) // test
-                } else {
-                    isNewVersionExist(false)
-                }
+//                if (newestVersion != BuildConfig.VERSION_NAME) {
+//                    isNewVersionExist(true) // onTrack
+//                    isNewVersionExist(false)
+//                } else {
+//                    isNewVersionExist(false)
+//                }
+//            }
+                isNewVersionExist(false) // test
             }
 
             override fun onCancelled(error: DatabaseError) {
