@@ -10,9 +10,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseReferenceModule {
+object FirebaseDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseReference() = Firebase.database.getReference("USER")
+    fun provideFirebaseDatabase() = Firebase.database
 }

@@ -20,12 +20,11 @@ import javax.inject.Inject
 
 class MainRepository @Inject constructor(
     val networkManager: NetworkManager,
-    val databaseRef: DatabaseReference,
+    val firebaseDatabase: FirebaseDatabase,
     private val dataStore: DataStore<Preferences>,
     private val matchDao: MatchDao,
     dispatcher: CoroutineDispatcher
 ) {
-    val databaseInstance = FirebaseDatabase.getInstance()
 
     private val platformFlow = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
@@ -42,7 +41,7 @@ class MainRepository @Inject constructor(
         userName: String,
         crossinline onSuccess: (User) -> Unit
     ) {
-        databaseInstance.getReference("USER_INFO").child(userName).get().addOnSuccessListener {
+        firebaseDatabase.getReference("USER_INFO").child(userName).get().addOnSuccessListener {
             onSuccess(
                 User(
                     arRankImg = it.child("arRankImg").value.toString(),
@@ -63,7 +62,7 @@ class MainRepository @Inject constructor(
         crossinline onSuccess: (List<Any>) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        databaseInstance.getReference(child).addListenerForSingleValueEvent(object : ValueEventListener {
+        firebaseDatabase.getReference(child).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = ArrayList<Any>()
                 when (child) {
@@ -196,7 +195,7 @@ class MainRepository @Inject constructor(
         id: String,
         crossinline onSuccess: () -> Unit
     ) {
-        databaseRef.child("USER").child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
+        firebaseDatabase.getReference("USER").child(platform).orderByKey().equalTo(id).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.ref.child(id).removeValue()

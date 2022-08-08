@@ -3,6 +3,7 @@ package jyotti.apexing.apexing_android.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,18 +31,18 @@ object RepositoryModule {
     fun provideAccountRepository(
         networkManager: NetworkManager,
         dataStore: DataStore<Preferences>,
-        databaseRef: DatabaseReference
-    ) = AccountRepository(networkManager, dataStore, databaseRef)
+        firebaseDatabase: FirebaseDatabase
+    ) = AccountRepository(networkManager, dataStore, firebaseDatabase)
 
     @ViewModelScoped
     @Provides
     fun provideMainRepository(
         networkManager: NetworkManager,
-        databaseRef: DatabaseReference,
+        firebaseDatabase: FirebaseDatabase,
         dataStore: DataStore<Preferences>,
         matchDao: MatchDao,
         dispatcher: CoroutineDispatcher
-    ) = MainRepository(networkManager, databaseRef, dataStore, matchDao, dispatcher)
+    ) = MainRepository(networkManager, firebaseDatabase, dataStore, matchDao, dispatcher)
 
     @ViewModelScoped
     @Provides
@@ -55,6 +56,6 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideStoreRepository(
-        networkManager: NetworkManager
-    ) = StoreRepository(networkManager)
+        firebaseDatabase: FirebaseDatabase
+    ) = StoreRepository(firebaseDatabase)
 }

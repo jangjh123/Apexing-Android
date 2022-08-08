@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class AccountRepository @Inject constructor(
     val networkManager: NetworkManager,
     private val dataStore: DataStore<Preferences>,
-    private val databaseRef: DatabaseReference
+    private val firebaseDatabase: FirebaseDatabase
 ) {
 
     inline fun sendAccountRequest(
@@ -76,6 +77,6 @@ class AccountRepository @Inject constructor(
 
         val user: HashMap<String, String> = HashMap()
         user[id] = platform
-        databaseRef.child(platform).updateChildren(user as Map<String, String>)
+        firebaseDatabase.getReference("USER").child(platform).updateChildren(user as Map<String, String>)
     }
 }
