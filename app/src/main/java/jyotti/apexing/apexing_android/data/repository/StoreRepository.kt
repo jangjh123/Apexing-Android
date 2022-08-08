@@ -1,42 +1,57 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import com.google.firebase.database.DatabaseReference
+import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
-import jyotti.apexing.apexing_android.BuildConfig.KEY_API
+import com.google.firebase.database.ktx.getValue
+import jyotti.apexing.apexing_android.data.model.store.Payment
 import jyotti.apexing.apexing_android.data.model.store.StoreItem
-import jyotti.apexing.apexing_android.data.remote.NetworkManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 class StoreRepository @Inject constructor(val firebaseDatabase: FirebaseDatabase) {
+
+    val curTime = System.currentTimeMillis() / 1000L
+
     inline fun fetchStoreData(
         crossinline onSuccess: (List<StoreItem>) -> Unit,
-        crossinline onError: () -> Unit,
-        crossinline onFailure: () -> Unit
     ) {
-//        networkManager.getClient().fetchStoreData(KEY_API).enqueue(object :
-//            Callback<List<StoreItem>> {
-//            override fun onResponse(
-//                call: Call<List<StoreItem>>,
-//                response: Response<List<StoreItem>>
-//            ) {
-//                when (response.code()) {
-//                    200 -> {
-//                        onSuccess(response.body()!!)
-//                    }
-//                    else -> {
-//                        onError()
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<StoreItem>>, t: Throwable) {
-//                onFailure()
-//            }
-//
-//        })
-//        databaseRef.child("Store").
+        firebaseDatabase.getReference("Store").get().addOnSuccessListener {
+            val list = ArrayList<StoreItem>()
+            it.children.forEach { storeItem ->
+                if (storeItem.child("expireTimeStamp").value.toString().toLong() > curTime) {
+                    list.add(
+                        StoreItem(
+                            title = storeItem.child("title").value.toString(),
+                            expireTimeStamp = storeItem.child("expireTimeStamp").value.toString().toLong(),
+                            shopTime = storeItem.child("shopTime").value.toString(),
+                            pricing = ArrayList<Payment>().apply {
+                                add(
+                                    Payment(
+                                        ref = storeItem.child("pricing1")
+                                            .child("ref").value.toString(),
+                                        quantity = storeItem.child("pricing1").child("quantity")
+                                            .getValue<Int>()!!
+                                    )
+                                )
+                                if (storeItem.child("pricing2").child("quantity")
+                                        .getValue<Int>()!! == 0
+                                ) {
+                                    add(
+                                        Payment(
+                                            ref = storeItem.child("pricing2")
+                                                .child("ref").value.toString(),
+                                            quantity = storeItem.child("pricing2").child("quantity")
+                                                .getValue<Int>()!!
+                                        )
+                                    )
+                                }
+                            },
+                            asset = storeItem.child("asset").value.toString(),
+                        )
+                    )
+                }
+            }
+
+            onSuccess(list)
+        }
     }
 }

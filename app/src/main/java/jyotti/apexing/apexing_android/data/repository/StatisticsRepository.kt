@@ -329,8 +329,6 @@ class StatisticsRepository @Inject constructor(
             add(RadarEntry(getRadarChartValue(matchList)[3]))
         }
 
-        Log.d("로그", getRadarChartValue(matchList)[3].toString())
-
         return RadarDataSet(radarEntries, label)
     }
 
