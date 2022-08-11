@@ -19,6 +19,7 @@ enum class LegendNames {
     Revenant,
     Seer,
     Valkyrie,
+    Vantage,
     Wattson,
     Wraith,
 }

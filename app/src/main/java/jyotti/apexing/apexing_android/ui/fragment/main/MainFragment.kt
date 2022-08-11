@@ -3,7 +3,6 @@ package jyotti.apexing.apexing_android.ui.fragment.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
@@ -12,7 +11,6 @@ import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
@@ -48,6 +46,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         showMap()
         showCrafting()
         showNews()
+        showNotice()
     }
 
     override fun setObservers() {
@@ -67,6 +66,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         viewModel.getNewsLiveData().observe(viewLifecycleOwner) {
             setNewsView(it)
         }
+
+        viewModel.getNoticeLiveData().observe(viewLifecycleOwner) {
+            setNoticeView(it)
+        }
     }
 
     private fun showUser() {
@@ -83,6 +86,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun showNews() {
         viewModel.getNews()
+    }
+
+    private fun showNotice() {
+        viewModel.getNotice()
     }
 
     @SuppressLint("SetTextI18n")
@@ -164,6 +171,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         linearSnapHelper.run {
             attachToRecyclerView(binding.rvNews)
             binding.indicator.attachToRecyclerView(binding.rvNews, this)
+        }
+    }
+
+    private fun setNoticeView(notice: String) {
+        if (notice.length == 1) {
+            binding.cvNotice.visibility = View.GONE
+        } else {
+            binding.tvNotice.text = notice
         }
     }
 

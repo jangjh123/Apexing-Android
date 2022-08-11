@@ -40,15 +40,14 @@ class SplashRepository @Inject constructor(
                 Log.d("remote", newestVersion)
                 Log.d("local", BuildConfig.VERSION_NAME)
 
-//                if (newestVersion != BuildConfig.VERSION_NAME) {
-//                    isNewVersionExist(true) // onTrack
-//                    isNewVersionExist(false)
-//                } else {
-//                    isNewVersionExist(false)
-//                }
-//            }
-                isNewVersionExist(false) // test
+                if (newestVersion != BuildConfig.VERSION_NAME) {
+                    isNewVersionExist(true) // onTrack
+                } else {
+                    isNewVersionExist(false)
+                }
             }
+//                isNewVersionExist(false) // test
+//            }
 
             override fun onCancelled(error: DatabaseError) {
                 onFailure()
