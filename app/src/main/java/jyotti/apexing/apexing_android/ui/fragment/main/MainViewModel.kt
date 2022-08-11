@@ -23,12 +23,14 @@ class MainViewModel @Inject constructor(
     private val mapList = MutableLiveData<List<Map>>()
     private val craftingList = MutableLiveData<List<Crafting>>()
     private val newsList = MutableLiveData<List<News>>()
+    private val notice = MutableLiveData<String>()
     private val contentsCount = MutableLiveData(0)
 
     fun getUserLiveData() = user
     fun getMapLiveData() = mapList
     fun getCraftingLiveData() = craftingList
     fun getNewsLiveData() = newsList
+    fun getNoticeLiveData() = notice
     fun getUser() {
         scope.launch {
             repository.fetchUser(repository.getIdFlow().first()) {
@@ -70,8 +72,10 @@ class MainViewModel @Inject constructor(
             })
     }
 
-    fun addContentsCount() {
-        contentsCount.postValue(contentsCount.value!! + 1)
+    fun getNotice() {
+        repository.fetchNotice {
+            notice.postValue(it)
+        }
     }
 
     inline fun removeAccount(crossinline onFinished: () -> Unit) {
