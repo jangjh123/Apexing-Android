@@ -59,7 +59,12 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             SuggestDialogFragment(
                 getString(R.string.rating_suggestion),
                 onClickConfirm = {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))))
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(getString(R.string.app_url))
+                        )
+                    )
                     viewModel.setRatingState()
                 }
             ).also {
@@ -93,7 +98,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         if ((binding.rvMatch.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() > 10) {
             binding.rvMatch.scrollToPosition(10)
         }
-        binding.rvMatch.smoothScrollToPosition(0)
+        binding.rvMatch.smoothScrollToPosition(-1)
     }
 
     private fun showMatch() {

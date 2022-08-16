@@ -92,6 +92,7 @@
     <string name="legend_kill_avg">레전드 평균 킬</string>
     <string name="legend_damage_avg">레전드 평균 대미지</string>
     <string name="touch_portrait">초상화를 터치하여 레전드별 통계를 볼 수 있습니다.</string>
-    <!--    StoreFragment-->
 
+    <!--    StoreFragment-->
+    <string name="touch_to_detail">아이템 터치하여 사진 확대</string>
 </resources>
