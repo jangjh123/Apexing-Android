@@ -40,7 +40,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_margin="8dp"
-                    android:background="@drawable/circle_most_0"
+                    android:background="@drawable/basic_portrait"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 

@@ -2,22 +2,16 @@ package jyotti.apexing.apexing_android.ui.component
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.transition.TransitionManager
-import android.transition.TransitionManager.beginDelayedTransition
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnAttach
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
@@ -30,7 +24,6 @@ import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
-import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.Utils.formatAmount
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
@@ -52,6 +45,7 @@ class MatchAdapter(
     private val _myIndex = MutableLiveData<Int>()
     val myIndex: LiveData<Int>
         get() = _myIndex
+    private val mostArr = Array(5) { "" }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
@@ -151,6 +145,27 @@ class MatchAdapter(
                             "drawable",
                             "jyotti.apexing.apexing_android"
                         )
+                    }
+                }
+
+                boxLegend.background = when (imageName) {
+                    mostArr[0] -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.most_0)
+                    }
+                    mostArr[1] -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.most_1)
+                    }
+                    mostArr[2] -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.most_2)
+                    }
+                    mostArr[3] -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.most_3)
+                    }
+                    mostArr[4] -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.most_4)
+                    }
+                    else -> {
+                        AppCompatResources.getDrawable(root.context, R.drawable.basic_portrait)
                     }
                 }
 
@@ -296,6 +311,8 @@ class MatchAdapter(
                     val circleImageName4 =
                         pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
 
+
+
                     Glide.with(root.context)
                         .load(
                             root.resources.getIdentifier(
@@ -345,7 +362,14 @@ class MatchAdapter(
                             )
                         )
                         .into(civMost4)
+
+                    mostArr[0] = circleImageName0
+                    mostArr[1] = circleImageName1
+                    mostArr[2] = circleImageName2
+                    mostArr[3] = circleImageName3
+                    mostArr[4] = circleImageName4
                 }
+
 
 //                Basic Statistics
                 tvKillAvgAll.text = String.format("%.2f", item.killRvgAll)

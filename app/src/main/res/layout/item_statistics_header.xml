@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -197,7 +196,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/circle_most_0"
+                        android:background="@drawable/most_0"
+                        android:backgroundTint="@color/most0"
                         app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
@@ -219,7 +219,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/circle_most_1"
+                        android:background="@drawable/most_1"
+                        android:backgroundTint="@color/most1"
                         app:layout_constraintEnd_toStartOf="@+id/relativeLayout3"
                         app:layout_constraintStart_toEndOf="@+id/relativeLayout2"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
@@ -240,7 +241,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/circle_most_2"
+                        android:background="@drawable/most_2"
+                        android:backgroundTint="@color/most2"
                         app:layout_constraintEnd_toStartOf="@+id/relativeLayout4"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/relativeLayout"
@@ -262,7 +264,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/circle_most_3"
+                        android:background="@drawable/most_3"
+                        android:backgroundTint="@color/most3"
                         app:layout_constraintEnd_toStartOf="@+id/relativeLayout5"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/relativeLayout3"
@@ -284,7 +287,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/circle_most_4"
+                        android:background="@drawable/most_4"
+                        android:backgroundTint="@color/most4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/relativeLayout4"

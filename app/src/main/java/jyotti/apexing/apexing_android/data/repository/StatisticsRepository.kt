@@ -128,7 +128,7 @@ class StatisticsRepository @Inject constructor(
         }
     }
 
-    inline fun addMatchWithFiltering(match: DataSnapshot, list: ArrayList<MatchModels.Match>) {
+    fun addMatchWithFiltering(match: DataSnapshot, list: ArrayList<MatchModels.Match>) {
         val mode = match.child("mode").value.toString()
         val secs = match.child("secs").getValue<Int>()!!
         val kill = match.child("kill").getValue<Int>()!!
