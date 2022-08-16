@@ -133,7 +133,7 @@ class StatisticsRepository @Inject constructor(
         val secs = match.child("secs").getValue<Int>()!!
         val kill = match.child("kill").getValue<Int>()!!
         val damage = match.child("damage").getValue<Int>()!!
-        if (mode != "UNKNOWN") {
+        if (mode != "UNKNOWN" && mode != "ARENA") {
             if (secs != -1) {
                 if (damage >= 0) {
                     if (kill >= 0) {
