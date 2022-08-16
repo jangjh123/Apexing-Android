@@ -94,5 +94,5 @@
     <string name="touch_portrait">초상화를 터치하여 레전드별 통계를 볼 수 있습니다.</string>
 
     <!--    StoreFragment-->
-    <string name="touch_to_detail">아이템 터치하여 사진 확대</string>
+    <string name="touch_to_detail">아이템 터치하여 이미지 확대</string>
 </resources>
