@@ -401,8 +401,8 @@
                     style="@style/TextViewDefault"
                     android:layout_margin="4dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:textColor="@color/main"
                     android:textSize="14dp" />
 

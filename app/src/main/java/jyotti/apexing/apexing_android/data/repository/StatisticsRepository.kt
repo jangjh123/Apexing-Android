@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -61,10 +60,11 @@ class StatisticsRepository @Inject constructor(
         crossinline onFailure: () -> Unit
     ) {
         databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    databaseInstance.getReference("MATCH").child(id)
+                        .addListenerForSingleValueEvent(object :
                             ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 val matchList = ArrayList<MatchModels.Match>()
@@ -98,7 +98,9 @@ class StatisticsRepository @Inject constructor(
                                             }
                                         }
                                     } else {
-                                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child("0")
+                                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child(
+                                                "0"
+                                            )
                                                 .child("date").value as Long
                                         ) {
                                             getRefreshIndex { pair ->
@@ -116,17 +118,23 @@ class StatisticsRepository @Inject constructor(
                                         } else {
                                             clearDatabase()
                                             snapshot.children.forEach { match ->
-                                                matchList.add(
-                                                    MatchModels.Match(
-                                                        0,
-                                                        match.child("legend").value.toString(),
-                                                        match.child("mode").value.toString(),
-                                                        match.child("secs").getValue<Int>()!!,
-                                                        match.child("date").value as Long,
-                                                        match.child("kill").getValue<Int>()!!,
-                                                        match.child("damage").getValue<Int>()!!,
+                                                val mode = match.child("mode").value.toString()
+                                                val secs = match.child("secs").getValue<Int>()!!
+                                                val kill = match.child("kill").getValue<Int>()!!
+                                                val damage = match.child("damage").getValue<Int>()!!
+                                                if (mode != "UNKNOWN" && damage >= 0 && kill >= 0 && secs != -1) {
+                                                    matchList.add(
+                                                        MatchModels.Match(
+                                                            0,
+                                                            match.child("legend").value.toString(),
+                                                            mode,
+                                                            secs,
+                                                            match.child("date").value as Long,
+                                                            kill,
+                                                            damage,
+                                                        )
                                                     )
-                                                )
+                                                }
                                             }
                                             getRefreshIndex { pair ->
                                                 getMyIndex { index ->
@@ -153,17 +161,17 @@ class StatisticsRepository @Inject constructor(
                             }
 
                         })
-                    } else {
-                        getRefreshIndex {
-                            onNoElement(it)
-                        }
+                } else {
+                    getRefreshIndex {
+                        onNoElement(it)
                     }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
+            override fun onCancelled(error: DatabaseError) {
 
-                }
-            })
+            }
+        })
 
 
     }
