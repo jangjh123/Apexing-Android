@@ -87,6 +87,7 @@
     <string name="my_index">나의 순번</string>
     <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.</string>
     <string name="no_match">기록된 매치가 없습니다.\n게임을 플레이 해주세요.\n현재 순번이 유저님의 순번을 지나면\n매치가 표시됩니다.</string>
+    <string name="please_set_tracker">킬과 대미지가 모두 0인 매치입니다.\n트래커를 등록해주세요.</string>
     <!--    StoreFragment-->
 
 </resources>

@@ -127,6 +127,14 @@ class MatchAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MatchModels.Match) {
             with(binding) {
+                if (item.damage == 0 && item.kill == 0) {
+                    layMatch.alpha = 0.2f
+                    tvNoDamageNoKill.visibility = View.VISIBLE
+                } else {
+                    layMatch.alpha = 1f
+                    tvNoDamageNoKill.visibility = View.GONE
+                }
+
                 val context = root.context
                 val imageName = item.legendPlayed.lowercase(Locale.getDefault())
                 val imageId: Int = when (item.legendPlayed) {

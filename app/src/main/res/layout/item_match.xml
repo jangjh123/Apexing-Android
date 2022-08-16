@@ -19,113 +19,132 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/box_legend"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_margin="8dp"
-                android:background="@drawable/circle_most_0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_legend"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="2dp" />
-            </RelativeLayout>
-
             <TextView
-                android:id="@+id/tv_kill"
+                android:id="@+id/tv_no_damage_no_kill"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/main"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_damage"
-                app:layout_constraintStart_toEndOf="@+id/box_legend"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/kill"
-                android:textColor="@color/white"
+                android:textColor="#cccccc"
                 android:textSize="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_kill"
-                app:layout_constraintStart_toEndOf="@+id/tv_kill"
-                app:layout_constraintTop_toTopOf="@+id/tv_kill" />
+                android:text="@string/please_set_tracker"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/lay_match"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/box_legend"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/circle_most_0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_legend"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="2dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_kill"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/main"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_damage"
+                    app:layout_constraintStart_toEndOf="@+id/box_legend"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/kill"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_kill"
+                    app:layout_constraintStart_toEndOf="@+id/tv_kill"
+                    app:layout_constraintTop_toTopOf="@+id/tv_kill" />
 
 
-            <TextView
-                android:id="@+id/tv_damage"
-                style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/main"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/box_legend"
-                app:layout_constraintTop_toBottomOf="@+id/tv_kill" />
+                <TextView
+                    android:id="@+id/tv_damage"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/main"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/box_legend"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_kill" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/damage"
-                android:textColor="@color/white"
-                android:textSize="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_damage"
-                app:layout_constraintStart_toEndOf="@+id/tv_damage"
-                app:layout_constraintTop_toTopOf="@+id/tv_damage" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/damage"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_damage"
+                    app:layout_constraintStart_toEndOf="@+id/tv_damage"
+                    app:layout_constraintTop_toTopOf="@+id/tv_damage" />
 
 
-            <TextView
-                android:id="@+id/tv_mode"
-                style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="배틀로얄"
-                android:textColor="@color/light_gray"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tv_mode"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="배틀로얄"
+                    android:textColor="@color/light_gray"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="06월 06일 17시 21분"
-                android:textColor="@color/light_gray"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_mode" />
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="06월 06일 17시 21분"
+                    android:textColor="@color/light_gray"
+                    android:textSize="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_mode" />
 
-            <TextView
-                android:id="@+id/tv_survival_duration"
-                style="@style/TextViewDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="1분 30초 생존"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white"
-                android:textSize="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <TextView
+                    android:id="@+id/tv_survival_duration"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="1분 30초 생존"
+                    android:textColor="@color/white"
+                    android:textColorHighlight="@color/white"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     </androidx.cardview.widget.CardView>
