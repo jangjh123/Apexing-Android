@@ -56,124 +56,102 @@ class StatisticsRepository @Inject constructor(
         id: String,
         crossinline onSuccess: (Pair<List<MatchModels.Match>, RefreshIndex>) -> Unit,
         crossinline onComplete: (RefreshIndex) -> Unit,
-        crossinline onNoElement: (Pair<Int, Int>) -> Unit,
-        crossinline onFailure: () -> Unit
+        crossinline onNoElement: (Pair<Int, Int>) -> Unit
     ) {
-        databaseInstance.getReference("MATCH").child(id).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    databaseInstance.getReference("MATCH").child(id)
-                        .addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val matchList = ArrayList<MatchModels.Match>()
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    if (matchDao.getAll().isEmpty()) {
-                                        snapshot.children.forEach { match ->
-                                            matchList.add(
-                                                MatchModels.Match(
-                                                    0,
-                                                    match.child("legend").value.toString(),
-                                                    match.child("mode").value.toString(),
-                                                    match.child("secs").getValue<Int>()!!,
-                                                    match.child("date").value as Long,
-                                                    match.child("kill").getValue<Int>()!!,
-                                                    match.child("damage").getValue<Int>()!!,
-                                                )
-                                            )
-                                        }
-                                        getRefreshIndex { pair ->
-                                            getMyIndex { index ->
-                                                onSuccess(
-                                                    Pair(
-                                                        matchList,
-                                                        RefreshIndex(
-                                                            pair.first,
-                                                            pair.second,
-                                                            index
-                                                        )
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    } else {
-                                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child(
-                                                "0"
-                                            )
-                                                .child("date").value as Long
-                                        ) {
-                                            getRefreshIndex { pair ->
-                                                getMyIndex { index ->
-                                                    onComplete(
-                                                        RefreshIndex(
-                                                            pair.first,
-                                                            pair.second,
-                                                            index
-                                                        )
-                                                    )
-                                                }
-                                            }
-
-                                        } else {
-                                            clearDatabase()
-                                            snapshot.children.forEach { match ->
-                                                val mode = match.child("mode").value.toString()
-                                                val secs = match.child("secs").getValue<Int>()!!
-                                                val kill = match.child("kill").getValue<Int>()!!
-                                                val damage = match.child("damage").getValue<Int>()!!
-                                                if (mode != "UNKNOWN" && damage >= 0 && kill >= 0 && secs != -1) {
-                                                    matchList.add(
-                                                        MatchModels.Match(
-                                                            0,
-                                                            match.child("legend").value.toString(),
-                                                            mode,
-                                                            secs,
-                                                            match.child("date").value as Long,
-                                                            kill,
-                                                            damage,
-                                                        )
-                                                    )
-                                                }
-                                            }
-                                            getRefreshIndex { pair ->
-                                                getMyIndex { index ->
-                                                    onSuccess(
-                                                        Pair(
-                                                            matchList,
-                                                            RefreshIndex(
-                                                                pair.first,
-                                                                pair.second,
-                                                                index
-                                                            )
-                                                        )
-                                                    )
-                                                }
-
-                                            }
-                                        }
-                                    }
+        databaseInstance.getReference("MATCH").child(id).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val matchList = ArrayList<MatchModels.Match>()
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (matchDao.getAll().isEmpty()) {
+                        snapshot.children.forEach { match ->
+                            addMatchWithFiltering(match, matchList)
+                        }
+                        getRefreshIndex { pair ->
+                            getMyIndex { index ->
+                                onSuccess(
+                                    Pair(
+                                        matchList,
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child(
+                                "0"
+                            )
+                                .child("date").value as Long
+                        ) {
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onComplete(
+                                        RefreshIndex(
+                                            pair.first,
+                                            pair.second,
+                                            index
+                                        )
+                                    )
                                 }
                             }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                onFailure()
+                        } else {
+                            clearDatabase()
+                            snapshot.children.forEach { match ->
+                                addMatchWithFiltering(match, matchList)
                             }
+                            getRefreshIndex { pair ->
+                                getMyIndex { index ->
+                                    onSuccess(
+                                        Pair(
+                                            matchList,
+                                            RefreshIndex(
+                                                pair.first,
+                                                pair.second,
+                                                index
+                                            )
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                getRefreshIndex {
+                    onNoElement(it)
+                }
+            }
+        }
+    }
 
-                        })
-                } else {
-                    getRefreshIndex {
-                        onNoElement(it)
+    inline fun addMatchWithFiltering(match: DataSnapshot, list: ArrayList<MatchModels.Match>) {
+        val mode = match.child("mode").value.toString()
+        val secs = match.child("secs").getValue<Int>()!!
+        val kill = match.child("kill").getValue<Int>()!!
+        val damage = match.child("damage").getValue<Int>()!!
+        if (mode != "UNKNOWN") {
+            if (secs != -1) {
+                if (damage >= 0) {
+                    if (kill >= 0) {
+                        list.add(
+                            MatchModels.Match(
+                                0,
+                                match.child("legend").value.toString(),
+                                mode,
+                                secs,
+                                match.child("date").value as Long,
+                                kill,
+                                damage,
+                            )
+                        )
                     }
                 }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
-
-
+        }
     }
 
     inline fun getRefreshIndex(crossinline onComplete: (Pair<Int, Int>) -> Unit) {

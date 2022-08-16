@@ -54,9 +54,6 @@ class StatisticsViewModel @Inject constructor(
                 },
                 onNoElement = {
                     _noElementLiveData.postValue(it)
-                },
-                onFailure = {
-
                 })
         }
     }
