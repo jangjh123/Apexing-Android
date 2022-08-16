@@ -98,7 +98,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
         if ((binding.rvMatch.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() > 10) {
             binding.rvMatch.scrollToPosition(10)
         }
-        binding.rvMatch.smoothScrollToPosition(-1)
+        binding.rvMatch.smoothScrollToPosition(0)
     }
 
     private fun showMatch() {
