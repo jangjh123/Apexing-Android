@@ -15,7 +15,9 @@ import jyotti.apexing.apexing_android.util.Utils.formatAmount
 import jyotti.apexing.apexing_android.util.Utils.getThumbnail
 import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
 
-class StoreAdapter :
+class StoreAdapter(
+    private inline val onClickItem: (Pair<String, String>) -> Unit
+) :
     ListAdapter<StoreItem, RecyclerView.ViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,10 +61,20 @@ class StoreAdapter :
                     1 -> {
                         when (storeItem.pricing[0].ref) {
                             "Legend Tokens" -> {
-                                ivPayment1.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.legend_token))
+                                ivPayment1.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        root.context,
+                                        R.drawable.legend_token
+                                    )
+                                )
                             }
                             "Apex Coins" -> {
-                                ivPayment1.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.apex_coin))
+                                ivPayment1.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        root.context,
+                                        R.drawable.apex_coin
+                                    )
+                                )
                             }
                         }
                         tvPayment1Amount.text = formatAmount(storeItem.pricing[0].quantity)
@@ -71,14 +83,29 @@ class StoreAdapter :
                     }
                     2 -> {
                         ivPayment2.visibility = View.VISIBLE
-                        ivPayment1.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.legend_token))
+                        ivPayment1.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                root.context,
+                                R.drawable.legend_token
+                            )
+                        )
                         tvPayment1Amount.text = formatAmount(storeItem.pricing[0].quantity)
-                        ivPayment2.setImageDrawable(ContextCompat.getDrawable(root.context, R.drawable.apex_coin))
+                        ivPayment2.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                root.context,
+                                R.drawable.apex_coin
+                            )
+                        )
                         tvPayment2Amount.text = formatAmount(storeItem.pricing[1].quantity)
                     }
                 }
 
-                tvItemExpirationDate.text = "${getTimestampToDate(storeItem.expireTimeStamp.toString())} 까지"
+                tvItemExpirationDate.text =
+                    "${getTimestampToDate(storeItem.expireTimeStamp.toString())} 까지"
+
+                ivItem.setOnClickListener {
+                    onClickItem(Pair(storeItem.title, storeItem.asset))
+                }
             }
         }
     }
