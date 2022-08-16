@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewHolder"
+            type="jyotti.apexing.apexing_android.ui.component.MatchAdapter.HeaderViewHolder" />
     </data>
 
     <ScrollView
@@ -179,6 +182,109 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_legend_detail"
+                        android:layout_width="240dp"
+                        android:layout_height="120dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/divider"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/btn_detail_close"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:padding="4dp"
+                                android:src="@drawable/icon_close"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/view_detail_circle"
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/most_0"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/civ_legend_detail"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="2dp"
+                                app:layout_constraintBottom_toBottomOf="@+id/view_detail_circle"
+                                app:layout_constraintEnd_toEndOf="@+id/view_detail_circle"
+                                app:layout_constraintStart_toStartOf="@+id/view_detail_circle"
+                                app:layout_constraintTop_toTopOf="@+id/view_detail_circle" />
+
+                            <TextView
+                                android:id="@+id/textView13"
+                                style="@style/TextViewDefault"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center"
+                                android:text="@string/legend_kill_avg"
+                                android:textColor="@color/white"
+                                android:textSize="14dp"
+                                app:layout_constraintEnd_toStartOf="@+id/textView12"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/view_detail_circle"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <TextView
+                                android:id="@+id/tv_legend_kill_avg"
+                                style="@style/TextViewDefault"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/main"
+                                android:textSize="16dp"
+                                app:layout_constraintEnd_toEndOf="@+id/textView13"
+                                app:layout_constraintStart_toStartOf="@+id/textView13"
+                                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                style="@style/TextViewDefault"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/legend_damage_avg"
+                                android:textColor="@color/white"
+                                android:textSize="14dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/textView13"
+                                app:layout_constraintTop_toTopOf="@+id/textView13"
+                                app:layout_constraintWidth_percent="0.5" />
+
+                            <TextView
+                                android:id="@+id/tv_legend_damage_avg"
+                                style="@style/TextViewDefault"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/main"
+                                android:textSize="16dp"
+                                app:layout_constraintEnd_toEndOf="@+id/textView12"
+                                app:layout_constraintStart_toStartOf="@+id/textView12"
+                                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
                     <TextView
                         android:id="@+id/textView6"
                         style="@style/TextViewDefault"
@@ -192,13 +298,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayout2"
+                        android:id="@+id/lay_most_0"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/most_0"
                         android:backgroundTint="@color/most0"
-                        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
+                        android:onClick="@{() -> viewHolder.showLegendDetail(0)}"
+                        app:layout_constraintEnd_toStartOf="@+id/lay_most_1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
@@ -213,16 +320,16 @@
                             android:layout_marginBottom="2dp" />
                     </RelativeLayout>
 
-
                     <RelativeLayout
-                        android:id="@+id/relativeLayout"
+                        android:id="@+id/lay_most_1"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/most_1"
                         android:backgroundTint="@color/most1"
-                        app:layout_constraintEnd_toStartOf="@+id/relativeLayout3"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayout2"
+                        android:onClick="@{() -> viewHolder.showLegendDetail(1)}"
+                        app:layout_constraintEnd_toStartOf="@+id/lay_most_2"
+                        app:layout_constraintStart_toEndOf="@+id/lay_most_0"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -237,15 +344,16 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayout3"
+                        android:id="@+id/lay_most_2"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/most_2"
                         android:backgroundTint="@color/most2"
-                        app:layout_constraintEnd_toStartOf="@+id/relativeLayout4"
+                        android:onClick="@{() -> viewHolder.showLegendDetail(2)}"
+                        app:layout_constraintEnd_toStartOf="@+id/lay_most_3"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
+                        app:layout_constraintStart_toEndOf="@+id/lay_most_1"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -260,15 +368,16 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayout4"
+                        android:id="@+id/lay_most_3"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/most_3"
                         android:backgroundTint="@color/most3"
-                        app:layout_constraintEnd_toStartOf="@+id/relativeLayout5"
+                        android:onClick="@{() -> viewHolder.showLegendDetail(3)}"
+                        app:layout_constraintEnd_toStartOf="@+id/lay_most_4"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayout3"
+                        app:layout_constraintStart_toEndOf="@+id/lay_most_2"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -283,15 +392,16 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayout5"
+                        android:id="@+id/lay_most_4"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/most_4"
                         android:backgroundTint="@color/most4"
+                        android:onClick="@{() -> viewHolder.showLegendDetail(4)}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayout4"
+                        app:layout_constraintStart_toEndOf="@+id/lay_most_3"
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -305,25 +415,38 @@
                             android:layout_marginBottom="2dp" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/touch_portrait"
+                        style="@style/TextViewDefault"
+                        android:textColor="@color/main"
+                        android:textSize="12dp"
+                        app:layout_constraintEnd_toEndOf="@+id/lay_most_4"
+                        app:layout_constraintStart_toStartOf="@+id/lay_most_0"
+                        app:layout_constraintTop_toBottomOf="@+id/lay_most_2" />
+
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/chart_pie"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="8dp"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+                        app:layout_constraintTop_toBottomOf="@+id/textView10"
                         app:layout_constraintWidth_percent="0.5" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="8dp"
                         android:orientation="vertical"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/relativeLayout4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView10"
                         app:layout_constraintWidth_percent="0.5">
 
                         <RelativeLayout

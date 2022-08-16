@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnAttach
@@ -46,6 +47,7 @@ class MatchAdapter(
     val myIndex: LiveData<Int>
         get() = _myIndex
     private val mostArr = Array(5) { "" }
+    private lateinit var matchList: List<MatchModels.Match>
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
@@ -206,6 +208,9 @@ class MatchAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MatchModels.Header) {
             with(binding) {
+                viewHolder = this@HeaderViewHolder
+                matchList = item.matchList
+
                 itemView.doOnAttach {
                     val mLifecycleOwner = itemView.findViewTreeLifecycleOwner()
                     if (mLifecycleOwner != null) {
@@ -253,7 +258,6 @@ class MatchAdapter(
                         add(3, ContextCompat.getColor(context, R.color.most3))
                         add(4, ContextCompat.getColor(context, R.color.most4))
                     }
-
 
                     setCenterTextSize(15f)
                     setCenterTextColor(Color.BLACK)
@@ -310,8 +314,6 @@ class MatchAdapter(
                         pieData.dataSets[0].getEntryForIndex(3).label.lowercase(Locale.getDefault())
                     val circleImageName4 =
                         pieData.dataSets[0].getEntryForIndex(4).label.lowercase(Locale.getDefault())
-
-
 
                     Glide.with(root.context)
                         .load(
@@ -439,12 +441,86 @@ class MatchAdapter(
                 btnHowToRecord.setOnClickListener {
                     onClickRecordingDesc()
                 }
+
+                val fadeOut = AlphaAnimation(1f, 0f).apply {
+                    duration = 200
+                }
+
+                btnDetailClose.setOnClickListener {
+
+                    cvLegendDetail.run {
+                        visibility = View.GONE
+                        startAnimation(fadeOut)
+                    }
+                }
+
+                cvLegendDetail.setOnClickListener {
+                    cvLegendDetail.run {
+                        visibility = View.GONE
+                        startAnimation(fadeOut)
+                    }
+                }
+            }
+        }
+
+        fun showLegendDetail(mostLv: Int) {
+            with(binding) {
+                val fadeIn = AlphaAnimation(0f, 1f).apply {
+                    duration = 200
+                }
+
+                cvLegendDetail.run {
+                    visibility = View.VISIBLE
+                    startAnimation(fadeIn)
+                }
+
+                var playedCnt = 0
+                var killAvg = 0.0
+                var damageAvg = 0.0
+
+                matchList.forEach {
+                    if (it.legendPlayed.lowercase() == mostArr[mostLv]) {
+                        playedCnt++
+                        killAvg += it.kill
+                        damageAvg += it.damage
+                    }
+                }
+
+                viewDetailCircle.background =
+                    when (mostLv) {
+                        0 -> {
+                            AppCompatResources.getDrawable(root.context, R.drawable.most_0)
+                        }
+                        1 -> {
+                            AppCompatResources.getDrawable(root.context, R.drawable.most_1)
+                        }
+                        2 -> {
+                            AppCompatResources.getDrawable(root.context, R.drawable.most_2)
+                        }
+                        3 -> {
+                            AppCompatResources.getDrawable(root.context, R.drawable.most_3)
+                        }
+                        else -> {
+                            AppCompatResources.getDrawable(root.context, R.drawable.most_4)
+                        }
+                    }
+
+                val imageId = root.resources.getIdentifier(
+                    mostArr[mostLv],
+                    "drawable",
+                    "jyotti.apexing.apexing_android"
+                )
+
+                Glide.with(root)
+                    .load(imageId)
+                    .into(civLegendDetail)
+
+                tvLegendKillAvg.text =
+                    String.format("%.2f", (killAvg / playedCnt).toFloat())
+                tvLegendDamageAvg.text = formatAmount((damageAvg / playedCnt).toInt())
             }
         }
     }
-
-    private fun getPercentage(ySum: Int, yValue: Float) =
-        String.format("%.1f", (yValue / ySum) * 100) + "%"
 
     inner class FooterViewHolder(private val binding: ItemStatisticsFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -452,6 +528,9 @@ class MatchAdapter(
             binding.tvFooter.text = item.text
         }
     }
+
+    private fun getPercentage(ySum: Int, yValue: Float) =
+        String.format("%.1f", (yValue / ySum) * 100) + "%"
 }
 
 

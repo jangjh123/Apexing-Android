@@ -224,6 +224,7 @@ class StatisticsRepository @Inject constructor(
         recentMatchList: List<MatchModels.Match>
     ) =
         MatchModels.Header(
+            matchList = matchList,
             matchCount = matchList.size,
             pieData = getPieChart(matchList),
             killRvgAll = getKillRvgAll(matchList),
