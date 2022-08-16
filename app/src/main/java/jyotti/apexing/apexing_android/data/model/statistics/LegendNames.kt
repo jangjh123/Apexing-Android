@@ -13,6 +13,7 @@ enum class LegendNames {
     Loba,
     MadMaggie,
     Mirage,
+    Newcastle,
     Octane,
     Pathfinder,
     Rampart,
