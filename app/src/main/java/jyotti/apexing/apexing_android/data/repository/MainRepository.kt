@@ -45,13 +45,13 @@ class MainRepository @Inject constructor(
             onSuccess(
                 User(
                     arRankImg = it.child("arRankImg").value.toString(),
-                    arRankScore = it.child("arRankScore").getValue<Int>()!!,
+                    arRankScore = it.child("arRankScore").getValue<Int>() ?: 0,
                     bannerImg = it.child("bannerImg").value.toString(),
                     brRankImg = it.child("brRankImg").value.toString(),
-                    brRankScore = it.child("brRankScore").getValue<Int>()!!,
-                    level = it.child("level").getValue<Int>()!!,
+                    brRankScore = it.child("brRankScore").getValue<Int>() ?: 0,
+                    level = it.child("level").getValue<Int>() ?: 0,
                     name = it.child("name").value.toString(),
-                    toNextLevelPercent = it.child("toNextLevelPercent").getValue<Int>()!!
+                    toNextLevelPercent = it.child("toNextLevelPercent").getValue<Int>() ?: 0
                 )
             )
         }
