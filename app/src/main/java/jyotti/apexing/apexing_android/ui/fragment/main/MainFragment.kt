@@ -178,7 +178,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         if (notice.length == 1) {
             binding.cvNotice.visibility = View.GONE
         } else {
-            binding.tvNotice.text = notice
+            binding.tvNotice.text = notice.replace("_n", "\n")
         }
     }
 
