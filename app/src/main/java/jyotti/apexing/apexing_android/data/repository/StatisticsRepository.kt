@@ -134,9 +134,9 @@ class StatisticsRepository @Inject constructor(
         val kill = match.child("kill").getValue<Int>()!!
         val damage = match.child("damage").getValue<Int>()!!
         if (mode != "UNKNOWN" && mode != "ARENA") {
-            if (secs != -1) {
-                if (damage >= 0) {
-                    if (kill >= 0) {
+            if (secs in 0..1800) {
+                if (damage in 0..9999) {
+                    if (kill in 0..59) {
                         list.add(
                             MatchModels.Match(
                                 0,
