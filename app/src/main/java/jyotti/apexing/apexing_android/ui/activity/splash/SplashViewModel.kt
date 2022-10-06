@@ -1,14 +1,15 @@
 package jyotti.apexing.apexing_android.ui.activity.splash
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepository
-import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,27 +18,74 @@ class SplashViewModel @Inject constructor(
     dispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val scope = CoroutineScope(dispatcher)
-    private val platform = MutableLiveData<String>()
-    private val version = MutableLiveData<Boolean>()
-    private val networkMessage = SingleLiveEvent<Unit>()
+    private val _nextScreenInfo = MutableLiveData<String>()
+    val nextScreenInfo: LiveData<String>
+        get() = _nextScreenInfo
 
-    fun getPlatformLiveData() = platform
-    fun getVersionLiveData() = version
-    fun getNetworkMessage() = networkMessage
+    init {
+        setNextScreenInfo()
+    }
 
-    fun getStoredPlatform() {
+    private fun setNextScreenInfo() {
+        checkNewVersionExist()
+    }
+
+    private fun checkNewVersionExist() {
         scope.launch {
-            platform.postValue(repository.readStoredPlatform().first())
+            repository.fetchVersion(
+                onComplete = {
+                    when (it) {
+                        true -> {
+                            _nextScreenInfo.postValue("newVersion")
+                        }
+                        false -> {
+                            checkAccountExist()
+                        }
+                    }
+                },
+                onFailure = {
+                    _nextScreenInfo.postValue("error")
+                }
+            )
         }
     }
 
-    fun getNewVersionCode() {
-        repository.fetchVersion(
-            isNewVersionExist = {
-                version.postValue(it)
-            },
-            onFailure = {
-                networkMessage.call()
-            })
+    private fun checkAccountExist() {
+        scope.launch {
+            val storedId = withContext(scope.coroutineContext) {
+                repository.getStoredIdFlow().first()
+            }
+
+            if (storedId.isEmpty()) {
+                _nextScreenInfo.postValue("account")
+            } else {
+                checkDormancy()
+            }
+        }
+    }
+
+
+    private fun checkDormancy() {
+        scope.launch {
+            val storedId = withContext(scope.coroutineContext) {
+                repository.getStoredIdFlow().first()
+            }
+
+            repository.fetchDormancy(
+                storedId,
+                onSuccess = {
+                    when (it) {
+                        true -> {
+                            _nextScreenInfo.postValue("account")
+                        }
+                        false -> {
+                            _nextScreenInfo.postValue("home")
+                        }
+                    }
+                },
+                onFailure = {
+                    _nextScreenInfo.postValue("error")
+                })
+        }
     }
 }

@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.BuildConfig
+import jyotti.apexing.data_store.KEY_ID
 import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -17,14 +19,14 @@ class SplashRepository @Inject constructor(
     dispatcher: CoroutineDispatcher,
     val firebaseDatabase: FirebaseDatabase
 ) {
-    private val platformFlow: Flow<String> = dataStore.data.map {
-        it[KEY_PLATFORM] ?: ""
+    private val idFlow: Flow<String> = dataStore.data.map {
+        it[KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
-    fun readStoredPlatform(): Flow<String> = platformFlow
+    fun getStoredIdFlow(): Flow<String> = idFlow
 
     inline fun fetchVersion(
-        crossinline isNewVersionExist: (Boolean) -> Unit,
+        crossinline onComplete: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
         firebaseDatabase.getReference("VERSION").child("current").get().addOnSuccessListener {
@@ -33,9 +35,9 @@ class SplashRepository @Inject constructor(
             Log.d("local", BuildConfig.VERSION_NAME)
 
             if (newestVersion != BuildConfig.VERSION_NAME) {
-                isNewVersionExist(true) // onTrack
+                onComplete(true) // onTrack
             } else {
-                isNewVersionExist(false)
+                onComplete(false)
             }
         }.addOnCanceledListener {
             onFailure()
@@ -44,10 +46,17 @@ class SplashRepository @Inject constructor(
         }
     }
 
-    inline fun fetchLastConnectionTime(
-        crossinline onSuccess: (Long) -> Unit,
+    inline fun fetchDormancy(   // 휴면 체크
+        id: String,
+        crossinline onSuccess: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-
+        firebaseDatabase.getReference("USER").child(id).get().addOnSuccessListener {
+            onSuccess(it.child("isDormancy").getValue<Boolean>() ?: false)
+        }.addOnCanceledListener {
+            onFailure()
+        }.addOnFailureListener {
+            onFailure()
+        }
     }
 }
