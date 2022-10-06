@@ -7,7 +7,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.BuildConfig
 import jyotti.apexing.data_store.KEY_ID
-import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -51,12 +50,17 @@ class SplashRepository @Inject constructor(
         crossinline onSuccess: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        firebaseDatabase.getReference("USER").child(id).get().addOnSuccessListener {
+        firebaseDatabase.getReference("USER_INFO").child(id).get().addOnSuccessListener {
             onSuccess(it.child("isDormancy").getValue<Boolean>() ?: false)
         }.addOnCanceledListener {
             onFailure()
         }.addOnFailureListener {
             onFailure()
         }
+    }
+
+    fun updateLastConnectionTime(id: String) {
+        firebaseDatabase.getReference("USER_INFO").child(id).child("lastConnection")
+            .setValue("${System.currentTimeMillis() / 1000L}")
     }
 }

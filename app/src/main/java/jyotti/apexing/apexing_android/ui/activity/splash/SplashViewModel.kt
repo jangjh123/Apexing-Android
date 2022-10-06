@@ -79,6 +79,7 @@ class SplashViewModel @Inject constructor(
                             _nextScreenInfo.postValue("account")
                         }
                         false -> {
+                            repository.updateLastConnectionTime(storedId)
                             _nextScreenInfo.postValue("home")
                         }
                     }
