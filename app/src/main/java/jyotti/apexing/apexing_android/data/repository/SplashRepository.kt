@@ -14,10 +14,9 @@ import javax.inject.Inject
 
 class SplashRepository @Inject constructor(
     dataStore: DataStore<Preferences>,
-    dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher,
+    val firebaseDatabase: FirebaseDatabase
 ) {
-    val reference = FirebaseDatabase.getInstance().getReference("VERSION")
-
     private val platformFlow: Flow<String> = dataStore.data.map {
         it[KEY_PLATFORM] ?: ""
     }.flowOn(dispatcher)
@@ -28,7 +27,7 @@ class SplashRepository @Inject constructor(
         crossinline isNewVersionExist: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        reference.child("current").get().addOnSuccessListener {
+        firebaseDatabase.getReference("VERSION").child("current").get().addOnSuccessListener {
             val newestVersion = it.value as String
             Log.d("remote", newestVersion)
             Log.d("local", BuildConfig.VERSION_NAME)
@@ -43,5 +42,12 @@ class SplashRepository @Inject constructor(
         }.addOnFailureListener {
             onFailure()
         }
+    }
+
+    inline fun fetchLastConnectionTime(
+        crossinline onSuccess: (Long) -> Unit,
+        crossinline onFailure: () -> Unit
+    ) {
+
     }
 }

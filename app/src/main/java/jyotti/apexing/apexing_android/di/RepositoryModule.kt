@@ -22,9 +22,10 @@ object RepositoryModule {
     @Provides
     fun provideSplashRepository(
         dataStore: DataStore<Preferences>,
-        dispatcher: CoroutineDispatcher
+        dispatcher: CoroutineDispatcher,
+        firebaseDatabase: FirebaseDatabase
     ) =
-        SplashRepository(dataStore, dispatcher)
+        SplashRepository(dataStore, dispatcher, firebaseDatabase)
 
     @ViewModelScoped
     @Provides
