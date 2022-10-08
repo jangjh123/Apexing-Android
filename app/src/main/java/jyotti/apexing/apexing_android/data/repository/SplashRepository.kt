@@ -50,7 +50,7 @@ class SplashRepository @Inject constructor(
         crossinline onSuccess: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        firebaseDatabase.getReference("USER_INFO").child(id).get().addOnSuccessListener {
+        firebaseDatabase.getReference("USER").child(id).get().addOnSuccessListener {
             onSuccess(it.child("isDormancy").getValue<Boolean>() ?: false)
         }.addOnCanceledListener {
             onFailure()
@@ -60,7 +60,7 @@ class SplashRepository @Inject constructor(
     }
 
     fun updateLastConnectionTime(id: String) {
-        firebaseDatabase.getReference("USER_INFO").child(id).child("lastConnection")
+        firebaseDatabase.getReference("USER").child(id).child("lastConnection")
             .setValue("${System.currentTimeMillis() / 1000L}")
     }
 }
