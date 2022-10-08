@@ -78,5 +78,6 @@ class AccountRepository @Inject constructor(
         val user: HashMap<String, String> = HashMap()
         user[id] = platform
         firebaseDatabase.getReference("USER").child(platform).updateChildren(user as Map<String, String>)
+        firebaseDatabase.getReference("USER").child("PC").child("isDormancy").setValue(false)
     }
 }
