@@ -3,7 +3,6 @@ package jyotti.apexing.apexing_android.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.BuildConfig.KEY_API
@@ -78,5 +77,6 @@ class AccountRepository @Inject constructor(
         val user: HashMap<String, String> = HashMap()
         user[id] = platform
         firebaseDatabase.getReference("USER").child(platform).updateChildren(user as Map<String, String>)
+        firebaseDatabase.getReference("USER").child("PC").child(id).child("isDormancy").setValue(false)
     }
 }
