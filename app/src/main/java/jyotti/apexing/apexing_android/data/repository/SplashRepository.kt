@@ -60,7 +60,7 @@ class SplashRepository @Inject constructor(
     }
 
     fun updateLastConnectionTime(id: String) {
-        firebaseDatabase.getReference("USER").child(id).child("lastConnection")
+        firebaseDatabase.getReference("USER").child("PC").child(id).child("lastConnection")
             .setValue("${System.currentTimeMillis() / 1000L}")
     }
 }

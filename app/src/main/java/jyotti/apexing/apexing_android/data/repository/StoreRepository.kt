@@ -1,6 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.data.model.store.Payment
