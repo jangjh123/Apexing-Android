@@ -26,9 +26,7 @@ class StatisticsViewModel @Inject constructor(
         get() = _refreshIndexLiveData
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()
-    private val _noElementLiveData = MutableLiveData<Pair<Int, Int>>()
-    val noElementLiveData: LiveData<Pair<Int,Int>>
-        get() = _noElementLiveData
+    private val noElementLiveData = SingleLiveEvent<Unit>()
 
     fun getDatabaseMessage() = databaseMessage
     fun getRatingMessage() = ratingMessage
@@ -52,7 +50,7 @@ class StatisticsViewModel @Inject constructor(
                     _refreshIndexLiveData.postValue(it)
                 },
                 onNoElement = {
-                    _noElementLiveData.postValue(it)
+                    noElementLiveData.call()
                 })
         }
     }

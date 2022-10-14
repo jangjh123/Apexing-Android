@@ -55,7 +55,7 @@ class StatisticsRepository @Inject constructor(
         id: String,
         crossinline onSuccess: (Pair<List<MatchModels.Match>, Int>) -> Unit,
         crossinline onComplete: (Int) -> Unit,
-        crossinline onNoElement: (Pair<Int, Int>) -> Unit
+        crossinline onNoElement: () -> Unit
     ) {
         databaseInstance.getReference("MATCH").child(id).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
@@ -103,9 +103,7 @@ class StatisticsRepository @Inject constructor(
                     }
                 }
             } else {
-                getRefreshIndex {
-                    onNoElement(it)
-                }
+                onNoElement()
             }
         }
     }
@@ -134,24 +132,6 @@ class StatisticsRepository @Inject constructor(
                 }
             }
         }
-    }
-
-    inline fun getRefreshIndex(crossinline onComplete: (Pair<Int, Int>) -> Unit) {
-        databaseInstance.reference.child("CurrentIndex").addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    onComplete(
-                        Pair(
-                            snapshot.child("index").getValue<Int>()!!,
-                            snapshot.child("size").getValue<Int>()!!
-                        )
-                    )
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
     }
 
     inline fun getMyIndex(crossinline onComplete: (Int) -> Unit) {
