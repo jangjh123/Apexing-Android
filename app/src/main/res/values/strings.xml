@@ -95,4 +95,5 @@
 
     <!--    StoreFragment-->
     <string name="touch_to_detail">아이템 터치하여 이미지 확대</string>
+    <string name="time_notice_refresh_matches">시간 후 나의 전적이 업데이트 됩니다.</string>
 </resources>
