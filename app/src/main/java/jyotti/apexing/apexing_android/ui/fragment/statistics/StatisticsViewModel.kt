@@ -26,10 +26,11 @@ class StatisticsViewModel @Inject constructor(
         get() = _refreshIndexLiveData
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()
-    private val noElementLiveData = SingleLiveEvent<Unit>()
+    private val noElementMessage = SingleLiveEvent<Unit>()
 
     fun getDatabaseMessage() = databaseMessage
     fun getRatingMessage() = ratingMessage
+    fun getNoElementMessage() = noElementMessage
 
     @SuppressLint("NullSafeMutableLiveData")
     fun updateMatch() {
@@ -50,7 +51,7 @@ class StatisticsViewModel @Inject constructor(
                     _refreshIndexLiveData.postValue(it)
                 },
                 onNoElement = {
-                    noElementLiveData.call()
+                    noElementMessage.call()
                 })
         }
     }
