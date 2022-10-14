@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
 import jyotti.apexing.apexing_android.util.SingleLiveEvent
 import kotlinx.coroutines.*
@@ -22,8 +21,8 @@ class StatisticsViewModel @Inject constructor(
 ) :
     ViewModel() {
     private val scope = CoroutineScope(dispatcher)
-    private val _refreshIndexLiveData = MutableLiveData<RefreshIndex>()
-    val refreshIndexLiveData: LiveData<RefreshIndex>
+    private val _refreshIndexLiveData = MutableLiveData<Int>()
+    val refreshIndexLiveData: LiveData<Int>
         get() = _refreshIndexLiveData
     private val databaseMessage = SingleLiveEvent<Unit>()
     private val ratingMessage = SingleLiveEvent<Unit>()

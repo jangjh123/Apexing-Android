@@ -17,7 +17,6 @@ import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
-import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
 import jyotti.apexing.data_store.KEY_ID
@@ -54,8 +53,8 @@ class StatisticsRepository @Inject constructor(
 
     inline fun sendMatchRequest(
         id: String,
-        crossinline onSuccess: (Pair<List<MatchModels.Match>, RefreshIndex>) -> Unit,
-        crossinline onComplete: (RefreshIndex) -> Unit,
+        crossinline onSuccess: (Pair<List<MatchModels.Match>, Int>) -> Unit,
+        crossinline onComplete: (Int) -> Unit,
         crossinline onNoElement: (Pair<Int, Int>) -> Unit
     ) {
         databaseInstance.getReference("MATCH").child(id).get().addOnSuccessListener { snapshot ->
@@ -66,19 +65,13 @@ class StatisticsRepository @Inject constructor(
                         snapshot.children.forEach { match ->
                             addMatchWithFiltering(match, matchList)
                         }
-                        getRefreshIndex { pair ->
-                            getMyIndex { index ->
-                                onSuccess(
-                                    Pair(
-                                        matchList,
-                                        RefreshIndex(
-                                            pair.first,
-                                            pair.second,
-                                            index
-                                        )
-                                    )
+                        getMyIndex { index ->
+                            onSuccess(
+                                Pair(
+                                    matchList,
+                                    index,
                                 )
-                            }
+                            )
                         }
                     } else {
                         if (matchDao.getLastMatch().gameStartTimestamp == snapshot.child(
@@ -86,16 +79,10 @@ class StatisticsRepository @Inject constructor(
                             )
                                 .child("date").value as Long
                         ) {
-                            getRefreshIndex { pair ->
-                                getMyIndex { index ->
-                                    onComplete(
-                                        RefreshIndex(
-                                            pair.first,
-                                            pair.second,
-                                            index
-                                        )
-                                    )
-                                }
+                            getMyIndex { index ->
+                                onComplete(
+                                    index
+                                )
                             }
 
                         } else {
@@ -103,19 +90,14 @@ class StatisticsRepository @Inject constructor(
                             snapshot.children.forEach { match ->
                                 addMatchWithFiltering(match, matchList)
                             }
-                            getRefreshIndex { pair ->
-                                getMyIndex { index ->
-                                    onSuccess(
-                                        Pair(
-                                            matchList,
-                                            RefreshIndex(
-                                                pair.first,
-                                                pair.second,
-                                                index
-                                            )
-                                        )
+                            getMyIndex { index ->
+                                onSuccess(
+                                    Pair(
+                                        matchList,
+                                        index
                                     )
-                                }
+                                )
+
                             }
                         }
                     }
