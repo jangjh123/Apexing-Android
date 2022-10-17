@@ -51,8 +51,8 @@ class SplashRepository @Inject constructor(
         crossinline onSuccess: (Boolean) -> Unit,
         crossinline onFailure: () -> Unit
     ) {
-        firebaseDatabase.getReference("USER").child(id).get().addOnSuccessListener {
-            onSuccess(it.child("isDormancy").getValue<Boolean>() ?: false)
+        firebaseDatabase.getReference("USER").child("PC").child(id).get().addOnSuccessListener {
+            onSuccess(it.child("isDormancy").getValue<Boolean>() ?: true)
         }.addOnCanceledListener {
             onFailure()
         }.addOnFailureListener {
