@@ -72,14 +72,14 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
             }
         }
 
-        viewModel.getNoElementMessage().observe(viewLifecycleOwner) { // 기록된 매치 없을 때
+        viewModel.noElementLiveData.observe(viewLifecycleOwner) { // 기록된 매치 없을 때
             dismissProgress()
             val noElementDialog = CustomDialogFragment(
                 getString(R.string.no_match),
                 getString(R.string.confirm),
                 onClickButton = {
                     CustomDialogFragment(
-                        "한 시간당 45명의 전적이 갱신됩니다.",
+                        "한 시간당 45명의 전적이 갱신됩니다.\n현재 순번 : ${it.first}\n나의 순번 : ${it.second + 1}",
                         getString(R.string.confirm),
                         onClickButton = {
                             (activity as HomeActivity).backToMainTab()
