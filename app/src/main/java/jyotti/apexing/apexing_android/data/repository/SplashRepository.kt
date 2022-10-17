@@ -38,6 +38,7 @@ class SplashRepository @Inject constructor(
             } else {
                 onComplete(false)
             }
+
         }.addOnCanceledListener {
             onFailure()
         }.addOnFailureListener {

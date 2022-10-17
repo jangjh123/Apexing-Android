@@ -21,7 +21,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModelType
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
-import jyotti.apexing.apexing_android.data.model.statistics.RefreshIndex
 import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsFooterBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
@@ -37,12 +36,6 @@ class MatchAdapter(
     private inline val onClickRefreshDesc: () -> Unit
 ) :
     PagingDataAdapter<MatchModels, RecyclerView.ViewHolder>(GenericDiffUtil()) {
-    private val _curIndex = MutableLiveData<Int>()
-    val curIndex: LiveData<Int>
-        get() = _curIndex
-    private val _curSize = MutableLiveData<Int>()
-    val curSize: LiveData<Int>
-        get() = _curSize
     private val _myIndex = MutableLiveData<Int>()
     val myIndex: LiveData<Int>
         get() = _myIndex
@@ -111,10 +104,8 @@ class MatchAdapter(
         }
     }
 
-    fun setRefreshIndex(refreshIndex: RefreshIndex) {
-        _curIndex.postValue(refreshIndex.curIndex)
-        _curSize.postValue(refreshIndex.curSize)
-        _myIndex.postValue(refreshIndex.myIndex)
+    fun setRefreshIndex(myIndex: Int) {
+        _myIndex.postValue(myIndex)
     }
 
     inner class MatchViewHolder(
@@ -214,22 +205,7 @@ class MatchAdapter(
                 itemView.doOnAttach {
                     val mLifecycleOwner = itemView.findViewTreeLifecycleOwner()
                     if (mLifecycleOwner != null) {
-                        myIndex.observe(mLifecycleOwner) { myIndex ->
-                            tvMyIndex.text = myIndex.toString()
-                            curIndex.observe(mLifecycleOwner) { curIndex ->
-                                tvCurIndex.text = curIndex.toString()
-                                curSize.observe(mLifecycleOwner) { curSize ->
-                                    tvSize.text = curSize.toString()
-
-                                    tvRefreshTime.text =
-                                        if (myIndex > curIndex) {
-                                            "${root.context.getString(R.string.refresh_desc)}\n나의 전적은 ${(myIndex - curIndex) / 45 + 1} 시간 뒤에 갱신됩니다."
-                                        } else {
-                                            "${root.context.getString(R.string.refresh_desc)}\n나의 전적은 ${(curSize - curIndex + myIndex) / 45} 시간 뒤에 갱신됩니다."
-                                        }
-                                }
-                            }
-                        }
+                        tvMyIndex.text = "${myIndex.value?.toInt()?.div(45)?.plus(1)}"
                     }
                 }
 
