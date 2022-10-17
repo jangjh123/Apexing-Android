@@ -47,9 +47,10 @@ class AccountRepository @Inject constructor(
                         when {
                             errorMessage.contains("Slow down") -> {
                                 onError()
-                            } else -> {
-                            onNull()
-                        }
+                            }
+                            else -> {
+                                onNull()
+                            }
                         }
                     } catch (exception: Exception) {
                         onNull()
@@ -76,7 +77,11 @@ class AccountRepository @Inject constructor(
 
         val user: HashMap<String, String> = HashMap()
         user[id] = platform
-        firebaseDatabase.getReference("USER").child(platform).updateChildren(user as Map<String, String>)
-        firebaseDatabase.getReference("USER").child("PC").child(id).child("isDormancy").setValue(false)
+        firebaseDatabase.getReference("USER").child(platform)
+            .updateChildren(user as Map<String, String>)
+        firebaseDatabase.getReference("USER").child("PC").child(id).child("isDormancy")
+            .setValue(false)
+        firebaseDatabase.getReference("USER").child("PC").child(id).child("lastConnection")
+            .setValue(System.currentTimeMillis() / 1000L)
     }
 }
