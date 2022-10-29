@@ -4,6 +4,7 @@ enum class LegendNames {
     Ash,
     Bangalore,
     Bloodhound,
+    Catalyst,
     Caustic,
     Crypto,
     Fuse,

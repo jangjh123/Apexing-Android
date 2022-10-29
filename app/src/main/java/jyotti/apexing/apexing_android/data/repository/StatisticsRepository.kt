@@ -135,18 +135,11 @@ class StatisticsRepository @Inject constructor(
     }
 
     inline fun getMyIndex(crossinline onComplete: (Int) -> Unit) {
-        databaseInstance.reference.child("Index").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    onComplete(snapshot.child(idFlow.first()).getValue<Int>()!!)
-                }
+        databaseInstance.reference.child("Index").get().addOnSuccessListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                onComplete(it.child(idFlow.first()).getValue<Int>() ?: -1)
             }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
+        }
     }
 
     fun storeMatch(matchList: List<MatchModels.Match>) {
