@@ -30,27 +30,35 @@ https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 ### 100% Kotlin
 
 ## 🏗 Architecture Pattern
-### MVVM(Model-View-ViewModel) + Repository Pattern
+### <code>MVVM(Model-View-ViewModel)</code> + <code>Repository Pattern</code>
 
 ## 🛠 Used Skill & Library
-### Retrofit2 
+### <code>Retrofit2</code> 
 for Network Request
-### OkHttp3 
+### <code>OkHttp3</code> 
 for Network Interceptor
-### Room 
+### <code>Room</code> 
 for Local Database
-### Dagger-Hilt 
+### <code>Dagger-Hilt</code> 
 for Dependency Injection
-### Glide 
+### <code>Glide</code> 
 for Image Loading
-### DataStore 
+### <code>DataStore</code> 
 for Storing Values
-### Paging 3 
+### <code>Paging 3</code> 
 for List Pagination
-### Android-SpinKit(ybq)
+### <code>Android-SpinKit(ybq)</code>
 for Loading Image
-### MPAndroidChart(PhilJay)
+### <code>MPAndroidChart(PhilJay)</code>
 for Charting
 
 ## 📢 Role
 ### 1인 개발
+
+## 🙄 What I learend
+- <code>MVVM Architecture</code> 를 처음 도입해보면서 **'유지보수가 용이한 구조란 이런 것이다'** 라는 것을 느끼게 되었습니다.
+- <code>Repository Pattern</code> 에 대해 알게 되었고, 도메인 **로직과 데이터를 분리하는 방법**을 배웠습니다.
+- <code>Dagger-Hilt</code> 를 처음 적용해보면서 **의존성 주입이 주는 편리함**을 알게 되었습니다.
+- <code>Paging3</code> 의 존재를 알게 됐고, API 의 협력이 있다면 **유저에게 굉장히 좋은 UX 를 선사할 수 있을 것**이라는 생각을 하게 되었습니다.
+- **UX 개선을 위한 리팩토링이 얼마나 중요한지**, 또 그 과정 후에 오는 **유저들의 찬사가 주는 기쁨이 얼마나 큰지**를 알았습니다.
+- **유저와의 상호작용을 통해 앱을 살아숨쉬게 만드는 일이 얼마나 기쁜 일인지**를 배웠습니다.
