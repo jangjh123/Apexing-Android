@@ -30,7 +30,7 @@ https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 ### 100% Kotlin
 
 ## 🏗 Architecture Pattern
-### <code>MVVM(Model-View-ViewModel)</code> + <code>Repository Pattern</code>
+### <code>MVVM(Model-View-ViewModel)</code> + <code>DataBinding</code> + <code>Repository Pattern</code>
 
 ## 🛠 Used Skill & Library
 ### <code>Retrofit2</code> 
