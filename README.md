@@ -20,7 +20,7 @@ https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 ![0](https://user-images.githubusercontent.com/82919343/175826141-e7e95657-026f-44ba-b863-ec643a6d8e96.png)
 ![1](https://user-images.githubusercontent.com/82919343/175826142-94ef3652-edd3-457e-ab5b-7045a67ce321.png)
 ![2](https://user-images.githubusercontent.com/82919343/175826143-688f5eaf-2da6-4c3a-a47d-64425945e0fd.png)
-![3](https://user-images.githubusercontent.com/82919343/175826145-199bd412-fb9c-41a0-bc5b-dcbc62a7309a.png)
+![img](https://user-images.githubusercontent.com/82919343/203725079-cce5ca78-516c-4526-a6da-4427ff8ba2e7.png)
 ![4](https://user-images.githubusercontent.com/82919343/175826146-53c1b415-c401-48d2-a8c6-6fed13bc906b.png)
 
 ---
