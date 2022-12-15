@@ -9,9 +9,7 @@ import androidx.paging.insertFooterItem
 import androidx.paging.insertHeaderItem
 import com.github.mikephil.charting.data.*
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.local.MatchPagingSource
@@ -114,39 +112,42 @@ class StatisticsRepository @Inject constructor(
         val kill = match.child("kill").getValue<Int>()!!
         val damage = match.child("damage").getValue<Int>()!!
         if (mode != "UNKNOWN" && mode != "ARENA") {
-            if (secs in 0..1800) {
-                if (damage in 0..9999) {
-                    if (kill in 0..59) {
-                        list.add(
-                            MatchModels.Match(
-                                0,
-                                match.child("legend").value.toString(),
-                                mode,
-                                secs,
-                                match.child("date").value as Long,
-                                kill,
-                                damage,
-                            )
-                        )
-                    }
-                }
+            if (secs in 0..1800 && damage in 0..9999 && kill in 0..59) {
+                list.add(
+                    MatchModels.Match(
+                        0,
+                        match.child("legend").value.toString(),
+                        mode,
+                        secs,
+                        match.child("date").value as Long,
+                        kill,
+                        damage,
+                        true
+                    )
+                )
+            } else {
+                list.add(
+                    MatchModels.Match(
+                        0,
+                        match.child("legend").value.toString(),
+                        mode,
+                        secs,
+                        match.child("date").value as Long,
+                        kill,
+                        damage,
+                        false
+                    )
+                )
             }
         }
     }
 
     inline fun getMyIndex(crossinline onComplete: (Int) -> Unit) {
-        databaseInstance.reference.child("Index").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    onComplete(snapshot.child(idFlow.first()).getValue<Int>()!!)
-                }
+        databaseInstance.reference.child("Index").get().addOnSuccessListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                onComplete(it.child(idFlow.first()).getValue<Int>() ?: -1)
             }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
+        }
     }
 
     fun storeMatch(matchList: List<MatchModels.Match>) {
@@ -187,7 +188,7 @@ class StatisticsRepository @Inject constructor(
     ) =
         MatchModels.Header(
             matchList = matchList,
-            matchCount = matchList.size,
+            matchCount = matchList.filter { it.isEffectOnStatistics }.size,
             pieData = getPieChart(matchList),
             killRvgAll = getKillRvgAll(matchList),
             damageRvgAll = getDamageRvgAll(matchList),
@@ -229,7 +230,7 @@ class StatisticsRepository @Inject constructor(
     // Basic Statistics
     private fun getKillRvgAll(matchList: List<MatchModels.Match>): Double {
         var kills = 0.0
-        matchList.forEach {
+        matchList.filter { it.isEffectOnStatistics }.forEach {
             kills += it.kill
         }
         return kills / matchList.size
@@ -237,7 +238,7 @@ class StatisticsRepository @Inject constructor(
 
     private fun getDamageRvgAll(matchList: List<MatchModels.Match>): Double {
         var damages = 0.0
-        matchList.forEach {
+        matchList.filter { it.isEffectOnStatistics }.forEach {
             damages += it.damage
         }
         return damages / matchList.size
@@ -246,23 +247,21 @@ class StatisticsRepository @Inject constructor(
     private fun getKillRvgRecent(recentMatchList: List<MatchModels.Match>): Double {
         var kills = 0.0
         if (recentMatchList.size > 19) {
-
             for (i in 0..19) {
                 kills += recentMatchList[i].kill
             }
         }
-        return kills / 20
+        return kills / recentMatchList.size
     }
 
     private fun getDamageRvgRecent(recentMatchList: List<MatchModels.Match>): Double {
         var damages = 0.0
         if (recentMatchList.size > 19) {
-
             for (i in 0..19) {
                 damages += recentMatchList[i].damage
             }
         }
-        return damages / 20
+        return damages / recentMatchList.size
     }
 
 
@@ -283,29 +282,29 @@ class StatisticsRepository @Inject constructor(
 
     private fun getRadarChartValue(matchList: List<MatchModels.Match>): FloatArray {
         val data = FloatArray(4)
-
         var killCatch = 0f
         var survivalAbility = 0f
         var deal = 0f
+        var effectedMatchCnt = matchList.count { it.isEffectOnStatistics }
 
-        matchList.forEach {
+        matchList.filter { it.isEffectOnStatistics }.forEach {
             killCatch += it.kill
             survivalAbility += it.gameLengthSecs
             deal += it.damage
         }
 
-        var killCatchData = killCatch / matchList.size
+        var killCatchData = killCatch / effectedMatchCnt
         killCatchData *= 40
         data[0] = killCatchData
 
-        var survivalAbilityData = survivalAbility / matchList.size
+        var survivalAbilityData = survivalAbility / effectedMatchCnt
         survivalAbilityData /= 12
         data[1] = survivalAbilityData
 
-        for (i in matchList.indices) {
+        for (i in matchList.filter { it.isEffectOnStatistics }.indices) {
             deal += matchList[i].damage
         }
-        var dealData = deal / matchList.size
+        var dealData = deal / effectedMatchCnt
         dealData /= 10
 
         data[2] = dealData
@@ -320,7 +319,7 @@ class StatisticsRepository @Inject constructor(
         val dealList = ArrayList<BarEntry>()
         val killList = ArrayList<BarEntry>()
 
-        if (recentMatchList.size > 19) {
+        if (recentMatchList.filter { it.isEffectOnStatistics }.size > 19) {
             for (i in 0..19) {
                 dealList.add(BarEntry(i.toFloat(), recentMatchList[i].damage.toFloat()))
                 killList.add(BarEntry(i.toFloat(), recentMatchList[i].kill.toFloat()))

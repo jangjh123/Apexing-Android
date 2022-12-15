@@ -16,7 +16,8 @@ sealed class MatchModels(var type: MatchModelType) {
         val gameLengthSecs: Int,
         val gameStartTimestamp: Long,
         var kill: Int,
-        var damage: Int
+        var damage: Int,
+        var isEffectOnStatistics: Boolean
     ) : MatchModels(MatchModelType.DATA)
 
     data class Header(

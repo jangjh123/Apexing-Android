@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
@@ -16,8 +17,8 @@ android {
         applicationId "jyotti.apexing.apexing_android"
         minSdk 23
         targetSdk 32
-        versionCode 18
-        versionName "2.1.2"
+        versionCode 20
+        versionName "2.1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,6 +59,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.5'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
     implementation 'com.google.firebase:firebase-config-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.12'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.0'
     kapt "androidx.room:room-compiler:2.4.2"
 
     // MVVM
