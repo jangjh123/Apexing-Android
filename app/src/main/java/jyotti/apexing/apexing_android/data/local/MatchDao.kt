@@ -10,7 +10,11 @@ interface MatchDao {
     @Query("SELECT * FROM `match`")
     suspend fun getAll(): List<MatchModels.Match>
 
-    @Query("SELECT * FROM 'match' ORDER BY gameStartTimestamp DESC LIMIT 20")
+    @Query("SELECT * FROM 'match' " +
+            "WHERE kill BETWEEN 0 AND 59" +
+            " AND damage BETWEEN 0 AND 9999" +
+            " AND gameLengthSecs BETWEEN 0 AND 1800" +
+            " ORDER BY gameStartTimestamp DESC LIMIT 20")
     suspend fun getRecent(): List<MatchModels.Match>
 
     @Query("SELECT * FROM `match` ORDER BY gameStartTimestamp DESC LIMIT :loadSize OFFSET :index * :loadSize")
