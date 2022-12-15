@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.ui.component
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ import java.util.*
 
 
 class MatchAdapter(
+    private val context: Context,
     private inline val onClickRecordingDesc: () -> Unit,
     private inline val onClickRefreshDesc: () -> Unit
 ) :
@@ -116,10 +118,15 @@ class MatchAdapter(
             with(binding) {
                 if (item.damage == 0 && item.kill == 0) {
                     layMatch.alpha = 0.2f
-                    tvNoDamageNoKill.visibility = View.VISIBLE
+                    tvNote.visibility = View.VISIBLE
+                    tvNote.text = context.getString(R.string.please_set_tracker_or_play_hard)
+                } else if (!item.isEffectOnStatistics) {
+                    layMatch.alpha = 0.2f
+                    tvNote.visibility = View.VISIBLE
+                    tvNote.text = context.getString(R.string.invalidated_match_data)
                 } else {
                     layMatch.alpha = 1f
-                    tvNoDamageNoKill.visibility = View.GONE
+                    tvNote.visibility = View.GONE
                 }
 
                 val context = root.context

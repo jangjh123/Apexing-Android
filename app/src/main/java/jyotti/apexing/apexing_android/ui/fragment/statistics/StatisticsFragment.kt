@@ -20,15 +20,20 @@ import kotlinx.coroutines.launch
 class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.fragment_statistics) {
     private val viewModel: StatisticsViewModel by viewModels()
 
-    val matchAdapter = MatchAdapter(
-        onClickRecordingDesc = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
-            startActivity(intent)
-        },
-        onClickRefreshDesc = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_refresh)))
-            startActivity(intent)
-        })
+    val matchAdapter by lazy {
+        MatchAdapter(
+            context = requireContext(),
+            onClickRecordingDesc = {
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_recording)))
+                startActivity(intent)
+            },
+            onClickRefreshDesc = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_refresh)))
+                startActivity(intent)
+            }
+        )
+    }
 
     override fun onStart() {
         super.onStart()
