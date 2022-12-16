@@ -89,7 +89,7 @@
     <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.</string>
     <string name="no_match">기록된 매치가 없습니다.\n게임을 플레이 해주세요.\n현재 순번이 유저님의 순번을 지나면\n매치가 표시됩니다.</string>
     <string name="please_set_tracker_or_play_hard">킬과 대미지가 모두 0인 매치입니다.\n트래커가 없거나, 민첩하셔야 합니다.</string>
-    <string name="invalidated_match_data">유효하지 않은 데이터가 기록되어 통계에 반영되지 않습니다.</string>
+    <string name="invalidated_match_data">유효하지 않은 데이터가 기록된 매치입니다.\n통계에는 반영되지 않습니다.</string>
     <string name="legend_kill_avg">레전드 평균 킬</string>
     <string name="legend_damage_avg">레전드 평균 대미지</string>
     <string name="touch_portrait">초상화를 터치하여 레전드별 통계를 볼 수 있습니다.</string>
