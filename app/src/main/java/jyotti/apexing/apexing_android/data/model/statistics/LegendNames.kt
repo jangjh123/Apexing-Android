@@ -2,6 +2,7 @@ package jyotti.apexing.apexing_android.data.model.statistics
 
 enum class LegendNames {
     Ash,
+    Ballistic,
     Bangalore,
     Bloodhound,
     Catalyst,
