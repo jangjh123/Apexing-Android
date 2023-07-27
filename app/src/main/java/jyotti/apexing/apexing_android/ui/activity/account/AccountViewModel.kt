@@ -31,12 +31,20 @@ class AccountViewModel @Inject constructor(
             onNull = {
                 if (retryCount < 10) {
                     checkAccount(platform, id)
+                    retryCount++
                 } else {
                     message.postValue(AccountMessage.Null)
+                    retryCount = 0
                 }
             },
             onError = {
-                checkAccount(platform, id)
+                if (retryCount < 10) {
+                    checkAccount(platform, id)
+                    retryCount++
+                } else {
+                    message.postValue(AccountMessage.Error)
+                    retryCount = 0
+                }
             },
             onFailure = {
                 message.postValue(AccountMessage.NetworkError)
