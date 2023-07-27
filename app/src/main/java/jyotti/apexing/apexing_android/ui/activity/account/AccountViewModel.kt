@@ -34,6 +34,7 @@ class AccountViewModel @Inject constructor(
                     retryCount++
                 } else {
                     message.postValue(AccountMessage.Null)
+                    retryCount = 0
                 }
             },
             onError = {
@@ -42,6 +43,7 @@ class AccountViewModel @Inject constructor(
                     retryCount++
                 } else {
                     message.postValue(AccountMessage.Error)
+                    retryCount = 0
                 }
             },
             onFailure = {
