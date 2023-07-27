@@ -167,6 +167,18 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:gravity="start"
+            android:text="문의 gn0001231@gmail.com"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/light_gray"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView14" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_enroll"
             android:layout_width="match_parent"

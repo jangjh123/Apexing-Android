@@ -40,13 +40,13 @@
     <string name="id">ID</string>
     <string name="choice_platform">플랫폼 선택</string>
     <string name="origin_id">오리진 ID 를 입력해주세요.</string>
-    <string name="if_you_are_steam_user">스팀 유저는 연동된 오리진 계정의\n닉네임을 입력해주세요.</string>
+    <string name="if_you_are_steam_user">스팀 유저는 스팀 계정에 연동된 \n오리진 계정의 닉네임을 입력해주세요.</string>
     <string name="please_set_id">ID를 입력해주세요.</string>
     <string name="please_set_platform">플랫폼을 선택해주세요.</string>
     <string name="please_set_all">ID 입력과 플랫폼 선택이 필요합니다.</string>
     <string name="please_retry">일시적인 오류입니다. 다시 시도해주세요.</string>
     <string name="account_error">ID를 확인하고 다시 시도해주세요.</string>
-    <string name="help">도와주세요.</string>
+    <string name="help">도움말 보기</string>
 
     <!--    HomeActivity-->
     <string name="main">메인</string>
