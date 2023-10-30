@@ -7,6 +7,7 @@ enum class LegendNames {
     Bloodhound,
     Catalyst,
     Caustic,
+    Conduit,
     Crypto,
     Fuse,
     Gibraltar,
