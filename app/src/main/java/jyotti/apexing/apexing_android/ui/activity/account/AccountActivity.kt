@@ -63,12 +63,15 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
             binding.rbPc.isChecked -> {
                 getString(R.string.pc)
             }
+
             binding.rbPs.isChecked -> {
                 getString(R.string.ps4)
             }
+
             binding.rbXbox.isChecked -> {
                 getString(R.string.xbox)
             }
+
             else -> {
                 ""
             }
@@ -83,8 +86,12 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         } else if (platform.isEmpty() && id.isEmpty()) {
             showSnackBar(getString(R.string.please_set_all))
         } else {
-            showProgress()
-            viewModel.checkAccount(id, platform)
+            if (id.contains('.') || id.contains('#') || id.contains('[') || id.contains(']')) {
+                showSnackBar(getString(R.string.not_allowed_id))
+            } else {
+                showProgress()
+                viewModel.checkAccount(id, platform)
+            }
         }
     }
 
@@ -97,12 +104,15 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
                     startActivity(intent)
                     finish()
                 }
+
                 AccountMessage.Null -> {
                     showSnackBar(getString(R.string.account_error))
                 }
+
                 AccountMessage.Error -> {
                     showSnackBar(getString(R.string.please_retry))
                 }
+
                 AccountMessage.NetworkError -> {
                     showSnackBar(getString(R.string.server_error))
                 }
@@ -110,8 +120,9 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         }
     }
 
-    private fun showSnackBar(text: String) =
+    private fun showSnackBar(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
 
     override fun onBackPressed() {
 

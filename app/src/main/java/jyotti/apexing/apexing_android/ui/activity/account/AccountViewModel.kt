@@ -48,7 +48,8 @@ class AccountViewModel @Inject constructor(
             },
             onFailure = {
                 message.postValue(AccountMessage.NetworkError)
-            })
+            }
+        )
     }
 }
 
