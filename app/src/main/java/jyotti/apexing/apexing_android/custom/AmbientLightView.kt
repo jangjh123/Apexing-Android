@@ -54,10 +54,10 @@ class AmbientLightView @JvmOverloads constructor(
         setMeasuredDimension(measuredWidth, measuredHeight)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         setDefaultPadding()
-        drawLight(canvas!!)
+        drawLight(canvas)
         drawInside(canvas)
     }
 
