@@ -11,14 +11,14 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "jyotti.apexing.apexing_android"
         minSdk 23
-        targetSdk 32
-        versionCode 25
-        versionName "2.1.9"
+        targetSdk 34
+        versionCode 2220
+        versionName "2.2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
