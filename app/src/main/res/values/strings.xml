@@ -46,6 +46,7 @@
     <string name="please_set_all">ID 입력과 플랫폼 선택이 필요합니다.</string>
     <string name="please_retry">일시적인 오류입니다. 다시 시도해주세요.</string>
     <string name="account_error">ID를 확인하고 다시 시도해주세요.</string>
+    <string name="not_allowed_id">ID에 \'.\', \'#\', \'[\', \']\' 는 포함될 수 없습니다.\n도움말 페이지를 확인해 주세요.</string>
     <string name="help">도움말 보기</string>
 
     <!--    HomeActivity-->
