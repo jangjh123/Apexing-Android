@@ -17,8 +17,8 @@ android {
         applicationId "jyotti.apexing.apexing_android"
         minSdk 23
         targetSdk 34
-        versionCode 2220
-        versionName "2.2.2"
+        versionCode 2230
+        versionName "2.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
