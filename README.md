@@ -15,7 +15,7 @@
 https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
 
 ---
-## 📷 ScreenShots!
+## 📷 ScreenShots
 ![end](https://user-images.githubusercontent.com/82919343/175826164-259126e1-dcbb-4c23-bb63-4c98e162b128.png)
 ![0](https://user-images.githubusercontent.com/82919343/175826141-e7e95657-026f-44ba-b863-ec643a6d8e96.png)
 ![1](https://user-images.githubusercontent.com/82919343/175826142-94ef3652-edd3-457e-ab5b-7045a67ce321.png)
