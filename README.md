@@ -55,7 +55,7 @@ for Charting
 ## 📢 Role
 ### 1인 개발
 
-## 🙄 What I learend
+## 🙄 What I learned
 - <code>Java</code> 만 사용하다가, <code>Kotlin</code> 을 독학하면서 처음 적용해 본 프로젝트입니다. **Kotlin 은 정말 간편하고 강력한 언어**임을 느꼈습니다.
 - <code>MVVM Architecture</code> 를 처음 도입해보면서 **'유지보수가 용이한 구조란 이런 것이다'** 라는 것을 느끼게 되었습니다.
 - <code>Repository Pattern</code> 에 대해 알게 되었고, 도메인 **로직과 데이터를 분리하는 방법**을 배웠습니다.
