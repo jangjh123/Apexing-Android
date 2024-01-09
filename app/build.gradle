@@ -12,7 +12,6 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 android {
     compileSdk 34
-
     defaultConfig {
         applicationId "jyotti.apexing.apexing_android"
         minSdk 23
@@ -24,7 +23,6 @@ android {
 
         buildConfigField "String", "KEY_API", properties['key_api']
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -40,6 +38,9 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
     testOptions {
         unitTests.all {
