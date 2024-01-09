@@ -149,21 +149,11 @@ class MatchAdapter(
                 }
 
                 boxLegend.background = when (imageName) {
-                    mostArr[0] -> {
-                        AppCompatResources.getDrawable(root.context, R.drawable.most_0)
-                    }
-                    mostArr[1] -> {
-                        AppCompatResources.getDrawable(root.context, R.drawable.most_1)
-                    }
-                    mostArr[2] -> {
-                        AppCompatResources.getDrawable(root.context, R.drawable.most_2)
-                    }
-                    mostArr[3] -> {
-                        AppCompatResources.getDrawable(root.context, R.drawable.most_3)
-                    }
-                    mostArr[4] -> {
-                        AppCompatResources.getDrawable(root.context, R.drawable.most_4)
-                    }
+                    mostArr[0] -> AppCompatResources.getDrawable(root.context, R.drawable.most_0)
+                    mostArr[1] -> AppCompatResources.getDrawable(root.context, R.drawable.most_1)
+                    mostArr[2] -> AppCompatResources.getDrawable(root.context, R.drawable.most_2)
+                    mostArr[3] -> AppCompatResources.getDrawable(root.context, R.drawable.most_3)
+                    mostArr[4] -> AppCompatResources.getDrawable(root.context, R.drawable.most_4)
                     else -> {
                         AppCompatResources.getDrawable(root.context, R.drawable.basic_portrait)
                     }
