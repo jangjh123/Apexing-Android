@@ -98,4 +98,7 @@
     <!--    StoreFragment-->
     <string name="touch_to_detail">아이템 터치하여 이미지 확대</string>
     <string name="time_notice_refresh_matches">시간 후 나의 전적이 업데이트 됩니다.</string>
+
+    <!--    ApexingException-->
+    <string name="exception_network">네트워크 오류입니다.\n연결 상태를 확인해주세요.</string>
 </resources>

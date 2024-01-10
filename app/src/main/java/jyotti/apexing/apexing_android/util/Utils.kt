@@ -5,6 +5,8 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineExceptionHandler
+import java.net.UnknownHostException
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,5 +55,15 @@ object Utils {
         val sdf = SimpleDateFormat("MM월 dd일 HH시 mm분", Locale.KOREA)
         sdf.timeZone = TimeZone.getTimeZone("GMT+9")
         return sdf.format(date)
+    }
+}
+
+fun getCoroutineExceptionHandler(
+    onUnknownHostException: () -> Unit
+): CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    when (throwable) {
+        is UnknownHostException -> {
+            onUnknownHostException()
+        }
     }
 }
