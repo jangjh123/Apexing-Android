@@ -2,7 +2,6 @@ package jyotti.apexing.apexing_android.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
@@ -10,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import jyotti.apexing.apexing_android.data.local.MatchDao
+import jyotti.apexing.apexing_android.data.remote.ApexingApi
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.data.repository.*
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,6 +26,16 @@ object RepositoryModule {
         firebaseDatabase: FirebaseDatabase
     ) =
         SplashRepository(dataStore, dispatcher, firebaseDatabase)
+
+    @ViewModelScoped
+    @Provides
+    fun provideSplashRepositoryV2(
+        apexingApi: ApexingApi,
+        dataStore: DataStore<Preferences>
+    ): SplashRepositoryV2 = SplashRepositoryV2(
+        apexingApi = apexingApi,
+        datastore = dataStore
+    )
 
     @ViewModelScoped
     @Provides

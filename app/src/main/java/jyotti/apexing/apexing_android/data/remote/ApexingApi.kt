@@ -5,10 +5,13 @@ import com.google.gson.JsonObject
 import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.model.store.StoreItem
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiService {
+interface ApexingApi {
     @GET("bridge?version=5")
     fun fetchAccount(
         @Query("platform") platform: String,
@@ -35,4 +38,18 @@ interface ApiService {
     fun fetchStoreData(
         @Query("auth") key: String
     ): Call<List<StoreItem>>
+
+    //
+
+    @GET("VERSION/current")
+    suspend fun fetchVersion(): String
+
+    @GET("USER/PC/{id}/isDormancy")
+    suspend fun fetchIsDormancy(id: String): Boolean
+
+    @PUT("USER/PC/{id}/lastConnection")
+    suspend fun fetchLastConnectedTime(
+        @Path("id") id: String,
+        @Body lastConnectedTime: String
+    ): String
 }

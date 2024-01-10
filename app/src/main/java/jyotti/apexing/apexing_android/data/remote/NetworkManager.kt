@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 class NetworkManager {
     companion object {
-        private val apiService = Retrofit.Builder()
+        private val apexingApi = Retrofit.Builder()
             .baseUrl("https://api.mozambiquehe.re/")
             .client(
                 OkHttpClient.Builder()
@@ -17,8 +17,8 @@ class NetworkManager {
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
+            .build().create(ApexingApi::class.java)
     }
 
-    fun getClient(): ApiService = apiService
+    fun getClient(): ApexingApi = apexingApi
 }
