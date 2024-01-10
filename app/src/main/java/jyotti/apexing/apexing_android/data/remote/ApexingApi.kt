@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiService {
+interface ApexingApi {
     @GET("bridge?version=5")
     fun fetchAccount(
         @Query("platform") platform: String,
@@ -35,4 +35,9 @@ interface ApiService {
     fun fetchStoreData(
         @Query("auth") key: String
     ): Call<List<StoreItem>>
+
+    //
+
+    @GET("VERSION/current")
+    suspend fun fetchVersion(): String
 }
