@@ -1,4 +1,4 @@
-package jyotti.apexing.data_store
+package jyotti.apexing.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

@@ -4,7 +4,7 @@ interface SplashUiContract {
     sealed interface SplashUiEffect {
         object GoToAccountActivity : SplashUiEffect
 
-        object GoToMainActivity : SplashUiEffect
+        data class GoToMainActivity(val id: String) : SplashUiEffect
 
         object ShowNewVersionDialog : SplashUiEffect
 

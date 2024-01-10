@@ -16,11 +16,17 @@ abstract class BaseActivityV2<VB : ViewDataBinding>(private val inflater: (Layou
         super.onCreate(savedInstanceState)
         binding = inflater(layoutInflater)
         setContentView(binding.root)
-
         initBinding()
     }
 
+    override fun onStart() {
+        super.onStart()
+        collectUiEffect()
+    }
+
     protected abstract fun initBinding()
+
+    protected abstract fun collectUiEffect()
 
     protected fun bind(action: VB.() -> Unit) {
         binding.run(action)

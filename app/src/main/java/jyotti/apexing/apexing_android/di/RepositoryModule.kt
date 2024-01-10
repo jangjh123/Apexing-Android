@@ -34,7 +34,7 @@ object RepositoryModule {
         dataStore: DataStore<Preferences>
     ): SplashRepositoryV2 = SplashRepositoryV2(
         apexingApi = apexingApi,
-        dataStore = dataStore
+        datastore = dataStore
     )
 
     @ViewModelScoped
