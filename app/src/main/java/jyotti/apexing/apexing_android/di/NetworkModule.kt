@@ -4,11 +4,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jyotti.apexing.apexing_android.BuildConfig
 import jyotti.apexing.apexing_android.BuildConfig.BASE_URL
-import jyotti.apexing.apexing_android.data.remote.ApiService
+import jyotti.apexing.apexing_android.data.remote.ApexingApi
 import jyotti.apexing.apexing_android.data.remote.FirebaseRequestInterceptor
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -31,13 +33,21 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(firebaseRequestInterceptor: FirebaseRequestInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
+    fun provideOkHttpClient(firebaseRequestInterceptor: FirebaseRequestInterceptor): OkHttpClient {
+        val builder = OkHttpClient.Builder()
             .connectTimeout(CONNECT_TIMEOUT_SEC, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT_SEC, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT_SEC, TimeUnit.SECONDS)
-            .addInterceptor(firebaseRequestInterceptor)
-            .build()
+
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }
+
+        builder.addInterceptor(firebaseRequestInterceptor)
+        return builder.build()
+    }
 
     @Singleton
     @Provides
@@ -56,5 +66,5 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+    fun provideApexingApi(retrofit: Retrofit): ApexingApi = retrofit.create(ApexingApi::class.java)
 }
