@@ -8,6 +8,6 @@ interface SplashUiContract {
 
         object ShowNewVersionDialog : SplashUiEffect
 
-        object ShowErrorDialog : SplashUiEffect
+        data class ShowErrorDialog(val stringId: Int) : SplashUiEffect
     }
 }

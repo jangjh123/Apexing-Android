@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.BuildConfig
+import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepositoryV2
 import jyotti.apexing.apexing_android.di.IoDispatcher
@@ -11,13 +12,15 @@ import jyotti.apexing.apexing_android.di.MainImmediateDispatcher
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.GoToAccountActivity
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.GoToMainActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.ShowErrorDialog
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.ShowNewVersionDialog
+import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,6 +33,14 @@ class SplashViewModelV2 @Inject constructor(
 ) : BaseViewModel, ViewModel() {
     private val _effect = MutableSharedFlow<SplashUiEffect>()
     val effect = _effect.asSharedFlow()
+
+    private val coroutineExceptionHandler = getCoroutineExceptionHandler(
+        onUnknownHostException = {
+            viewModelScope.launch {
+                _effect.emit(ShowErrorDialog(R.string.exception_network))
+            }
+        }
+    )
 
     init {
         checkVersion()
@@ -44,9 +55,7 @@ class SplashViewModelV2 @Inject constructor(
                     checkAccount()
                 }
             }
-        }.catch {
-            // todo: 예외 처리
-        }.launchIn(viewModelScope + ioDispatcher)
+        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
     }
 
     private fun checkAccount() {
@@ -58,9 +67,7 @@ class SplashViewModelV2 @Inject constructor(
                     _effect.emit(GoToAccountActivity)
                 }
             }
-        }.catch {
-            // todo: 예외 처리
-        }.launchIn(viewModelScope + ioDispatcher)
+        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
     }
 
     private fun checkDormancy(storedId: String) {
@@ -72,16 +79,12 @@ class SplashViewModelV2 @Inject constructor(
                     updateLastConnectedTime(storedId)
                 }
             }
-        }.catch {
-            // todo: 예외 처리
-        }.launchIn(viewModelScope + ioDispatcher)
+        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
     }
 
     private suspend fun updateLastConnectedTime(storedId: String) {
         withContext(ioDispatcher) {
-            repository.fetchLastConnectedTime(storedId).catch {
-                // todo: 예외 처리
-            }.collect {
+            repository.fetchLastConnectedTime(storedId).collect {
                 _effect.emit(GoToMainActivity(storedId))
             }
         }
