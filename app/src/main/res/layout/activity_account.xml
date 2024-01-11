@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="activity"
-            type="jyotti.apexing.apexing_android.ui.activity.account.AccountActivity" />
+            name="vm"
+            type="jyotti.apexing.apexing_android.ui.activity.account.AccountViewModelV2" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
