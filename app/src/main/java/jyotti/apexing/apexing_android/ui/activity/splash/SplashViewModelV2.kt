@@ -73,26 +73,25 @@ class SplashViewModelV2 @Inject constructor(
                     _uiEffect.emit(GoToAccountActivity)
                 }
             }
-        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
+        }.launchIn(viewModelScope + coroutineExceptionHandler)
     }
 
     private fun checkDormancy(storedId: String) {
-        repository.fetchIsDormancy(storedId).onEach { isDormancy ->
-            withContext(mainImmediateDispatcher) {
-                if (isDormancy == true) {
-                    _uiEffect.emit(GoToAccountActivity)
-                } else {
-                    updateLastConnectedTime(storedId)
-                }
+        viewModelScope.launch(coroutineExceptionHandler) {
+            val isDormancy = repository.fetchIsDormancy(storedId)
+
+            if (isDormancy) {
+                _uiEffect.emit(GoToAccountActivity)
+            } else {
+                updateLastConnectedTime(storedId)
             }
-        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
+        }
     }
 
     private suspend fun updateLastConnectedTime(storedId: String) {
-        withContext(ioDispatcher) {
-            repository.fetchLastConnectedTime(storedId).collect {
-                _uiEffect.emit(GoToMainActivity(storedId))
-            }
+        viewModelScope.launch(coroutineExceptionHandler) {
+            repository.fetchLastConnectedTime(storedId)
+            _uiEffect.emit(GoToMainActivity(storedId))
         }
     }
 }

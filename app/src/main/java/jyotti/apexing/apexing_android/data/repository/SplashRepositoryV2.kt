@@ -21,11 +21,10 @@ class SplashRepositoryV2 @Inject constructor(
         preferences[DATASTORE_KEY_ID]
     }
 
-    fun fetchIsDormancy(id: String): Flow<Boolean?> = flow {
-        emit(apexingApi.fetchIsDormancy(id))
-    }
+    suspend fun fetchIsDormancy(id: String): Boolean = apexingApi.fetchIsDormancy(id)
 
-    fun fetchLastConnectedTime(id: String): Flow<String?> = flow {
-        emit(apexingApi.fetchLastConnectedTime(id, "${System.currentTimeMillis() / 1000L}"))
-    }
+    suspend fun fetchLastConnectedTime(id: String): Boolean = apexingApi.fetchLastConnectedTime(
+        id = id,
+        lastConnectedTime = "${System.currentTimeMillis() / 1000L}"
+    ).isNotEmpty()
 }
