@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="activity"
-            type="jyotti.apexing.apexing_android.ui.activity.account.AccountActivity" />
+            name="vm"
+            type="jyotti.apexing.apexing_android.ui.activity.account.AccountViewModelV2" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/tv_title"
             style="@style/TextViewDefault"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
@@ -32,7 +32,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView12"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="30dp"
@@ -55,6 +55,8 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
+                android:singleLine="true"
+                android:onTextChanged="@{vm.onIdTextChanged}"
                 android:textSize="20dp" />
 
         </androidx.cardview.widget.CardView>
@@ -78,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:onClick="@{activity::onClickHelp}"
+            android:onClick="@{() -> vm.onClickHelp()}"
             android:text="@string/help"
             android:textColor="@color/main"
             android:textSize="16dp"
@@ -86,105 +88,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView7" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/divider"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:layout_editor_absoluteX="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextViewDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:text="@string/choice_platform"
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
-
-                <RadioGroup
-                    android:id="@+id/rg_platform"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/rb_pc"
-                        style="@style/TextViewDefault"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@drawable/radio_button"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:paddingStart="8dp"
-                        android:text="@string/pc"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-
-                    <RadioButton
-                        android:id="@+id/rb_xbox"
-                        style="@style/TextViewDefault"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:button="@drawable/radio_button"
-                        android:gravity="center"
-                        android:paddingStart="8dp"
-                        android:text="@string/xbox"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_ps"
-                        style="@style/TextViewDefault"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:button="@drawable/radio_button"
-                        android:gravity="center"
-                        android:paddingStart="8dp"
-                        android:text="@string/ps4"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-                </RadioGroup>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:gravity="start"
-            android:text="문의 gn0001231@gmail.com"
-            android:layout_marginStart="20dp"
+            android:text="@string/help_email"
             android:textColor="@color/light_gray"
             android:textSize="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView14" />
+            app:layout_constraintBottom_toTopOf="@+id/btn_enroll"
+            app:layout_constraintEnd_toEndOf="@+id/btn_enroll"
+            app:layout_constraintStart_toStartOf="@+id/btn_enroll" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_enroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="@{activity::onClickEnroll}"
+            android:onClick="@{() -> vm.onClickEnroll()}"
             app:cardBackgroundColor="@color/main"
             app:cardCornerRadius="8dp"
             app:cardElevation="20dp"

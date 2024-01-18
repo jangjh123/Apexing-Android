@@ -1,13 +1,21 @@
 package jyotti.apexing.apexing_android.ui.activity.splash
 
-interface SplashUiContract {
-    sealed interface SplashUiEffect {
-        object GoToAccountActivity : SplashUiEffect
+import jyotti.apexing.apexing_android.base.BaseContract
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiState
 
-        data class GoToMainActivity(val id: String) : SplashUiEffect
+interface SplashUiContract : BaseContract<UiState, UiEffect> {
+    data class UiState(
+        val isLoading: Boolean = false
+    )
 
-        object ShowNewVersionDialog : SplashUiEffect
+    sealed interface UiEffect {
+        object GoToAccountActivity : UiEffect
 
-        data class ShowErrorDialog(val stringId: Int) : SplashUiEffect
+        data class GoToMainActivity(val id: String) : UiEffect
+
+        object ShowNewVersionDialog : UiEffect
+
+        data class ShowErrorDialog(val stringId: Int) : UiEffect
     }
 }

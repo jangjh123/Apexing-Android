@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val repository: SplashRepository,
     dispatcher: CoroutineDispatcher
-) : ViewModel() {
+) : ViewModel(), BaseViewModel {
     private val scope = CoroutineScope(dispatcher)
     private val _nextScreenInfo = MutableLiveData<String>()
     val nextScreenInfo: LiveData<String>

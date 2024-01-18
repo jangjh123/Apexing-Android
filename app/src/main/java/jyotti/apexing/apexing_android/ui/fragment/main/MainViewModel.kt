@@ -33,9 +33,9 @@ class MainViewModel @Inject constructor(
     fun getNoticeLiveData() = notice
     fun getUser() {
         scope.launch {
-            repository.fetchUser(repository.getIdFlow().first()) {
-                user.postValue(it)
-            }
+//            repository.fetchUser(repository.getIdFlow().first()) {
+//                user.postValue(it)
+//            }
         }
     }
 
@@ -82,15 +82,15 @@ class MainViewModel @Inject constructor(
         scope.launch {
             repository.getPlatformFlow().collect { platform ->
                 repository.getIdFlow().collect { id ->
-                    repository.removeFirebaseUser(platform, id,
-                        onSuccess = {
-                            scope.launch {
-                                repository.clearDataStore()
-                            }
-                            deleteStoredMatches {
-                                onFinished()
-                            }
-                        })
+//                    repository.removeFirebaseUser(platform, id,
+//                        onSuccess = {
+//                            scope.launch {
+//                                repository.clearDataStore()
+//                            }
+//                            deleteStoredMatches {
+//                                onFinished()
+//                            }
+//                        })
                 }
             }
         }

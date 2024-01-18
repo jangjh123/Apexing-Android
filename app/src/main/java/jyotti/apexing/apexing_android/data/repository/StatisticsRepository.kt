@@ -17,8 +17,8 @@ import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import jyotti.apexing.apexing_android.util.CustomBarDataSet
-import jyotti.apexing.data_store.KEY_ID
-import jyotti.apexing.data_store.KEY_IS_RATED
+import jyotti.apexing.datastore.DATASTORE_KEY_ID
+import jyotti.apexing.datastore.KEY_IS_RATED
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ class StatisticsRepository @Inject constructor(
     dispatcher: CoroutineDispatcher
 ) {
     val idFlow: Flow<String> = dataStore.data.map {
-        it[KEY_ID] ?: ""
+        it[DATASTORE_KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
     private val isRatedFlow: Flow<Boolean> = dataStore.data.map {
