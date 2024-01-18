@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="jyotti.apexing.apexing_android.ui.activity.splash.SplashViewModelV2" />
+            type="jyotti.apexing.apexing_android.ui.activity.splash.SplashViewModel" />
     </data>
 
 

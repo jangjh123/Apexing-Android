@@ -21,18 +21,9 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideSplashRepository(
-        dataStore: DataStore<Preferences>,
-        dispatcher: CoroutineDispatcher,
-        firebaseDatabase: FirebaseDatabase
-    ) =
-        SplashRepository(dataStore, dispatcher, firebaseDatabase)
-
-    @ViewModelScoped
-    @Provides
-    fun provideSplashRepositoryV2(
         apexingApi: ApexingApi,
         dataStore: DataStore<Preferences>
-    ): SplashRepositoryV2 = SplashRepositoryV2(
+    ): SplashRepository = SplashRepository(
         apexingApi = apexingApi,
         datastore = dataStore
     )
@@ -40,17 +31,9 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideAccountRepository(
-        networkManager: NetworkManager,
-        dataStore: DataStore<Preferences>,
-        firebaseDatabase: FirebaseDatabase
-    ) = AccountRepository(networkManager, dataStore, firebaseDatabase)
-
-    @ViewModelScoped
-    @Provides
-    fun provideAccountRepositoryV2(
         apexingApi: ApexingApi,
         dataStore: DataStore<Preferences>
-    ) = AccountRepositoryV2(
+    ) = AccountRepository(
         apexingApi = apexingApi,
         dataStore = dataStore
     )

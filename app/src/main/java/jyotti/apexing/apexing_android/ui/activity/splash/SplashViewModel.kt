@@ -1,93 +1,97 @@
 package jyotti.apexing.apexing_android.ui.activity.splash
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jyotti.apexing.apexing_android.BuildConfig
+import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepository
+import jyotti.apexing.apexing_android.di.IoDispatcher
+import jyotti.apexing.apexing_android.di.MainImmediateDispatcher
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccountActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToMainActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowErrorDialog
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowNewVersionDialog
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiState
+import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val repository: SplashRepository,
-    dispatcher: CoroutineDispatcher
-) : ViewModel(), BaseViewModel {
-    private val scope = CoroutineScope(dispatcher)
-    private val _nextScreenInfo = MutableLiveData<String>()
-    val nextScreenInfo: LiveData<String>
-        get() = _nextScreenInfo
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainImmediateDispatcher private val mainImmediateDispatcher: CoroutineDispatcher,
+    private val repository: SplashRepository
+) : BaseViewModel, SplashUiContract, ViewModel() {
+    private val _uiState = MutableStateFlow(UiState())
+    override val uiState: StateFlow<UiState> = _uiState
+
+    private val _uiEffect = MutableSharedFlow<UiEffect>()
+    override val uiEffect: SharedFlow<UiEffect> = _uiEffect
+
+    private val coroutineExceptionHandler = getCoroutineExceptionHandler(
+        onUnknownHostException = {
+            viewModelScope.launch {
+                _uiEffect.emit(ShowErrorDialog(R.string.exception_network))
+            }
+        }
+    )
 
     init {
-        setNextScreenInfo()
+        checkVersion()
     }
 
-    private fun setNextScreenInfo() {
-        checkNewVersionExist()
-    }
-
-    private fun checkNewVersionExist() {
-        scope.launch {
-            repository.fetchVersion(
-                onComplete = {
-                    when (it) {
-                        true -> {
-                            _nextScreenInfo.postValue("newVersion")
-                        }
-                        false -> {
-                            checkAccountExist()
-                        }
-                    }
-                },
-                onFailure = {
-                    _nextScreenInfo.postValue("error")
+    private fun checkVersion() {
+        repository.fetchVersion().onEach { version ->
+            withContext(mainImmediateDispatcher) {
+                if (version != BuildConfig.VERSION_NAME) {
+                    _uiEffect.emit(ShowNewVersionDialog)
+                } else {
+                    checkAccount()
                 }
-            )
-        }
+            }
+        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
     }
 
-    private fun checkAccountExist() {
-        scope.launch {
-            val storedId = withContext(scope.coroutineContext) {
-                repository.getStoredIdFlow().first()
+    private fun checkAccount() {
+        repository.readStoredId().onEach { storedId ->
+            withContext(mainImmediateDispatcher) {
+                if (storedId != null) {
+                    checkDormancy(storedId)
+                } else {
+                    _uiEffect.emit(GoToAccountActivity)
+                }
             }
+        }.launchIn(viewModelScope + coroutineExceptionHandler)
+    }
 
-            if (storedId.isEmpty()) {
-                _nextScreenInfo.postValue("account")
+    private fun checkDormancy(storedId: String) {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            val isDormancy = repository.fetchIsDormancy(storedId)
+
+            if (isDormancy) {
+                _uiEffect.emit(GoToAccountActivity)
             } else {
-                checkDormancy()
+                updateLastConnectedTime(storedId)
             }
         }
     }
 
-
-    private fun checkDormancy() {
-        scope.launch {
-            val storedId = withContext(scope.coroutineContext) {
-                repository.getStoredIdFlow().first()
-            }
-
-            repository.fetchDormancy(
-                storedId,
-                onSuccess = {
-                    when (it) {
-                        true -> {
-                            _nextScreenInfo.postValue("account")
-                        }
-                        false -> {
-                            repository.updateLastConnectionTime(storedId)
-                            _nextScreenInfo.postValue("home")
-                        }
-                    }
-                },
-                onFailure = {
-                    _nextScreenInfo.postValue("error")
-                })
+    private suspend fun updateLastConnectedTime(storedId: String) {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            repository.fetchLastConnectedTime(storedId)
+            _uiEffect.emit(GoToMainActivity(storedId))
         }
     }
 }

@@ -19,12 +19,12 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name="jyotti.apexing.apexing_android.ui.activity.account.AccountActivityV2"
+            android:name="jyotti.apexing.apexing_android.ui.activity.account.AccountActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name="jyotti.apexing.apexing_android.ui.activity.splash.SplashActivityV2"
+            android:name="jyotti.apexing.apexing_android.ui.activity.splash.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:exported="true">
