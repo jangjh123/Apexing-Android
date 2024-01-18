@@ -101,4 +101,6 @@
 
     <!--    ApexingException-->
     <string name="exception_network">네트워크 오류입니다.\n연결 상태를 확인해주세요.</string>
+    <string name="exception_player_not_found">올바른 ID를 입력해주세요.</string>
+    <string name="exception_unknown">알 수 없는 오류입니다.\n잠시 후 다시 시도해주세요.</string>
 </resources>

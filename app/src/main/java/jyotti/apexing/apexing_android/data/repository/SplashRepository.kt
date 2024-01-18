@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
 import jyotti.apexing.apexing_android.BuildConfig
-import jyotti.apexing.data_store.KEY_ID
+import jyotti.apexing.datastore.DATASTORE_KEY_ID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,7 +19,7 @@ class SplashRepository @Inject constructor(
     val firebaseDatabase: FirebaseDatabase
 ) {
     private val idFlow: Flow<String> = dataStore.data.map {
-        it[KEY_ID] ?: ""
+        it[DATASTORE_KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
     fun getStoredIdFlow(): Flow<String> = idFlow

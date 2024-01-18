@@ -55,6 +55,8 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
+                android:singleLine="true"
+                android:onTextChanged="@{vm.onIdTextChanged}"
                 android:textSize="20dp" />
 
         </androidx.cardview.widget.CardView>
@@ -78,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:onClick="@{activity::onClickHelp}"
+            android:onClick="@{() -> vm.onClickHelp()}"
             android:text="@string/help"
             android:textColor="@color/main"
             android:textSize="16dp"
@@ -103,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="@{activity::onClickEnroll}"
+            android:onClick="@{() -> vm.onClickEnroll()}"
             app:cardBackgroundColor="@color/main"
             app:cardCornerRadius="8dp"
             app:cardElevation="20dp"

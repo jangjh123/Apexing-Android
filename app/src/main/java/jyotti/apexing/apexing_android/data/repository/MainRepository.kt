@@ -11,8 +11,6 @@ import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.data.model.main.user.User
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
-import jyotti.apexing.data_store.KEY_ID
-import jyotti.apexing.data_store.KEY_PLATFORM
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -27,11 +25,11 @@ class MainRepository @Inject constructor(
 ) {
 
     private val platformFlow = dataStore.data.map {
-        it[KEY_PLATFORM] ?: ""
+//        it[KEY_PLATFORM] ?: ""
     }.flowOn(dispatcher)
 
     private val idFlow = dataStore.data.map {
-        it[KEY_ID] ?: ""
+//        it[KEY_ID] ?: ""
     }.flowOn(dispatcher)
 
     fun getPlatformFlow() = platformFlow
@@ -94,6 +92,7 @@ class MainRepository @Inject constructor(
                             )
                             onSuccess(list)
                         }
+
                         "MAPS" -> {
                             list.add(
                                 Map(
@@ -129,6 +128,7 @@ class MainRepository @Inject constructor(
                             )
                             onSuccess(list)
                         }
+
                         "News" -> {
                             list.add(
                                 News(

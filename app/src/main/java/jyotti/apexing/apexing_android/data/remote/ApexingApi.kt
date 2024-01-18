@@ -1,45 +1,18 @@
 package jyotti.apexing.apexing_android.data.remote
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import jyotti.apexing.apexing_android.data.model.main.user.User
-import jyotti.apexing.apexing_android.data.model.store.StoreItem
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface ApexingApi {
-    @GET("bridge?version=5")
-    fun fetchAccount(
-        @Query("platform") platform: String,
-        @Query("player") id: String,
-        @Query("auth") key: String
-    ): Call<JsonObject>
-
-    @GET("bridge?version=5")
-    fun fetchUser(
-        @Query("platform") platform: String,
-        @Query("player") id: String,
-        @Query("auth") key: String
-    ): Call<User>
-
-    @GET("games?")
-    fun fetchMatch(
-        @Query("auth") key: String,
-        @Query("uid") uid: String,
-        @Query("start") date: Long,
-        @Query("limit") limit: Int
-    ): Call<JsonArray>
-
-    @GET("store?")
-    fun fetchStoreData(
-        @Query("auth") key: String
-    ): Call<List<StoreItem>>
-
-    //
+    @Headers("notForFirebase: true")
+    @GET
+    suspend fun fetchAccount(@Url url: String): Response<JsonObject>
 
     @GET("VERSION/current")
     suspend fun fetchVersion(): String

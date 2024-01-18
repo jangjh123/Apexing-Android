@@ -47,6 +47,16 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
+    fun provideAccountRepositoryV2(
+        apexingApi: ApexingApi,
+        dataStore: DataStore<Preferences>
+    ) = AccountRepositoryV2(
+        apexingApi = apexingApi,
+        dataStore = dataStore
+    )
+
+    @ViewModelScoped
+    @Provides
     fun provideMainRepository(
         networkManager: NetworkManager,
         firebaseDatabase: FirebaseDatabase,

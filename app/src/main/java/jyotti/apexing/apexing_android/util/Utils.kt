@@ -4,12 +4,17 @@ import android.content.Context
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.widget.TextView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object Utils {
 
@@ -58,12 +63,19 @@ object Utils {
     }
 }
 
-fun getCoroutineExceptionHandler(
-    onUnknownHostException: () -> Unit
+inline fun ViewModel.getCoroutineExceptionHandler(
+    crossinline onUnknownHostException: suspend () -> Unit,
+    noinline onElse: (suspend (Throwable) -> Unit)? = null
 ): CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-    when (throwable) {
-        is UnknownHostException -> {
-            onUnknownHostException()
+    viewModelScope.launch {
+        when (throwable) {
+            is UnknownHostException -> {
+                onUnknownHostException()
+            }
+
+            else -> {
+                onElse?.let { it(throwable) }
+            }
         }
     }
 }

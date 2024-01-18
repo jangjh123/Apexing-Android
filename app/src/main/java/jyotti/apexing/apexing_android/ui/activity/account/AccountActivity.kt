@@ -21,7 +21,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
 
     override fun onStart() {
         super.onStart()
-        binding.activity = this@AccountActivity
     }
 
     override fun startProcess() {
@@ -33,13 +32,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
         val fadeIn1 = AnimationUtils.loadAnimation(this, R.anim.fade_in1)
         val fadeIn2 = AnimationUtils.loadAnimation(this, R.anim.fade_in2)
         val fadeIn3 = AnimationUtils.loadAnimation(this, R.anim.fade_in3)
-
-        binding.tvTitle.animation = fadeIn1
-        binding.cardView12.animation = fadeIn2
-        binding.textView7.animation = fadeIn2
-        binding.btnHelp.animation = fadeIn2
-        binding.cardView14.animation = fadeIn2
-        binding.btnEnroll.animation = fadeIn3
     }
 
     private fun initKeyboard(view: View) {
@@ -59,40 +51,40 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     }
 
     fun onClickEnroll(view: View) {
-        val platform = when {
-            binding.rbPc.isChecked -> {
-                getString(R.string.pc)
-            }
-
-            binding.rbPs.isChecked -> {
-                getString(R.string.ps4)
-            }
-
-            binding.rbXbox.isChecked -> {
-                getString(R.string.xbox)
-            }
-
-            else -> {
-                ""
-            }
-        }
-
-        val id = binding.etId.text.toString()
-
-        if (platform.isEmpty() && id.isNotEmpty()) {
-            showSnackBar(getString(R.string.please_set_platform))
-        } else if (platform.isNotEmpty() && id.isEmpty()) {
-            showSnackBar(getString(R.string.please_set_id))
-        } else if (platform.isEmpty() && id.isEmpty()) {
-            showSnackBar(getString(R.string.please_set_all))
-        } else {
-            if (id.contains('.') || id.contains('#') || id.contains('[') || id.contains(']')) {
-                showSnackBar(getString(R.string.not_allowed_id))
-            } else {
-                showProgress()
-                viewModel.checkAccount(id, platform)
-            }
-        }
+//        val platform = when {
+//            binding.rbPc.isChecked -> {
+//                getString(R.string.pc)
+//            }
+//
+//            binding.rbPs.isChecked -> {
+//                getString(R.string.ps4)
+//            }
+//
+//            binding.rbXbox.isChecked -> {
+//                getString(R.string.xbox)
+//            }
+//
+//            else -> {
+//                ""
+//            }
+//        }
+//
+//        val id = binding.etId.text.toString()
+//
+//        if (platform.isEmpty() && id.isNotEmpty()) {
+//            showSnackBar(getString(R.string.please_set_platform))
+//        } else if (platform.isNotEmpty() && id.isEmpty()) {
+//            showSnackBar(getString(R.string.please_set_id))
+//        } else if (platform.isEmpty() && id.isEmpty()) {
+//            showSnackBar(getString(R.string.please_set_all))
+//        } else {
+//            if (id.contains('.') || id.contains('#') || id.contains('[') || id.contains(']')) {
+//                showSnackBar(getString(R.string.not_allowed_id))
+//            } else {
+//                showProgress()
+//                viewModel.checkAccount(id, platform)
+//            }
+//        }
     }
 
     override fun setObservers() {
@@ -125,6 +117,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     }
 
     override fun onBackPressed() {
-
+        super.onBackPressed()
     }
 }

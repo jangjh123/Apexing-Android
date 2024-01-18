@@ -9,15 +9,18 @@ import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.SplashRepositoryV2
 import jyotti.apexing.apexing_android.di.IoDispatcher
 import jyotti.apexing.apexing_android.di.MainImmediateDispatcher
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.GoToAccountActivity
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.GoToMainActivity
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.ShowErrorDialog
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.SplashUiEffect.ShowNewVersionDialog
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccountActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToMainActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowErrorDialog
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowNewVersionDialog
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiState
 import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -30,14 +33,17 @@ class SplashViewModelV2 @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainImmediateDispatcher private val mainImmediateDispatcher: CoroutineDispatcher,
     private val repository: SplashRepositoryV2
-) : BaseViewModel, ViewModel() {
-    private val _effect = MutableSharedFlow<SplashUiEffect>()
-    val effect = _effect.asSharedFlow()
+) : BaseViewModel, SplashUiContract, ViewModel() {
+    private val _uiState = MutableStateFlow(UiState())
+    override val uiState: StateFlow<UiState> = _uiState
+
+    private val _uiEffect = MutableSharedFlow<UiEffect>()
+    override val uiEffect: SharedFlow<UiEffect> = _uiEffect
 
     private val coroutineExceptionHandler = getCoroutineExceptionHandler(
         onUnknownHostException = {
             viewModelScope.launch {
-                _effect.emit(ShowErrorDialog(R.string.exception_network))
+                _uiEffect.emit(ShowErrorDialog(R.string.exception_network))
             }
         }
     )
@@ -50,7 +56,7 @@ class SplashViewModelV2 @Inject constructor(
         repository.fetchVersion().onEach { version ->
             withContext(mainImmediateDispatcher) {
                 if (version != BuildConfig.VERSION_NAME) {
-                    _effect.emit(ShowNewVersionDialog)
+                    _uiEffect.emit(ShowNewVersionDialog)
                 } else {
                     checkAccount()
                 }
@@ -64,7 +70,7 @@ class SplashViewModelV2 @Inject constructor(
                 if (storedId != null) {
                     checkDormancy(storedId)
                 } else {
-                    _effect.emit(GoToAccountActivity)
+                    _uiEffect.emit(GoToAccountActivity)
                 }
             }
         }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
@@ -74,7 +80,7 @@ class SplashViewModelV2 @Inject constructor(
         repository.fetchIsDormancy(storedId).onEach { isDormancy ->
             withContext(mainImmediateDispatcher) {
                 if (isDormancy == true) {
-                    _effect.emit(GoToAccountActivity)
+                    _uiEffect.emit(GoToAccountActivity)
                 } else {
                     updateLastConnectedTime(storedId)
                 }
@@ -85,7 +91,7 @@ class SplashViewModelV2 @Inject constructor(
     private suspend fun updateLastConnectedTime(storedId: String) {
         withContext(ioDispatcher) {
             repository.fetchLastConnectedTime(storedId).collect {
-                _effect.emit(GoToMainActivity(storedId))
+                _uiEffect.emit(GoToMainActivity(storedId))
             }
         }
     }
