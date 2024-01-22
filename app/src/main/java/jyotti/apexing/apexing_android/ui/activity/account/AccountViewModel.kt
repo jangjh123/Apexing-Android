@@ -14,6 +14,7 @@ import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEf
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiState
 import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -33,7 +34,10 @@ class AccountViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState())
     override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _uiEffect = MutableSharedFlow<UiEffect>()
+    private val _uiEffect = MutableSharedFlow<UiEffect>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
     override val uiEffect: SharedFlow<UiEffect> = _uiEffect.asSharedFlow()
 
     private val coroutineExceptionHandler = getCoroutineExceptionHandler(
