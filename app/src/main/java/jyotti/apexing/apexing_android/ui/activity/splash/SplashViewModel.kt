@@ -21,10 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -53,27 +50,29 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun checkVersion() {
-        repository.fetchVersion().onEach { version ->
-            withContext(mainImmediateDispatcher) {
-                if (version != BuildConfig.VERSION_NAME) {
-                    _uiEffect.emit(ShowNewVersionDialog)
-                } else {
-                    checkAccount()
-                }
+        viewModelScope.launch(coroutineExceptionHandler) {
+            val version = repository.fetchVersion()
+
+            if (version != BuildConfig.VERSION_NAME) {
+                _uiEffect.emit(ShowNewVersionDialog)
+            } else {
+                checkAccount()
             }
-        }.launchIn(viewModelScope + ioDispatcher + coroutineExceptionHandler)
+        }
     }
 
     private fun checkAccount() {
-        repository.readStoredId().onEach { storedId ->
+        viewModelScope.launch(ioDispatcher + coroutineExceptionHandler) {
+            val storedId = repository.readStoredId()
+
             withContext(mainImmediateDispatcher) {
-                if (storedId != null) {
+                storedId?.let {
                     checkDormancy(storedId)
-                } else {
+                } ?: run {
                     _uiEffect.emit(GoToAccountActivity)
                 }
             }
-        }.launchIn(viewModelScope + coroutineExceptionHandler)
+        }
     }
 
     private fun checkDormancy(storedId: String) {

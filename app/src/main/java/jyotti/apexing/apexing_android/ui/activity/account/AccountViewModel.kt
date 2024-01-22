@@ -8,7 +8,6 @@ import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.remote.ApexLegendsApiError
 import jyotti.apexing.apexing_android.data.repository.AccountRepository
 import jyotti.apexing.apexing_android.di.IoDispatcher
-import jyotti.apexing.apexing_android.di.MainImmediateDispatcher
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHelpPage
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.ShowSnackBar
@@ -29,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @MainImmediateDispatcher private val mainImmediateDispatcher: CoroutineDispatcher,
     private val repository: AccountRepository
 ) : BaseViewModel, AccountUiContract, ViewModel() {
     private val _uiState = MutableStateFlow(UiState())

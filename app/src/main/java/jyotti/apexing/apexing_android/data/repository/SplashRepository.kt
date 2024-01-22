@@ -4,8 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import jyotti.apexing.apexing_android.data.remote.ApexingApi
 import jyotti.apexing.datastore.DATASTORE_KEY_ID
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -13,12 +12,12 @@ class SplashRepository @Inject constructor(
     private val apexingApi: ApexingApi,
     private val datastore: DataStore<Preferences>
 ) {
-    fun fetchVersion(): Flow<String> = flow {
-        emit(apexingApi.fetchVersion())
-    }
+    suspend fun fetchVersion(): String = apexingApi.fetchVersion()
 
-    fun readStoredId(): Flow<String?> = datastore.data.map { preferences ->
-        preferences[DATASTORE_KEY_ID]
+    suspend fun readStoredId(): String? {
+        return datastore.data.map { preferences ->
+            preferences[DATASTORE_KEY_ID]
+        }.first()
     }
 
     suspend fun fetchIsDormancy(id: String): Boolean = apexingApi.fetchIsDormancy(id)
