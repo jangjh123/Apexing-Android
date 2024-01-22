@@ -9,7 +9,9 @@ import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivityV2
 import jyotti.apexing.apexing_android.databinding.ActivityAccountBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHelpPage
+import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.ShowSnackBar
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivityV2
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 import kotlinx.coroutines.flow.collectLatest
 
@@ -27,13 +29,12 @@ class AccountActivity : BaseActivityV2<ActivityAccountBinding>(ActivityAccountBi
         repeatCallDefaultOnStarted {
             viewModel.uiEffect.collectLatest { uiEffect ->
                 when (uiEffect) {
-                    is GoToHelpPage -> {
-                        goToHelpPage()
-                    }
+                    is GoToHelpPage -> goToHelpPage()
 
-                    is ShowSnackBar -> {
-                        this@AccountActivity.showSnackBar(getString(uiEffect.stringId))
-                    }
+                    is ShowSnackBar -> showSnackBar(getString(uiEffect.stringId))
+
+                    is GoToHome -> goToHome(uiEffect.id)
+
                 }
             }
         }
@@ -41,6 +42,15 @@ class AccountActivity : BaseActivityV2<ActivityAccountBinding>(ActivityAccountBi
 
     private fun goToHelpPage() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_help))))
+    }
+
+    private fun goToHome(id: String) {
+        startActivity(
+            HomeActivityV2.newIntent(
+                context = this@AccountActivity,
+                id = id
+            )
+        )
     }
 
     companion object {

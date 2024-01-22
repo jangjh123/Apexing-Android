@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Url
@@ -18,7 +19,7 @@ interface ApexingApi {
     suspend fun fetchVersion(): String
 
     @GET("USER/PC/{id}/isDormancy")
-    suspend fun fetchIsDormancy(id: String): Boolean
+    suspend fun fetchIsDormancy(@Path("id") id: String): Boolean
 
     @PUT("USER/PC/{id}/lastConnection")
     suspend fun fetchLastConnectedTime(

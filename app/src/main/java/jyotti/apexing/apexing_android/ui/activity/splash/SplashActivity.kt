@@ -6,8 +6,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseActivityV2
 import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccountActivity
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToMainActivity
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivityV2
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccount
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowErrorDialog
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowNewVersionDialog
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
@@ -26,29 +27,30 @@ class SplashActivity : BaseActivityV2<ActivitySplashBinding>(ActivitySplashBindi
 
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collectLatest { effect ->
-                when (effect) {
-                    is GoToAccountActivity -> {
-                        goToAccountActivity()
-                    }
+            viewModel.uiEffect.collectLatest { uiEffect ->
+                when (uiEffect) {
+                    is GoToAccount -> goToAccount()
 
-                    is GoToMainActivity -> {
+                    is GoToHome -> goToHome(uiEffect.id)
 
-                    }
+                    is ShowNewVersionDialog -> Unit
 
-                    is ShowNewVersionDialog -> {
-
-                    }
-
-                    is ShowErrorDialog -> {
-
-                    }
+                    is ShowErrorDialog -> Unit
                 }
             }
         }
     }
 
-    private fun goToAccountActivity() {
+    private fun goToAccount() {
         startActivity(AccountActivity.newIntent(this@SplashActivity))
+    }
+
+    private fun goToHome(id: String) {
+        startActivity(
+            HomeActivityV2.newIntent(
+                context = this@SplashActivity,
+                id = id,
+            )
+        )
     }
 }

@@ -10,9 +10,9 @@ interface SplashUiContract : BaseContract<UiState, UiEffect> {
     )
 
     sealed interface UiEffect {
-        object GoToAccountActivity : UiEffect
+        object GoToAccount : UiEffect
 
-        data class GoToMainActivity(val id: String) : UiEffect
+        data class GoToHome(val id: String) : UiEffect
 
         object ShowNewVersionDialog : UiEffect
 

@@ -12,5 +12,7 @@ interface AccountUiContract : BaseContract<AccountUiContract.UiState, AccountUiC
         object GoToHelpPage : UiEffect
 
         data class ShowSnackBar(val stringId: Int) : UiEffect
+
+        data class GoToHome(val id: String) : UiEffect
     }
 }

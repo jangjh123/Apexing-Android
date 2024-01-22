@@ -10,8 +10,8 @@ import jyotti.apexing.apexing_android.data.repository.SplashRepository
 import jyotti.apexing.apexing_android.di.IoDispatcher
 import jyotti.apexing.apexing_android.di.MainImmediateDispatcher
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccountActivity
-import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToMainActivity
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccount
+import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowErrorDialog
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowNewVersionDialog
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiState
@@ -73,7 +73,7 @@ class SplashViewModel @Inject constructor(
                 storedId?.let {
                     checkDormancy(storedId)
                 } ?: run {
-                    _uiEffect.emit(GoToAccountActivity)
+                    _uiEffect.emit(GoToAccount)
                 }
             }
         }
@@ -84,7 +84,7 @@ class SplashViewModel @Inject constructor(
             val isDormancy = repository.fetchIsDormancy(storedId)
 
             if (isDormancy) {
-                _uiEffect.emit(GoToAccountActivity)
+                _uiEffect.emit(GoToAccount)
             } else {
                 updateLastConnectedTime(storedId)
             }
@@ -94,7 +94,7 @@ class SplashViewModel @Inject constructor(
     private suspend fun updateLastConnectedTime(storedId: String) {
         viewModelScope.launch(coroutineExceptionHandler) {
             repository.fetchLastConnectedTime(storedId)
-            _uiEffect.emit(GoToMainActivity(storedId))
+            _uiEffect.emit(GoToHome(storedId))
         }
     }
 }
