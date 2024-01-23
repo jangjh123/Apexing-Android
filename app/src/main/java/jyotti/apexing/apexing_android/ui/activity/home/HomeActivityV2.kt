@@ -10,6 +10,7 @@ import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.MAIN
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.STATISTICS
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
+import jyotti.apexing.apexing_android.ui.fragment.main.MainFragmentV2
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 class HomeActivityV2 : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
     override val viewModel: HomeViewModel by viewModels()
 
-    private val mainFragment = MainFragment()
+    private val mainFragment = MainFragmentV2()
     private val statisticsFragment by lazy { StatisticsFragment() }
 
     override fun initBinding() {
@@ -26,6 +27,7 @@ class HomeActivityV2 : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::
             vm = viewModel
         }
 
+        showFragment(MAIN)
         initTabLayout()
     }
 

@@ -1,10 +1,10 @@
-package jyotti.apexing.apexing_android.ui.activity.home
+package jyotti.apexing.apexing_android.ui.fragment.main
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.base.BaseViewModel
-import jyotti.apexing.apexing_android.ui.activity.home.HomeUiContract.UiEffect
-import jyotti.apexing.apexing_android.ui.activity.home.HomeUiContract.UiState
+import jyotti.apexing.apexing_android.ui.fragment.main.MainUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.fragment.main.MainUiContract.UiState
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : BaseViewModel, HomeUiContract, ViewModel() {
+class MainViewModelV2 @Inject constructor() : BaseViewModel, MainUiContract, ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -24,4 +24,6 @@ class HomeViewModel @Inject constructor() : BaseViewModel, HomeUiContract, ViewM
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     override val uiEffect: SharedFlow<UiEffect> = _uiEffect.asSharedFlow()
+
+
 }
