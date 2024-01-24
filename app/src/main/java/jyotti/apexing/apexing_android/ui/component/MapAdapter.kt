@@ -3,20 +3,17 @@ package jyotti.apexing.apexing_android.ui.component
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
-import jyotti.apexing.apexing_android.util.GenericDiffUtil
 import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
 import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
 
 
-class MapAdapter :
-    ListAdapter<Map, RecyclerView.ViewHolder>(
-        GenericDiffUtil()
-    ) {
+class MapAdapter : ListAdapter<Map, RecyclerView.ViewHolder>(MapDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
@@ -55,4 +52,9 @@ class MapAdapter :
             }
         }
     }
+}
+
+class MapDiffUtil : DiffUtil.ItemCallback<Map>() {
+    override fun areItemsTheSame(oldItem: Map, newItem: Map): Boolean = oldItem.endTime == newItem.endTime
+    override fun areContentsTheSame(oldItem: Map, newItem: Map): Boolean = oldItem == newItem
 }
