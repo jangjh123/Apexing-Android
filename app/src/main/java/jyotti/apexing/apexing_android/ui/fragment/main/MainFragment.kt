@@ -1,5 +1,7 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
+import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseFragmentV2
@@ -13,8 +15,8 @@ class MainFragment : BaseFragmentV2<FragmentMainBinding>(FragmentMainBinding::in
     override val viewModel: MainViewModel by viewModels()
     private val mapAdapter = MapAdapter()
     private val newsAdapter = NewsAdapter(
-        onClickNews = {
-
+        onClickNews = { newsUrl ->
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(newsUrl)))
         }
     )
 
