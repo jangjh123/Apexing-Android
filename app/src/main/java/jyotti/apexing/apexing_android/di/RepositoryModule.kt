@@ -41,18 +41,8 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideMainRepository(
-        networkManager: NetworkManager,
-        firebaseDatabase: FirebaseDatabase,
-        dataStore: DataStore<Preferences>,
-        matchDao: MatchDao,
-        dispatcher: CoroutineDispatcher
-    ) = MainRepository(networkManager, firebaseDatabase, dataStore, matchDao, dispatcher)
-
-    @ViewModelScoped
-    @Provides
-    fun provideMainRepositoryV2(
         apexingApi: ApexingApi
-    ) = MainRepositoryV2(apexingApi)
+    ) = MainRepository(apexingApi)
 
     @ViewModelScoped
     @Provides

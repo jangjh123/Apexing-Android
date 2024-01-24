@@ -10,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseFragment
 import jyotti.apexing.apexing_android.databinding.FragmentStatisticsBinding
-import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.ui.component.CustomDialogFragment
 import jyotti.apexing.apexing_android.ui.component.MatchAdapter
 import jyotti.apexing.apexing_android.ui.component.SuggestDialogFragment
@@ -87,7 +86,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(R.layout.frag
                         "한 시간당 45명의 전적이 갱신됩니다.",
                         getString(R.string.confirm),
                         onClickButton = {
-                            (activity as HomeActivity).backToMainTab()
+//                            (activity as HomeActivity).backToMainTab()
                         }
                     ).show(childFragmentManager, "index_dialog")
                 }

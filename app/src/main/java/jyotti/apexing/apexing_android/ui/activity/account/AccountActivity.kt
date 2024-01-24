@@ -11,7 +11,7 @@ import jyotti.apexing.apexing_android.databinding.ActivityAccountBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHelpPage
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.ShowSnackBar
-import jyotti.apexing.apexing_android.ui.activity.home.HomeActivityV2
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 import kotlinx.coroutines.flow.collectLatest
 
@@ -46,7 +46,7 @@ class AccountActivity : BaseActivityV2<ActivityAccountBinding>(ActivityAccountBi
 
     private fun goToHome(id: String) {
         startActivity(
-            HomeActivityV2.newIntent(
+            HomeActivity.newIntent(
                 context = this@AccountActivity,
                 id = id
             )

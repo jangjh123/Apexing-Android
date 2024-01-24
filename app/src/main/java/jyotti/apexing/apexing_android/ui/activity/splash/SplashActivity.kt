@@ -6,13 +6,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseActivityV2
 import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
-import jyotti.apexing.apexing_android.ui.activity.home.HomeActivityV2
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToAccount
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowErrorDialog
 import jyotti.apexing.apexing_android.ui.activity.splash.SplashUiContract.UiEffect.ShowNewVersionDialog
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
-import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -47,7 +46,7 @@ class SplashActivity : BaseActivityV2<ActivitySplashBinding>(ActivitySplashBindi
 
     private fun goToHome(id: String) {
         startActivity(
-            HomeActivityV2.newIntent(
+            HomeActivity.newIntent(
                 context = this@SplashActivity,
                 id = id,
             )

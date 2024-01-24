@@ -6,11 +6,11 @@
 
         <variable
             name="fragment"
-            type="jyotti.apexing.apexing_android.ui.fragment.main.MainFragmentV2" />
+            type="jyotti.apexing.apexing_android.ui.fragment.main.MainFragment" />
 
         <variable
             name="vm"
-            type="jyotti.apexing.apexing_android.ui.fragment.main.MainViewModelV2" />
+            type="jyotti.apexing.apexing_android.ui.fragment.main.MainViewModel" />
     </data>
 
     <ScrollView
