@@ -17,7 +17,7 @@ import jyotti.apexing.apexing_android.base.BaseFragment
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
-import jyotti.apexing.apexing_android.data.model.main.user.User
+import jyotti.apexing.apexing_android.data.model.main.user.UserInfo
 import jyotti.apexing.apexing_android.databinding.FragmentMainBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.component.MapAdapter
@@ -38,7 +38,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun onStart() {
         super.onStart()
-        binding.fragment = this@MainFragment
+//        binding.fragment = this@MainFragment
     }
 
     override fun startProcess() {
@@ -93,26 +93,26 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUserView(user: User) {
+    private fun setUserView(userInfo: UserInfo) {
         with(binding) {
-            if (user.name.isNotEmpty()) {
-                tvUserId.text = user.name
+            if (userInfo.name.isNotEmpty()) {
+                tvUserId.text = userInfo.name
             } else {
                 tvUserId.text = getString(R.string.korean_nickname)
             }
-            tvBrRankPoint.text = formatAmount(user.brRankScore)
-            tvArenaRankPoint.text = formatAmount(user.arRankScore)
+            tvBrRankPoint.text = formatAmount(userInfo.brRankScore)
+            tvArenaRankPoint.text = formatAmount(userInfo.arRankScore)
 
-            if (user.level <= 500) {
-                tvUserLevel.text = "Lv.${user.level}"
-                tvCurLevel.text = "Lv.${user.level}"
-                tvNextLevel.text = "Lv.${user.level + 1}"
+            if (userInfo.level <= 500) {
+                tvUserLevel.text = "Lv.${userInfo.level}"
+                tvCurLevel.text = "Lv.${userInfo.level}"
+                tvNextLevel.text = "Lv.${userInfo.level + 1}"
             } else {
                 tvUserLevel.text = 500.toString()
             }
 
             Glide.with(requireContext())
-                .load(user.bannerImg.replace("\"", ""))
+                .load(userInfo.bannerImg.replace("\"", ""))
                 .centerCrop()
                 .into(binding.ivBanner)
 
@@ -124,15 +124,15 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     ), BlendModeCompat.SRC_ATOP
                 )
 
-            pbLevel.progress = user.toNextLevelPercent
+            pbLevel.progress = userInfo.toNextLevelPercent
         }
 
         Glide.with(requireContext())
-            .load(user.brRankImg)
+            .load(userInfo.brRankImg)
             .into(binding.ivBrRank)
 
         Glide.with(requireContext())
-            .load(user.arRankImg)
+            .load(userInfo.arRankImg)
             .into(binding.ivArenaRank)
     }
 
@@ -170,7 +170,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         newsAdapter.submitList(newsList)
         linearSnapHelper.run {
             attachToRecyclerView(binding.rvNews)
-            binding.indicator.attachToRecyclerView(binding.rvNews, this)
         }
     }
 

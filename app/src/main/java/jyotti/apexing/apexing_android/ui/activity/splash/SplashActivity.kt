@@ -27,7 +27,7 @@ class SplashActivity : BaseActivityV2<ActivitySplashBinding>(ActivitySplashBindi
 
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collectLatest { uiEffect ->
+            viewModel.uiEffect.collect { uiEffect ->
                 when (uiEffect) {
                     is GoToAccount -> goToAccount()
 

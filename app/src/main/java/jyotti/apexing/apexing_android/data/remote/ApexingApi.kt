@@ -1,11 +1,14 @@
 package jyotti.apexing.apexing_android.data.remote
 
 import com.google.gson.JsonObject
+import jyotti.apexing.apexing_android.data.model.main.crafting.CraftingsResponse
+import jyotti.apexing.apexing_android.data.model.main.map.MapsResponse
+import jyotti.apexing.apexing_android.data.model.main.news.NewsesResponse
+import jyotti.apexing.apexing_android.data.model.main.user.UserInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
-import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Url
@@ -26,4 +29,19 @@ interface ApexingApi {
         @Path("id") id: String,
         @Body lastConnectedTime: String
     ): String
+
+    @GET("MAPS")
+    suspend fun fetchMaps(): MapsResponse
+
+    @GET("VERSION/notice")
+    suspend fun fetchNotice(): String
+
+    @GET("Craftings")
+    suspend fun fetchCraftings(): CraftingsResponse
+
+    @GET("USER_INFO/{id}")
+    suspend fun fetchUserInfo(@Path("id") id: String): UserInfo
+
+    @GET("News")
+    suspend fun fetchNewses(): NewsesResponse
 }

@@ -6,7 +6,11 @@
 
         <variable
             name="fragment"
-            type="jyotti.apexing.apexing_android.ui.fragment.main.MainFragment" />
+            type="jyotti.apexing.apexing_android.ui.fragment.main.MainFragmentV2" />
+
+        <variable
+            name="vm"
+            type="jyotti.apexing.apexing_android.ui.fragment.main.MainViewModelV2" />
     </data>
 
     <ScrollView
@@ -20,24 +24,23 @@
             android:clipToPadding="false"
             android:paddingBottom="20dp">
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_map"
-                setAdapter="@{fragment.mapAdapter}"
-                setAutoScroll="@{true}"
-                setLayoutManager="@{0}"
-                setSnapHelper="@{true}"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:alpha="0.85"
+                android:orientation="horizontal"
                 android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:list="@{vm.uiState.maps}"
+                app:setSnapHelper="@{true}" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_notice"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 app:cardBackgroundColor="@color/divider"
@@ -54,14 +57,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:gravity="start"
+                    android:text="@{vm.uiState.notice}"
                     android:textColor="@color/main"
                     android:textSize="14dp" />
-
             </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:background="@drawable/box_radius"
@@ -88,7 +91,9 @@
                         android:id="@+id/iv_craft_daily_0"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter" />
+                        android:background="@color/background"
+                        android:scaleType="fitCenter"
+                        app:setImage="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(0).asset : ``}" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -97,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:text="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(0).cost : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +126,9 @@
                     <ImageView
                         android:id="@+id/iv_craft_daily_1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:background="@color/background"
+                        app:setImage="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(1).asset : ``}" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -129,6 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:text="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(1).cost : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -152,7 +161,9 @@
                         android:id="@+id/iv_craft_weekly_0"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter" />
+                        android:background="@color/background"
+                        android:scaleType="fitCenter"
+                        app:setImage="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(2).asset : ``}" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -161,6 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:text="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(2).cost : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -184,7 +196,9 @@
                         android:id="@+id/iv_craft_weekly_1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter" />
+                        android:background="@color/background"
+                        android:scaleType="fitCenter"
+                        app:setImage="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(3).asset : ``}" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -194,6 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:text="@{vm.uiState.craftings.size() > 0 ? vm.uiState.craftings.get(3).cost : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -205,7 +220,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/block_user"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
@@ -217,7 +232,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_banner"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="128dp"
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/divider"
@@ -237,6 +252,7 @@
                             android:layout_height="match_parent"
                             android:background="@color/divider"
                             android:tintMode="src_atop"
+                            app:setImage="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.bannerImg : ``}"
                             app:tint="#99000000" />
 
                         <TextView
@@ -247,6 +263,7 @@
                             android:layout_above="@+id/center"
                             android:layout_centerHorizontal="true"
                             android:gravity="center"
+                            android:text="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.name : ``}"
                             android:textColor="@color/white"
                             android:textSize="24dp" />
 
@@ -262,9 +279,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/center"
-
-
                             android:layout_centerHorizontal="true"
+                            android:text="@{vm.uiState.userInfo != null ? @string/level(vm.uiState.userInfo.level) : ``}"
                             android:textColor="@color/white"
                             android:textSize="16dp" />
 
@@ -278,6 +294,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:paddingVertical="10dp"
+                    android:text="@{vm.uiState.userInfo != null ? @string/level(vm.uiState.userInfo.level) : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -287,10 +304,12 @@
                 <ProgressBar
                     android:id="@+id/pb_level"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginHorizontal="12dp"
                     android:indeterminateTint="@color/main"
+                    android:progress="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.toNextLevelPercent : 0}"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_next_level"
                     app:layout_constraintEnd_toStartOf="@+id/tv_next_level"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -304,6 +323,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:paddingVertical="10dp"
+                    android:text="@{vm.uiState.userInfo != null ? @string/level(vm.uiState.userInfo.level + 1) : ``}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -332,7 +352,8 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp" />
+                            android:layout_margin="10dp"
+                            app:setImage="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.brRankImg : ``}" />
 
                         <TextView
                             android:id="@+id/tv_br_rank_point"
@@ -341,7 +362,8 @@
                             android:layout_gravity="center"
                             android:letterSpacing="-0.05"
                             android:textColor="@color/white"
-                            android:textSize="20dp" />
+                            android:textSize="20dp"
+                            app:formattedNumberText="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.brRankScore : 0}" />
 
                     </LinearLayout>
 
@@ -371,7 +393,8 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp" />
+                            android:layout_margin="10dp"
+                            app:setImage="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.arRankImg : ``}" />
 
                         <TextView
                             android:id="@+id/tv_arena_rank_point"
@@ -380,35 +403,29 @@
                             android:layout_gravity="center"
                             android:letterSpacing="-0.05"
                             android:textColor="@color/white"
-                            android:textSize="20dp" />
+                            android:textSize="20dp"
+                            app:formattedNumberText="@{vm.uiState.userInfo != null ? vm.uiState.userInfo.arRankScore : 0}" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_news"
-                    setAdapter="@{fragment.newsAdapter}"
-                    setLayoutManager="@{0}"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="230dp"
+                    android:orientation="horizontal"
                     android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView2" />
-
-                <me.relex.circleindicator.CircleIndicator2
-                    android:id="@+id/indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_news" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/cardView2"
+                    app:list="@{vm.uiState.newses}"
+                    app:setSnapHelper="@{true}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_change_account"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_margin="20dp"
                 app:cardBackgroundColor="@color/divider"
@@ -418,16 +435,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_user">
 
-
                 <TextView
                     style="@style/TextViewDefault"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:onClick="@{fragment::onClickChangeAccount}"
                     android:text="@string/change_id"
                     android:textColor="@color/main"
                     android:textSize="16dp" />
+                <!--                <TextView-->
+                <!--                    style="@style/TextViewDefault"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:onClick="@{fragment::onClickChangeAccount}"-->
+                <!--                    android:text="@string/change_id"-->
+                <!--                    android:textColor="@color/main"-->
+                <!--                    android:textSize="16dp" />-->
 
             </androidx.cardview.widget.CardView>
 

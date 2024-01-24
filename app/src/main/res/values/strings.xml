@@ -56,7 +56,12 @@
     <string name="back_button_double_tap">뒤로 가기 버튼을 빠르게 두 번 탭하면 종료됩니다.</string>
 
     <!--    MainFragment-->
+    <string name="battle_royale_normal">배틀로얄 - 일반</string>
+    <string name="battle_royale_rank">배틀로얄 - 랭크</string>
+    <string name="arena_normal">아레나 - 일반</string>
+    <string name="arena_rank">아레나 - 랭크</string>
     <string name="korean_nickname">한글 닉네임</string>
+    <string name="level">Lv.%d</string>
     <string name="tab_to_detail">탭하여 자세히 알아보기</string>
     <string name="record_damage">전체 가한 대미지</string>
     <string name="record_kill">전체 킬</string>

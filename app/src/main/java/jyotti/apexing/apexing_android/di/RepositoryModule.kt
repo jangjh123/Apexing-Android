@@ -50,6 +50,12 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
+    fun provideMainRepositoryV2(
+        apexingApi: ApexingApi
+    ) = MainRepositoryV2(apexingApi)
+
+    @ViewModelScoped
+    @Provides
     fun provideStatisticsRepository(
         networkManager: NetworkManager,
         dataStore: DataStore<Preferences>,

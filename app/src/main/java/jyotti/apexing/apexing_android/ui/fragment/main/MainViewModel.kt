@@ -6,10 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
-import jyotti.apexing.apexing_android.data.model.main.user.User
+import jyotti.apexing.apexing_android.data.model.main.user.UserInfo
 import jyotti.apexing.apexing_android.data.repository.MainRepository
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,14 +18,14 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     val scope = CoroutineScope(dispatcher)
 
-    private val user = MutableLiveData<User>()
+    private val userInfo = MutableLiveData<UserInfo>()
     private val mapList = MutableLiveData<List<Map>>()
     private val craftingList = MutableLiveData<List<Crafting>>()
     private val newsList = MutableLiveData<List<News>>()
     private val notice = MutableLiveData<String>()
     private val contentsCount = MutableLiveData(0)
 
-    fun getUserLiveData() = user
+    fun getUserLiveData() = userInfo
     fun getMapLiveData() = mapList
     fun getCraftingLiveData() = craftingList
     fun getNewsLiveData() = newsList

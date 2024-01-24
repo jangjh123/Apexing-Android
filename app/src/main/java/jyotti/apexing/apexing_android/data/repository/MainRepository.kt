@@ -9,7 +9,7 @@ import jyotti.apexing.apexing_android.data.local.MatchDao
 import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.data.model.main.news.News
-import jyotti.apexing.apexing_android.data.model.main.user.User
+import jyotti.apexing.apexing_android.data.model.main.user.UserInfo
 import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
@@ -37,11 +37,11 @@ class MainRepository @Inject constructor(
 
     inline fun fetchUser(
         userName: String,
-        crossinline onSuccess: (User) -> Unit
+        crossinline onSuccess: (UserInfo) -> Unit
     ) {
         firebaseDatabase.getReference("USER_INFO").child(userName).get().addOnSuccessListener {
             onSuccess(
-                User(
+                UserInfo(
                     arRankImg = it.child("arRankImg").value.toString(),
                     arRankScore = it.child("arRankScore").getValue<Int>() ?: 0,
                     bannerImg = it.child("bannerImg").value.toString(),
@@ -96,7 +96,8 @@ class MainRepository @Inject constructor(
                         "MAPS" -> {
                             list.add(
                                 Map(
-                                    type = "배틀로얄 (노말)",
+//                                    type = "배틀로얄 (노말)",
+                                    typeStringId = 1,
                                     snapshot.child("BR_normal").child("asset").value.toString(),
                                     snapshot.child("BR_normal").child("map").value.toString(),
                                     snapshot.child("BR_normal").child("end").value.toString()
@@ -104,7 +105,8 @@ class MainRepository @Inject constructor(
                             )
                             list.add(
                                 Map(
-                                    "배틀로얄 (랭크)",
+//                                    "배틀로얄 (랭크)",
+                                    typeStringId = 1,
                                     snapshot.child("BR_rank").child("asset").value.toString(),
                                     snapshot.child("BR_rank").child("map").value.toString(),
                                     snapshot.child("BR_rank").child("end").value.toString()
@@ -112,7 +114,8 @@ class MainRepository @Inject constructor(
                             )
                             list.add(
                                 Map(
-                                    "아레나 (노말)",
+//                                    "아레나 (노말)",
+                                    typeStringId = 1,
                                     snapshot.child("AR_normal").child("asset").value.toString(),
                                     snapshot.child("AR_normal").child("map").value.toString(),
                                     snapshot.child("AR_normal").child("end").value.toString()
@@ -120,7 +123,8 @@ class MainRepository @Inject constructor(
                             )
                             list.add(
                                 Map(
-                                    "아레나 (랭크)",
+//                                    "아레나 (랭크)",
+                                    typeStringId = 1,
                                     snapshot.child("AR_rank").child("asset").value.toString(),
                                     snapshot.child("AR_rank").child("map").value.toString(),
                                     snapshot.child("AR_rank").child("end").value.toString()

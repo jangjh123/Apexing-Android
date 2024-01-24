@@ -49,7 +49,7 @@ class MapAdapter :
                     )
                     .centerCrop()
                     .into(ivMap)
-                tvMapType.text = map.type
+                tvMapType.text = root.context.getString(map.typeStringId)
                 tvMapName.text = map.name
                 tvMapTime.text = getTimestampToDate(map.endTime) + " 까지"
             }

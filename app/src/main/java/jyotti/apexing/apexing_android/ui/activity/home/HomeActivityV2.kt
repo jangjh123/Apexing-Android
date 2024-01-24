@@ -3,17 +3,16 @@ package jyotti.apexing.apexing_android.ui.activity.home
 import android.content.Context
 import android.content.Intent
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.base.BaseActivityV2
 import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.MAIN
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.STATISTICS
-import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragmentV2
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class HomeActivityV2 : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
@@ -53,14 +52,14 @@ class HomeActivityV2 : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::
 
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.layoutFrame.id, fragment)
+            .replace(binding.layoutFrame.id, MainFragmentV2::class.java, bundleOf(Pair(KEY_ID, intent.getStringExtra(KEY_ID))))
             .addToBackStack(null)
             .commit()
     }
 
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collectLatest { uiEffect ->
+            viewModel.uiEffect.collect { uiEffect ->
                 when (uiEffect) {
                     else -> Unit
                 }

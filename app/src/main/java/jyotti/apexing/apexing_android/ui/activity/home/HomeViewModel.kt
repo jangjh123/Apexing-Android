@@ -1,5 +1,6 @@
 package jyotti.apexing.apexing_android.ui.activity.home
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jyotti.apexing.apexing_android.base.BaseViewModel
@@ -15,7 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : BaseViewModel, HomeUiContract, ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+) : BaseViewModel, HomeUiContract, ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -24,4 +27,6 @@ class HomeViewModel @Inject constructor() : BaseViewModel, HomeUiContract, ViewM
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     override val uiEffect: SharedFlow<UiEffect> = _uiEffect.asSharedFlow()
+
+    fun getId(): String? = savedStateHandle.get<String>(HomeActivityV2.KEY_ID)
 }
