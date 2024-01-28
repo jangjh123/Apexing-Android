@@ -73,6 +73,9 @@
     <string name="most_legend">모스트 레전드</string>
     <string name="basic_statistics">기본 통계</string>
     <string name="battle_ability">전투 능력</string>
+    <string name="every_match">최근 %d전 기준</string>
+    <string name="kill_with_string">%s 킬</string>
+    <string name="damage_with_string">%s 대미지</string>
     <string name="recent_games_statistics">최근 20전 킬 / 딜</string>
     <string name="statistics_made_by_source">모든 통계는 기록된 게임을 바탕으로 산출됩니다.</string>
     <string name="kill_avg_all">전체 평균 킬</string>
@@ -94,11 +97,16 @@
     <string name="my_index">나의 순번</string>
     <string name="refresh_desc">한 시간 당 45명의 전적이 갱신됩니다.</string>
     <string name="no_match">기록된 매치가 없습니다.\n게임을 플레이 해주세요.\n현재 순번이 유저님의 순번을 지나면\n매치가 표시됩니다.</string>
-    <string name="please_set_tracker_or_play_hard">킬과 대미지가 모두 0인 매치입니다.\n트래커가 없거나, 민첩하셔야 합니다.</string>
+    <string name="please_set_tracker_or_play_hard">킬과 대미지가 모두 0인 매치입니다.\n트래커를 설정하거나, 민첩하셔야 합니다.</string>
     <string name="invalidated_match_data">유효하지 않은 데이터가 기록된 매치입니다.\n통계에는 반영되지 않습니다.</string>
     <string name="legend_kill_avg">레전드 평균 킬</string>
     <string name="legend_damage_avg">레전드 평균 대미지</string>
     <string name="touch_portrait">초상화를 터치하여 레전드별 통계를 볼 수 있습니다.</string>
+    <string name="kill_catch">킬 캐치</string>
+    <string name="dealing">딜링</string>
+    <string name="survival_ability">생존 능력</string>
+    <string name="positiveness">적극성</string>
+    <string name="survival_time">%d 분 %d 초 생존</string>
 
     <!--    StoreFragment-->
     <string name="touch_to_detail">아이템 터치하여 이미지 확대</string>

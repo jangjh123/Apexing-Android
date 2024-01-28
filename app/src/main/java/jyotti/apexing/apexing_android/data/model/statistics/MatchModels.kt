@@ -1,43 +1,30 @@
 package jyotti.apexing.apexing_android.data.model.statistics
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.RadarDataSet
 
-sealed class MatchModels(var type: MatchModelType) {
-    @Entity
-    data class Match(
-        @PrimaryKey(autoGenerate = true)
-        var id: Int = 0,
-        val legendPlayed: String,
-        val gameMode: String,
-        val gameLengthSecs: Int,
-        val gameStartTimestamp: Long,
-        var kill: Int,
-        var damage: Int,
-        var isEffectOnStatistics: Boolean
-    ) : MatchModels(MatchModelType.DATA)
-
+sealed class MatchModels {
     data class Header(
-        val matchList: List<Match>,
-        val matchCount: Int,
+        val updateTimeLeft: Int,
+        val matches: List<Match>,
+        val mostLegends: List<Pair<String, MostLegend>>,
         val pieData: PieData,
-        val killRvgAll: Double,
-        val damageRvgAll: Double,
-        val killRvgRecent: Double,
-        val damageRvgRecent: Double,
+        val killAvgAll: Float,
+        val damageAvgAll: Float,
+        val killAvgRecent: Float,
+        val damageAvgRecent: Float,
         val radarDataSet: RadarDataSet,
         val barDataSet: List<BarDataSet>
-    ) : MatchModels(MatchModelType.HEADER)
+    ) : MatchModels()
 
-    data class Footer(
-        val text: String
-    ) : MatchModels(MatchModelType.FOOTER)
-
-}
-
-enum class MatchModelType {
-    HEADER, DATA, FOOTER
+    data class Match(
+        val legend: String,
+        val mode: String,
+        val secs: Int,
+        val date: Long,
+        val kill: Int,
+        val damage: Int,
+        val isValid: Boolean
+    ) : MatchModels()
 }

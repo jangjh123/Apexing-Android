@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
-import jyotti.apexing.apexing_android.util.Utils.getThumbnail
+import jyotti.apexing.apexing_android.util.getThumbnail
 
 class NewsAdapter(private inline val onClickNews: (String) -> Unit) : ListAdapter<News, RecyclerView.ViewHolder>(NewsDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -37,9 +37,7 @@ class NewsAdapter(private inline val onClickNews: (String) -> Unit) : ListAdapte
                 Glide.with(root)
                     .load(news.img)
                     .centerCrop()
-                    .thumbnail(
-                        getThumbnail(root.context, news.img)
-                    )
+                    .thumbnail(getThumbnail(root.context, news.img))
                     .into(ivNewsImage)
 
                 layoutNews.setOnClickListener {

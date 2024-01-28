@@ -11,9 +11,9 @@ import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.data.model.store.StoreItem
 import jyotti.apexing.apexing_android.databinding.ItemStoreBinding
 import jyotti.apexing.apexing_android.util.GenericDiffUtil
-import jyotti.apexing.apexing_android.util.Utils.formatAmount
-import jyotti.apexing.apexing_android.util.Utils.getThumbnail
-import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
+import jyotti.apexing.apexing_android.util.formatAmount
+import jyotti.apexing.apexing_android.util.getThumbnail
+import jyotti.apexing.apexing_android.util.getTimestampToDate
 
 class StoreAdapter(
     private inline val onClickItem: (Pair<String, String>) -> Unit
@@ -100,8 +100,7 @@ class StoreAdapter(
                     }
                 }
 
-                tvItemExpirationDate.text =
-                    "${getTimestampToDate(storeItem.expireTimeStamp.toString())} 까지"
+                tvItemExpirationDate.text = "${getTimestampToDate(storeItem.expireTimeStamp.toString())} 까지"
 
                 ivItem.setOnClickListener {
                     onClickItem(Pair(storeItem.title, storeItem.asset))

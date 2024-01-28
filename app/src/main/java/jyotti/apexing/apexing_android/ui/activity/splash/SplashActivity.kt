@@ -3,7 +3,7 @@ package jyotti.apexing.apexing_android.ui.activity.splash
 import android.annotation.SuppressLint
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import jyotti.apexing.apexing_android.base.BaseActivityV2
+import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivitySplashBinding
 import jyotti.apexing.apexing_android.ui.activity.account.AccountActivity
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
@@ -15,7 +15,7 @@ import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BaseActivityV2<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
+class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
     override val viewModel: SplashViewModel by viewModels()
 
     override fun initBinding() {

@@ -22,7 +22,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_refresh_board"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
@@ -100,7 +100,7 @@
 
             <TextView
                 android:id="@+id/btn_how_to_record"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingVertical="10dp"
@@ -114,7 +114,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/block_mosts"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 app:cardBackgroundColor="@color/divider"
@@ -137,6 +137,7 @@
                         android:layout_width="240dp"
                         android:layout_height="120dp"
                         android:visibility="gone"
+                        android:onClick="@{() -> viewHolder.hideLegendDetail()}"
                         app:cardBackgroundColor="@color/divider"
                         app:cardCornerRadius="12dp"
                         app:cardElevation="20dp"
@@ -830,13 +831,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView11"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 app:cardBackgroundColor="@color/divider"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView9">
 
 

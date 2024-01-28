@@ -1,76 +1,59 @@
 package jyotti.apexing.apexing_android.ui.fragment.statistics
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
-import jyotti.apexing.apexing_android.util.SingleLiveEvent
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
-import java.util.*
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity.Companion.KEY_ID
+import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsUiContract.UiState
+import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-    private val repository: StatisticsRepository,
-    dispatcher: CoroutineDispatcher
-) :
-    ViewModel() {
-    private val scope = CoroutineScope(dispatcher)
-    private val _refreshIndexLiveData = MutableLiveData<Int>()
-    val refreshIndexLiveData: LiveData<Int>
-        get() = _refreshIndexLiveData
-    private val databaseMessage = SingleLiveEvent<Unit>()
-    private val ratingMessage = SingleLiveEvent<Unit>()
-    private val noElementMessage = SingleLiveEvent<Unit>()
+    private val statisticsRepository: StatisticsRepository,
+    private val savedStateHandle: SavedStateHandle
+) : BaseViewModel, StatisticsUiContract, ViewModel() {
+    private val _uiState = MutableStateFlow(UiState())
+    override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    fun getDatabaseMessage() = databaseMessage
-    fun getRatingMessage() = ratingMessage
-    fun getNoElementMessage() = noElementMessage
+    private val _uiEffect = MutableSharedFlow<UiEffect>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    override val uiEffect: SharedFlow<UiEffect> = _uiEffect.asSharedFlow()
 
-    @SuppressLint("NullSafeMutableLiveData")
-    fun updateMatch() {
-        scope.launch {
-            repository.sendMatchRequest(
-                id = repository.readStoredId().first(),
-                onSuccess = { pair ->
-                    scope.launch {
-                        withContext(Dispatchers.IO) {
-                            repository.storeMatch(pair.first)
-                        }
-                        databaseMessage.call()
-                        _refreshIndexLiveData.postValue(pair.second)
-                    }
-                },
-                onComplete = {
-                    databaseMessage.call()
-                    _refreshIndexLiveData.postValue(it)
-                },
-                onNoElement = {
-                    noElementMessage.call()
-                })
-        }
-    }
+    private val coroutineExceptionHandler = getCoroutineExceptionHandler(
+        onUnknownHostException = {
+            viewModelScope.launch {
 
-    fun getMatch() = repository.readMatch().cachedIn(viewModelScope)
-
-    fun suggestRating() {
-        scope.launch {
-            if (!repository.readStoredRatingState().first()) {
-                if (Random().nextInt(25) == 10) {
-                    ratingMessage.call()
-                }
             }
         }
+    )
+
+    init {
+        getStatistics()
     }
 
-    fun setRatingState() {
-        scope.launch {
-            repository.storeRatingState()
+    private fun getStatistics() {
+        savedStateHandle.get<String>(KEY_ID)?.let { id ->
+            viewModelScope.launch(coroutineExceptionHandler) {
+                _uiState.update {
+                    it.copy(statistics = statisticsRepository.fetchStatistics(id))
+                }
+            }
         }
     }
 }

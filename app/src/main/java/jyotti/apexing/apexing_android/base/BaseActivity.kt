@@ -1,65 +1,39 @@
 package jyotti.apexing.apexing_android.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import jyotti.apexing.apexing_android.ui.component.ProgressFragment
-import java.lang.Exception
+import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : AppCompatActivity() {
+abstract class BaseActivity<VB : ViewDataBinding>(private val inflater: (LayoutInflater) -> VB) :
+    AppCompatActivity() {
+
     lateinit var binding: VB
-    private val progressFragment = ProgressFragment()
+
+    protected abstract val viewModel: BaseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObservers()
-        init()
-        startProcess()
+        binding = inflater(layoutInflater)
+        setContentView(binding.root)
+        initBinding()
     }
 
-    protected open fun isProgressShowing(): Boolean {
-        return progressFragment.isVisible
+    override fun onStart() {
+        super.onStart()
+        collectUiEffect()
     }
 
-    protected open fun setObservers() {
+    protected abstract fun initBinding()
 
+    protected abstract fun collectUiEffect()
+
+    protected fun bind(action: VB.() -> Unit) {
+        binding.run(action)
     }
 
-    protected open fun init() {
-        initViewDataBinding()
-    }
-
-    protected open fun initViewDataBinding() {
-        binding = DataBindingUtil.setContentView(this, layoutId)
-    }
-
-    protected open fun startProcess() {
-
-    }
-
-    protected open fun showProgress() {
-        if (!progressFragment.isAdded) {
-            try {
-                progressFragment.show(supportFragmentManager, "progress")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    protected open fun dismissProgress() {
-        if (progressFragment.isAdded) {
-            try {
-                progressFragment.dismiss()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dismissProgress()
+    protected fun showSnackBar(text: String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 }

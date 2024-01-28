@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import jyotti.apexing.apexing_android.base.BaseActivityV2
+import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.MAIN
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.STATISTICS
@@ -15,12 +15,8 @@ import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
+class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
     override val viewModel: HomeViewModel by viewModels()
-
-    private val mainFragment = MainFragment()
-    private val statisticsFragment by lazy { StatisticsFragment() }
-
     override fun initBinding() {
         bind {
             vm = viewModel
@@ -45,14 +41,14 @@ class HomeActivity : BaseActivityV2<ActivityHomeBinding>(ActivityHomeBinding::in
     }
 
     private fun showFragment(apexingFragment: ApexingFragment) {
-        val fragment = when (apexingFragment) {
-            MAIN -> mainFragment
-            STATISTICS -> statisticsFragment
+        val fragmentClass = when (apexingFragment) {
+            MAIN -> MainFragment::class.java
+            STATISTICS -> StatisticsFragment::class.java
         }
 
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.layoutFrame.id, MainFragment::class.java, bundleOf(Pair(KEY_ID, intent.getStringExtra(KEY_ID))))
+            .replace(binding.layoutFrame.id, fragmentClass, bundleOf(Pair(KEY_ID, intent.getStringExtra(KEY_ID))))
             .addToBackStack(null)
             .commit()
     }

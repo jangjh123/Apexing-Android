@@ -5,6 +5,7 @@ import jyotti.apexing.apexing_android.data.model.main.crafting.CraftingsResponse
 import jyotti.apexing.apexing_android.data.model.main.map.MapsResponse
 import jyotti.apexing.apexing_android.data.model.main.news.NewsesResponse
 import jyotti.apexing.apexing_android.data.model.main.user.UserInfo
+import jyotti.apexing.apexing_android.data.model.statistics.MatchModels.Match
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -44,4 +45,10 @@ interface ApexingApi {
 
     @GET("News")
     suspend fun fetchNewses(): NewsesResponse
+
+    @GET("MATCH/{id}")
+    suspend fun fetchMatches(@Path("id") id: String): List<Match>
+
+    @GET("Index/{id}")
+    suspend fun fetchUpdateIndex(@Path("id") id: String): Int
 }

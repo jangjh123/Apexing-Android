@@ -3,7 +3,6 @@ package jyotti.apexing.apexing_android.ui.fragment.store
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import jyotti.apexing.apexing_android.R
-import jyotti.apexing.apexing_android.base.BaseFragment
 import jyotti.apexing.apexing_android.databinding.FragmentStoreBinding
 import jyotti.apexing.apexing_android.ui.component.ItemDetailFragment
 import jyotti.apexing.apexing_android.ui.component.StoreAdapter

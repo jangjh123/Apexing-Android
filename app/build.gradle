@@ -61,11 +61,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
 
-    // Room for local database
-    implementation "androidx.room:room-runtime:2.6.1"
-    implementation "androidx.room:room-ktx:2.6.1"
-    kapt "androidx.room:room-compiler:2.6.1"
-
     // Firebase
     implementation 'com.google.firebase:firebase-database:20.3.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.0'
@@ -82,15 +77,12 @@ dependencies {
     kapt 'com.google.dagger:hilt-android-compiler:2.48'
 
     // Glide for image loading
-    implementation 'com.github.bumptech.glide:glide:4.13.0'
-    kapt 'com.github.bumptech.glide:compiler:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
     // Datastore for migration from SharedPreferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
-
-    // Paging for pagination
-    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
 
     // Library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

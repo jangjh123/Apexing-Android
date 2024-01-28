@@ -4,78 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import jyotti.apexing.apexing_android.ui.component.ProgressFragment
+import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
+abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutInflater) -> VB) : Fragment() {
     lateinit var binding: VB
-    private val progressFragment = ProgressFragment()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        setObservers()
-        showProgress()
-        startProcess()
+    protected abstract val viewModel: BaseViewModel
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = inflater(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        initBinding()
         return binding.root
     }
 
-    protected open fun showProgress() {
-        if (!progressFragment.isAdded) {
-            try {
-                progressFragment.show(childFragmentManager, "progress")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        collectUiEffect()
     }
 
-    protected open fun dismissProgress() {
-        if (progressFragment.isAdded) {
-            try {
-                progressFragment.dismiss()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+    protected abstract fun initBinding()
+
+    protected abstract fun collectUiEffect()
+
+    protected fun bind(action: VB.() -> Unit) {
+        binding.run(action)
     }
 
-    protected open fun isProgressShowing(): Boolean {
-        return progressFragment.isVisible
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dismissProgress()
-    }
-
-    protected open fun setObservers() {
-
-    }
-
-    protected open fun setOnFailureView(failureView: View, successView: View) {
-        failureView.visibility = View.VISIBLE
-        successView.visibility = View.GONE
-        dismissProgress()
-    }
-
-    protected open fun setOnSuccessView(successView: View, failureView: View) {
-        successView.visibility = View.VISIBLE
-        failureView.visibility = View.GONE
-    }
-
-    protected open fun onClickRetryButton(successView: View, failureView: View) {
-        setOnSuccessView(successView, failureView)
-        showProgress()
-        startProcess()
-    }
-
-    protected open fun startProcess() {
+    protected fun showSnackBar(text: String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 }

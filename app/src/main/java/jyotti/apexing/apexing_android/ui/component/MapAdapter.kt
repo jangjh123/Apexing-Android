@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
-import jyotti.apexing.apexing_android.util.Utils.getThumbnailWithCenterCrop
-import jyotti.apexing.apexing_android.util.Utils.getTimestampToDate
+import jyotti.apexing.apexing_android.util.getThumbnailWithCenterCrop
+import jyotti.apexing.apexing_android.util.getTimestampToDate
 
 
 class MapAdapter : ListAdapter<Map, RecyclerView.ViewHolder>(MapDiffUtil()) {
@@ -41,9 +41,7 @@ class MapAdapter : ListAdapter<Map, RecyclerView.ViewHolder>(MapDiffUtil()) {
             with(binding) {
                 Glide.with(root)
                     .load(map.asset)
-                    .thumbnail(
-                        getThumbnailWithCenterCrop(root.context, map.asset)
-                    )
+                    .thumbnail(getThumbnailWithCenterCrop(root.context, map.asset))
                     .centerCrop()
                     .into(ivMap)
                 tvMapType.text = root.context.getString(map.typeStringId)
