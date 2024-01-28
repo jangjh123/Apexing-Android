@@ -31,26 +31,6 @@ fun getThumbnail(context: Context, imageUrl: String) = Glide.with(context)
     .load(imageUrl)
     .sizeMultiplier(0.1f)
 
-fun getThumbnail(context: Context, imageUrl: Int) = Glide.with(context)
-    .load(imageUrl)
-    .sizeMultiplier(0.1f)
-
-fun setGradientText(
-    textView: TextView,
-    startColor: Int,
-    endColor: Int
-) {
-    val paint = textView.paint
-    val width = paint.measureText(textView.text as String?)
-    val shader = LinearGradient(
-        0f, 0f, width, textView.textSize,
-        listOf(startColor, endColor).toIntArray(),
-        null,
-        Shader.TileMode.CLAMP
-    )
-    textView.paint.shader = shader
-}
-
 fun formatAmount(amount: Int): String = dec.format(amount)
 
 fun getTimestampToDate(timestampStr: String): String {
@@ -59,30 +39,4 @@ fun getTimestampToDate(timestampStr: String): String {
     val sdf = SimpleDateFormat("MM월 dd일 HH시 mm분", Locale.KOREA)
     sdf.timeZone = TimeZone.getTimeZone("GMT+9")
     return sdf.format(date)
-}
-
-fun Float.firstDecimalString(): String = String.format("%.1f", this)
-
-fun ImageView.setImageWithResourceId(name: String) {
-    val context = this.context
-    Glide.with(context)
-        .load(context.resources.getIdentifier(name.lowercase(), "drawable", "jyotti.apexing.apexing_android"))
-        .into(this)
-}
-
-inline fun ViewModel.getCoroutineExceptionHandler(
-    crossinline onUnknownHostException: suspend () -> Unit,
-    noinline onElse: (suspend (Throwable) -> Unit)? = null
-): CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-    viewModelScope.launch {
-        when (throwable) {
-            is UnknownHostException -> {
-                onUnknownHostException()
-            }
-
-            else -> {
-                onElse?.let { it(throwable) }
-            }
-        }
-    }
 }
