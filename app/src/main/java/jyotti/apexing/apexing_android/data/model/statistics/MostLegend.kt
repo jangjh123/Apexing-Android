@@ -1,10 +1,11 @@
 package jyotti.apexing.apexing_android.data.model.statistics
 
-class MostLegend(
-    val legendName: String,
-    var playCount: Int
+data class MostLegend(
+    val playCount: Int,
+    val killAmount: Int,
+    val damageAmount: Int
 ) {
-    fun addPlayCount() {
-        this.playCount += 1
-    }
+    fun getKillAvgString(): String = String.format("%.2f", killAmount / playCount.toFloat())
+
+    fun getDamageAvgString(): String = String.format("%.2f", damageAmount / playCount.toFloat())
 }

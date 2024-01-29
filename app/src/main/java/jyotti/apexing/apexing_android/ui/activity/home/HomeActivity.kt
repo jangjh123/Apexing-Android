@@ -1,114 +1,76 @@
 package jyotti.apexing.apexing_android.ui.activity.home
 
-import android.view.animation.AnimationUtils
-import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
+import android.content.Context
+import android.content.Intent
+import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import jyotti.apexing.apexing_android.R
 import jyotti.apexing.apexing_android.base.BaseActivity
 import jyotti.apexing.apexing_android.databinding.ActivityHomeBinding
+import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.MAIN
+import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.STATISTICS
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
-import jyotti.apexing.apexing_android.ui.fragment.store.StoreFragment
+import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
-    private val mainFragment = MainFragment()
-    private val statisticsFragment by lazy {
-        StatisticsFragment()
-    }
-    private val storeFragment by lazy {
-        StoreFragment()
-    }
-    private var backKeyPressedTime: Long = 0
+class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
+    override val viewModel: HomeViewModel by viewModels()
+    override fun initBinding() {
+        bind {
+            vm = viewModel
+        }
 
-    override fun startProcess() {
-        initView()
-        showView()
-    }
-
-    private fun initView() {
+        showFragment(MAIN)
         initTabLayout()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(binding.layoutFrame.id, mainFragment)
-            .commit()
-    }
-
-    private fun showView() {
-        val fadeIn1 = AnimationUtils.loadAnimation(this, R.anim.fade_in1)
-        val fadeIn2 = AnimationUtils.loadAnimation(this, R.anim.fade_in2)
-        val fadeIn3 = AnimationUtils.loadAnimation(this, R.anim.fade_in3)
-
-        binding.tvTitle.animation = fadeIn1
-        binding.layoutTab.animation = fadeIn2
-        binding.layoutFrame.animation = fadeIn3
     }
 
     private fun initTabLayout() {
         binding.layoutTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> {
-                        showFragment(0)
-                    }
-                    1 -> {
-                        showFragment(1)
-                    }
-                    else -> {
-                        showFragment(2)
-                    }
+                    0 -> showFragment(MAIN)
+                    1 -> showFragment(STATISTICS)
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
-    private fun showFragment(fragmentNumber: Int) {
-        lateinit var fragment: Fragment
-
-        when (fragmentNumber) {
-            0 -> {
-                fragment = mainFragment
-            }
-            1 -> {
-                fragment = statisticsFragment
-            }
-            2 -> {
-                fragment = storeFragment
-            }
+    private fun showFragment(apexingFragment: ApexingFragment) {
+        val fragmentClass = when (apexingFragment) {
+            MAIN -> MainFragment::class.java
+            STATISTICS -> StatisticsFragment::class.java
         }
 
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.layoutFrame.id, fragment)
+            .replace(binding.layoutFrame.id, fragmentClass, bundleOf(Pair(KEY_ID, intent.getStringExtra(KEY_ID))))
             .addToBackStack(null)
             .commit()
     }
 
-    fun backToMainTab() {
-        binding.layoutTab.selectTab(binding.layoutTab.getTabAt(0))
+    override fun collectUiEffect() {
+        repeatCallDefaultOnStarted {
+            viewModel.uiEffect.collect { uiEffect ->
+                when (uiEffect) {
+                    else -> Unit
+                }
+            }
+        }
     }
 
-    override fun onBackPressed() {
-        if (System.currentTimeMillis() > backKeyPressedTime + 1000) {
-            backKeyPressedTime = System.currentTimeMillis()
-            Snackbar.make(
-                binding.root,
-                getString(R.string.back_button_double_tap),
-                Snackbar.LENGTH_SHORT
-            ).show()
-        } else if (System.currentTimeMillis() <= backKeyPressedTime + 1000) {
-            moveTaskToBack(true)
-            finishAndRemoveTask()
-            android.os.Process.killProcess(android.os.Process.myPid())
+    companion object {
+        const val KEY_ID = "key_id"
+
+        fun newIntent(
+            context: Context,
+            id: String
+        ): Intent = Intent(context, HomeActivity::class.java).apply {
+            putExtra(KEY_ID, id)
         }
     }
 }

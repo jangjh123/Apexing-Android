@@ -8,7 +8,6 @@ import jyotti.apexing.apexing_android.BuildConfig
 import jyotti.apexing.apexing_android.BuildConfig.BASE_URL
 import jyotti.apexing.apexing_android.data.remote.ApexingApi
 import jyotti.apexing.apexing_android.data.remote.FirebaseRequestInterceptor
-import jyotti.apexing.apexing_android.data.remote.NetworkManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,10 +21,6 @@ object NetworkModule {
     private const val CONNECT_TIMEOUT_SEC = 5L
     private const val READ_TIMEOUT_SEC = 10L
     private const val WRITE_TIMEOUT_SEC = 5L
-
-    @Provides
-    @Singleton
-    fun provideNetworkManager() = NetworkManager()
 
     @Singleton
     @Provides

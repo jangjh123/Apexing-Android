@@ -1,114 +1,95 @@
 package jyotti.apexing.apexing_android.ui.fragment.main
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jyotti.apexing.apexing_android.data.model.main.crafting.Crafting
-import jyotti.apexing.apexing_android.data.model.main.map.Map
-import jyotti.apexing.apexing_android.data.model.main.news.News
-import jyotti.apexing.apexing_android.data.model.main.user.User
+import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.MainRepository
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
+import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
+import jyotti.apexing.apexing_android.ui.fragment.main.MainUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.fragment.main.MainUiContract.UiState
+import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val repository: MainRepository,
-    dispatcher: CoroutineDispatcher
-) : ViewModel() {
-    val scope = CoroutineScope(dispatcher)
+    private val mainRepository: MainRepository,
+    private val savedStateHandle: SavedStateHandle
+) : BaseViewModel, MainUiContract, ViewModel() {
+    private val _uiState = MutableStateFlow(UiState())
+    override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val user = MutableLiveData<User>()
-    private val mapList = MutableLiveData<List<Map>>()
-    private val craftingList = MutableLiveData<List<Crafting>>()
-    private val newsList = MutableLiveData<List<News>>()
-    private val notice = MutableLiveData<String>()
-    private val contentsCount = MutableLiveData(0)
+    private val _uiEffect = MutableSharedFlow<UiEffect>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    override val uiEffect: SharedFlow<UiEffect> = _uiEffect.asSharedFlow()
 
-    fun getUserLiveData() = user
-    fun getMapLiveData() = mapList
-    fun getCraftingLiveData() = craftingList
-    fun getNewsLiveData() = newsList
-    fun getNoticeLiveData() = notice
-    fun getUser() {
-        scope.launch {
-//            repository.fetchUser(repository.getIdFlow().first()) {
-//                user.postValue(it)
-//            }
+    private val coroutineExceptionHandler = getCoroutineExceptionHandler(
+        onUnknownHostException = {
+            viewModelScope.launch {
+
+            }
+        }
+    )
+
+    init {
+        getMaps()
+        getNotice()
+        getCraftings()
+        getUserInfo()
+        getNewses()
+    }
+
+    private fun getMaps() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.update {
+                it.copy(maps = mainRepository.fetchMaps())
+            }
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun getMap() {
-        repository.fetchGameInfo("MAPS",
-            onSuccess = {
-                mapList.postValue(it as List<Map>?)
-            },
-            onFailure = {
-
-            })
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun getCrafting() {
-        repository.fetchGameInfo("Craftings",
-            onSuccess = {
-                craftingList.postValue(it as List<Crafting>)
-            },
-            onFailure = {
-
-            })
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun getNews() {
-        repository.fetchGameInfo("News",
-            onSuccess = {
-                newsList.postValue(it as List<News>)
-            },
-            onFailure = {
-
-            })
-    }
-
-    fun getNotice() {
-        repository.fetchNotice {
-            notice.postValue(it)
+    private fun getNotice() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.update {
+                it.copy(notice = mainRepository.fetchNotice())
+            }
         }
     }
 
-    inline fun removeAccount(crossinline onFinished: () -> Unit) {
-        scope.launch {
-            repository.getPlatformFlow().collect { platform ->
-                repository.getIdFlow().collect { id ->
-//                    repository.removeFirebaseUser(platform, id,
-//                        onSuccess = {
-//                            scope.launch {
-//                                repository.clearDataStore()
-//                            }
-//                            deleteStoredMatches {
-//                                onFinished()
-//                            }
-//                        })
+    private fun getCraftings() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.update {
+                it.copy(craftings = mainRepository.fetchCraftings())
+            }
+        }
+    }
+
+    private fun getUserInfo() {
+        savedStateHandle.get<String>(HomeActivity.KEY_ID)?.let { id ->
+            viewModelScope.launch(coroutineExceptionHandler) {
+                _uiState.update {
+                    it.copy(userInfo = mainRepository.fetchUserInfo(id))
                 }
             }
         }
     }
 
-    inline fun deleteStoredMatches(crossinline onSuccess: () -> Unit) {
-        scope.launch {
-            withContext(Dispatchers.Default) {
-                repository.clearDatabase()
+    private fun getNewses() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.update {
+                it.copy(newses = mainRepository.fetchNewses())
             }
-            onSuccess()
         }
     }
-
-//    fun setTimeOut() {
-//        scope.launch {
-//            delay(5000)
-//            timeOutMessage.call()
-//        }
-//    }
 }

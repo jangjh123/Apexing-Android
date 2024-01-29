@@ -1,6 +1,6 @@
 package jyotti.apexing.apexing_android.data.model.main.user
 
-data class User(
+data class UserInfo(
     val arRankImg: String,
     val arRankScore: Int,
     val bannerImg: String,
