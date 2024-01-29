@@ -1,7 +1,6 @@
 package jyotti.apexing.apexing_android.binding
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,16 +9,20 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.RadarData
-import com.github.mikephil.charting.data.RadarDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import jyotti.apexing.apexing_android.R
+import jyotti.apexing.apexing_android.util.getTimestampToDate
 import kotlin.math.roundToInt
 
+private const val MAD_MAGGIE = "Mad Maggie"
+private const val MAD_MAGGIE_IN_LOWERCASE = "madmaggie"
+private const val MODE_BATTLE_ROYALE = "BATTLE_ROYALE"
+private const val MODE_ARENA = "ARENAS"
+
 @BindingAdapter("app:setLegendImage")
-fun ImageView.setLegendImage(name: String) {
+fun ImageView.setLegendImage(_name: String) {
+    val name = if (_name == MAD_MAGGIE) MAD_MAGGIE_IN_LOWERCASE else _name.lowercase()
+
     Glide.with(context)
         .load(context.resources.getIdentifier(name.lowercase(), "drawable", "jyotti.apexing.apexing_android"))
         .into(this)
@@ -76,43 +79,21 @@ fun TextView.setPiePercentageAsString(pieData: PieData?, pieIndex: Int) {
     }
 }
 
-@BindingAdapter("app:setRadarChartData")
-fun RadarChart.setRadarChartData(radarDataSet: RadarDataSet) {
-    setTouchEnabled(false)
-    setDrawMarkers(false)
-    val radarData = RadarData(radarDataSet.apply {
-        color = ContextCompat.getColor(context, R.color.main)
-        lineWidth = 2f
-        setDrawFilled(true)
-        fillColor = ContextCompat.getColor(context, R.color.main)
-    })
-    data = radarData.apply {
-        setValueTextSize(15f)
-        setValueTextColor(ContextCompat.getColor(context, R.color.light_gray))
+@BindingAdapter("app:setModeText")
+fun TextView.setModeText(mode: String) {
+    text = when (mode) {
+        MODE_BATTLE_ROYALE -> context.getString(R.string.battle_royal)
+        MODE_ARENA -> context.getString(R.string.arena)
+        else -> mode
     }
-    val valueList = mutableListOf<String>().apply {
-        add(0, context.getString(R.string.kill_catch))
-        add(1, context.getString(R.string.dealing))
-        add(2, context.getString(R.string.survival_ability))
-        add(3, context.getString(R.string.positiveness))
-    }
-    xAxis.apply {
-        valueFormatter = IndexAxisValueFormatter(valueList)
-        textColor = ContextCompat.getColor(context, R.color.white)
-        textSize = 15f
-    }
-    yAxis.apply {
-        setDrawLabels(false)
-        axisMinimum = 0f
-        axisMaximum = 100f
-        typeface = Typeface.DEFAULT_BOLD
-        setLabelCount(10, true)
-    }
-    legend.isEnabled = false
-    description.isEnabled = false
-    webLineWidthInner = 0f
-    webLineWidth = 0f
-    webColor = ContextCompat.getColor(context, R.color.main)
-    webColorInner = ContextCompat.getColor(context, R.color.divider)
-    invalidate()
+}
+
+@BindingAdapter("app:setKorTimeText")
+fun TextView.setKorTimeText(timeStampStr: String) {
+    text = getTimestampToDate(timeStampStr)
+}
+
+@BindingAdapter("app:setSurvivalTime")
+fun TextView.setSurvivalTime(secs: Int) {
+    text = context.getString(R.string.survival_time, secs.div(60), secs.rem(60))
 }

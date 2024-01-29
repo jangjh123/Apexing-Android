@@ -3,8 +3,6 @@ package jyotti.apexing.apexing_android.data.repository
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.data.RadarDataSet
-import com.github.mikephil.charting.data.RadarEntry
 import jyotti.apexing.apexing_android.data.model.statistics.LegendNames
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels
 import jyotti.apexing.apexing_android.data.model.statistics.MatchModels.Header
@@ -25,17 +23,17 @@ class StatisticsRepository @Inject constructor(
         val matchModels = mutableListOf<MatchModels>()
 
         val updateIndex = apexingApi.fetchUpdateIndex(id)
-        val validMatches = apexingApi.fetchMatches(id).asSequence().map { match ->
-            match.copy(
-                isValid = match.mode != "UNKNOWN" &&
+        val validMatches = apexingApi.fetchMatches(id)
+            .asSequence()
+            .filter { match ->
+                match.mode != "UNKNOWN" &&
                         match.mode != "ARENA" &&
                         match.secs in 0..1800 &&
                         match.damage in 0..9999 &&
                         match.kill in 0..59
-            )
-        }.filter {
-            it.isValid
-        }.toList()
+            }.map { match ->
+                match.copy(isTracked = match.kill != 0 || match.damage != 0)
+            }.toList()
 
         val header = withContext(defaultDispatcher) {
             buildHeader(
@@ -59,7 +57,7 @@ class StatisticsRepository @Inject constructor(
         val mostLegends = getMostLegends(matches)
 
         return Header(
-            updateTimeLeft = updateIndex / 45 + 1,
+            updateTimeLeft = updateIndex / UPDATE_PER_HOUR + 1,
             matches = matches,
             mostLegends = mostLegends,
             pieData = getPieData(mostLegends),
@@ -67,7 +65,6 @@ class StatisticsRepository @Inject constructor(
             damageAvgAllString = getDamageAvgAllString(matches),
             killAvgRecentString = getKillAvgRecentString(recentMatches),
             damageAvgRecentString = getDamageAvgRecentString(recentMatches),
-            radarDataSet = getRadarChart(matches)
         )
     }
 
@@ -109,7 +106,7 @@ class StatisticsRepository @Inject constructor(
      */
     private fun getKillAvgAllString(matches: List<Match>): String {
         var kills = 0f
-        matches.filter { it.isValid }.forEach {
+        matches.forEach {
             kills += it.kill
         }
         return (kills / matches.size).firstDecimalString()
@@ -117,7 +114,7 @@ class StatisticsRepository @Inject constructor(
 
     private fun getDamageAvgAllString(matches: List<Match>): String {
         var damages = 0f
-        matches.filter { it.isValid }.forEach {
+        matches.forEach {
             damages += it.damage
         }
         return (damages / matches.size).firstDecimalString()
@@ -139,52 +136,7 @@ class StatisticsRepository @Inject constructor(
         return (damages / recentMatches.size).firstDecimalString()
     }
 
-    /*
-        RadarChart
-     */
-    private fun getRadarChart(matches: List<Match>): RadarDataSet {
-        val label = ""
-        val radarEntries = mutableListOf<RadarEntry>().apply {
-            add(RadarEntry(getRadarChartValue(matches)[0]))
-            add(RadarEntry(getRadarChartValue(matches)[1]))
-            add(RadarEntry(getRadarChartValue(matches)[2]))
-            add(RadarEntry(getRadarChartValue(matches)[3]))
-        }
-
-        return RadarDataSet(radarEntries, label)
-    }
-
-    private fun getRadarChartValue(matches: List<Match>): FloatArray {
-        val data = FloatArray(4)
-        var killCatch = 0f
-        var survivalAbility = 0f
-        var deal = 0f
-        val effectedMatchCnt = matches.count { it.isValid }
-
-        matches.filter { it.isValid }.forEach {
-            killCatch += it.kill
-            survivalAbility += it.secs
-            deal += it.damage
-        }
-
-        var killCatchData = killCatch / effectedMatchCnt
-        killCatchData *= 40
-        data[0] = killCatchData
-
-        var survivalAbilityData = survivalAbility / effectedMatchCnt
-        survivalAbilityData /= 12
-        data[1] = survivalAbilityData
-
-        for (i in matches.filter { it.isValid }.indices) {
-            deal += matches[i].damage
-        }
-        var dealData = deal / effectedMatchCnt
-        dealData /= 10
-
-        data[2] = dealData
-
-        data[3] = ((killCatchData + dealData) / survivalAbilityData) * 25
-
-        return data
+    companion object {
+        private const val UPDATE_PER_HOUR = 45
     }
 }

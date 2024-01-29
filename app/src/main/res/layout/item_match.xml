@@ -4,9 +4,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="vh"
-            type="jyotti.apexing.apexing_android.ui.component.MatchAdapter.MatchViewHolder" />
+            name="match"
+            type="jyotti.apexing.apexing_android.data.model.statistics.MatchModels.Match" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -28,14 +30,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:text="@{match.tracked ? `` : @string/please_set_tracker_or_play_hard }"
                 android:textColor="#cccccc"
                 android:textSize="12dp"
-                android:visibility="gone" />
+                android:visibility="@{match.tracked ? View.GONE : View.VISIBLE}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lay_match"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:alpha="@{match.tracked ? 1f : 0.2f}">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_legend"
@@ -43,7 +47,8 @@
                     android:layout_height="64dp"
                     android:layout_margin="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setLegendImage="@{match.legend}" />
 
                 <TextView
                     android:id="@+id/tv_kill"
@@ -52,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/main"
+                    android:text="@{String.valueOf(match.kill)}"
                     android:textSize="16dp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_damage"
                     app:layout_constraintStart_toEndOf="@+id/iv_legend"
@@ -76,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/main"
+                    app:formattedNumberText="@{match.damage}"
                     android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_legend"
@@ -99,12 +106,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="배틀로얄"
                     android:textColor="@color/light_gray"
                     android:textSize="10dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setModeText="@{match.mode}" />
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -112,11 +119,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="06월 06일 17시 21분"
                     android:textColor="@color/light_gray"
                     android:textSize="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_mode" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_mode"
+                    app:setKorTimeText="@{String.valueOf(match.date)}" />
 
                 <TextView
                     android:id="@+id/tv_survival_duration"
@@ -124,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="1분 30초 생존"
+                    app:setSurvivalTime="@{match.secs}"
                     android:textColor="@color/white"
                     android:textColorHighlight="@color/white"
                     android:textSize="12dp"
