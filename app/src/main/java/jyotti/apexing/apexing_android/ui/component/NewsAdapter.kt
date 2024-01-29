@@ -5,45 +5,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
-import jyotti.apexing.apexing_android.util.getThumbnail
 
 class NewsAdapter(private inline val onClickNews: (String) -> Unit) : ListAdapter<News, RecyclerView.ViewHolder>(NewsDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(
-            ItemNewsBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        return NewsViewHolder(
+            binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickNews = onClickNews
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
+        if (holder is NewsViewHolder) {
             val news = getItem(position)
             holder.bind(news)
         }
     }
 
-    inner class ViewHolder(private val binding: ItemNewsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(news: News) {
-            with(binding) {
-                tvNewsTitle.text = news.title
+    class NewsViewHolder(
+        private val binding: ItemNewsBinding,
+        private val onClickNews: (String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(news: News) = with(binding) { this.news = news }
 
-                Glide.with(root)
-                    .load(news.img)
-                    .centerCrop()
-                    .thumbnail(getThumbnail(root.context, news.img))
-                    .into(ivNewsImage)
-
-                layoutNews.setOnClickListener {
-                    onClickNews(news.link)
-                }
-            }
+        fun onClickNewsItem(link: String) {
+            onClickNews(link)
         }
     }
 }

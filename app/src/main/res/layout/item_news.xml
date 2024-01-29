@@ -4,13 +4,20 @@
 
     <data>
 
+        <variable
+            name="news"
+            type="jyotti.apexing.apexing_android.data.model.main.news.News" />
+
+        <variable
+            name="viewHolder"
+            type="jyotti.apexing.apexing_android.ui.component.NewsAdapter.NewsViewHolder" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="280dp"
         android:layout_height="200dp"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/divider"
         app:cardCornerRadius="16dp"
         app:cardElevation="10dp">
@@ -30,6 +37,7 @@
                 android:letterSpacing="-0.05"
                 android:maxLines="1"
                 android:paddingHorizontal="10dp"
+                android:text="@{news.title}"
                 android:textColor="@color/main"
                 android:textSize="14dp" />
 
@@ -41,8 +49,10 @@
                     android:id="@+id/iv_news_image"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
+                    android:onClick="@{() -> viewHolder.onClickNewsItem(news.link)}"
                     android:scaleType="fitXY"
                     android:tintMode="src_atop"
+                    app:setGlideImage="@{news.img}"
                     app:tint="#99000000" />
 
                 <TextView
@@ -55,10 +65,6 @@
                     android:textColor="@color/white"
                     android:textSize="14dp" />
             </RelativeLayout>
-
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-
 </layout>
