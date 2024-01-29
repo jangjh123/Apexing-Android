@@ -24,8 +24,7 @@ class CustomDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_custom_dialog, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_custom_dialog, container, false)
         isCancelable = true
         binding.root.background = ColorDrawable(Color.TRANSPARENT)
 

@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="viewHolder"
+            name="vh"
             type="jyotti.apexing.apexing_android.ui.component.MatchAdapter.MatchViewHolder" />
     </data>
 

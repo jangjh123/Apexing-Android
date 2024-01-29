@@ -10,12 +10,11 @@ sealed class MatchModels {
         val matches: List<Match>,
         val mostLegends: List<Pair<String, MostLegend>>,
         val pieData: PieData,
-        val killAvgAll: Float,
-        val damageAvgAll: Float,
-        val killAvgRecent: Float,
-        val damageAvgRecent: Float,
-        val radarDataSet: RadarDataSet,
-        val barDataSet: List<BarDataSet>
+        val killAvgAllString: String,
+        val damageAvgAllString: String,
+        val killAvgRecentString: String,
+        val damageAvgRecentString: String,
+        val radarDataSet: RadarDataSet
     ) : MatchModels()
 
     data class Match(

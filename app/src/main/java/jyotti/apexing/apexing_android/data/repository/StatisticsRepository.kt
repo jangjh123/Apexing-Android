@@ -1,7 +1,5 @@
 package jyotti.apexing.apexing_android.data.repository
 
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -14,7 +12,7 @@ import jyotti.apexing.apexing_android.data.model.statistics.MatchModels.Match
 import jyotti.apexing.apexing_android.data.model.statistics.MostLegend
 import jyotti.apexing.apexing_android.data.remote.ApexingApi
 import jyotti.apexing.apexing_android.di.DefaultDispatcher
-import jyotti.apexing.apexing_android.util.CustomBarDataSet
+import jyotti.apexing.apexing_android.util.firstDecimalString
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -27,8 +25,7 @@ class StatisticsRepository @Inject constructor(
         val matchModels = mutableListOf<MatchModels>()
 
         val updateIndex = apexingApi.fetchUpdateIndex(id)
-        val matches = apexingApi.fetchMatches(id)
-        val validMatches = matches.asSequence().map { match ->
+        val validMatches = apexingApi.fetchMatches(id).asSequence().map { match ->
             match.copy(
                 isValid = match.mode != "UNKNOWN" &&
                         match.mode != "ARENA" &&
@@ -50,7 +47,7 @@ class StatisticsRepository @Inject constructor(
 
         return matchModels.apply {
             add(header)
-            addAll(matches)
+            addAll(validMatches)
         }
     }
 
@@ -66,12 +63,11 @@ class StatisticsRepository @Inject constructor(
             matches = matches,
             mostLegends = mostLegends,
             pieData = getPieData(mostLegends),
-            killAvgAll = getKillAvgAll(matches),
-            damageAvgAll = getDamageAvgAll(matches),
-            killAvgRecent = getKillAvgRecent(matches),
-            damageAvgRecent = getDamageAvgRecent(matches),
-            radarDataSet = getRadarChart(matches),
-            barDataSet = getBarChartValue(recentMatches)
+            killAvgAllString = getKillAvgAllString(matches),
+            damageAvgAllString = getDamageAvgAllString(matches),
+            killAvgRecentString = getKillAvgRecentString(recentMatches),
+            damageAvgRecentString = getDamageAvgRecentString(recentMatches),
+            radarDataSet = getRadarChart(matches)
         )
     }
 
@@ -111,40 +107,36 @@ class StatisticsRepository @Inject constructor(
     /*
         Basic Statistics
      */
-    private fun getKillAvgAll(matches: List<Match>): Float {
+    private fun getKillAvgAllString(matches: List<Match>): String {
         var kills = 0f
         matches.filter { it.isValid }.forEach {
             kills += it.kill
         }
-        return kills / matches.size
+        return (kills / matches.size).firstDecimalString()
     }
 
-    private fun getDamageAvgAll(matches: List<Match>): Float {
+    private fun getDamageAvgAllString(matches: List<Match>): String {
         var damages = 0f
         matches.filter { it.isValid }.forEach {
             damages += it.damage
         }
-        return damages / matches.size
+        return (damages / matches.size).firstDecimalString()
     }
 
-    private fun getKillAvgRecent(recentMatches: List<Match>): Float {
+    private fun getKillAvgRecentString(recentMatches: List<Match>): String {
         var kills = 0f
-        if (recentMatches.size > 19) {
-            for (i in 0..19) {
-                kills += recentMatches[i].kill
-            }
+        recentMatches.forEach {
+            kills += it.kill
         }
-        return kills / recentMatches.size
+        return (kills / recentMatches.size).firstDecimalString()
     }
 
-    private fun getDamageAvgRecent(recentMatches: List<Match>): Float {
+    private fun getDamageAvgRecentString(recentMatches: List<Match>): String {
         var damages = 0f
-        if (recentMatches.size > 19) {
-            for (i in 0..19) {
-                damages += recentMatches[i].damage
-            }
+        recentMatches.forEach {
+            damages += it.damage
         }
-        return damages / recentMatches.size
+        return (damages / recentMatches.size).firstDecimalString()
     }
 
     /*
@@ -194,22 +186,5 @@ class StatisticsRepository @Inject constructor(
         data[3] = ((killCatchData + dealData) / survivalAbilityData) * 25
 
         return data
-    }
-
-    /*
-        BarChart
-     */
-    private fun getBarChartValue(recentMatches: List<Match>): List<BarDataSet> {
-        val dealList = mutableListOf<BarEntry>()
-        val killList = mutableListOf<BarEntry>()
-
-        if (recentMatches.filter { it.isValid }.size > 19) {
-            for (i in 0..19) {
-                dealList.add(BarEntry(i.toFloat(), recentMatches[i].damage.toFloat()))
-                killList.add(BarEntry(i.toFloat(), recentMatches[i].kill.toFloat()))
-            }
-        }
-
-        return listOf(BarDataSet(dealList, "딜"), CustomBarDataSet(killList, "킬"))
     }
 }

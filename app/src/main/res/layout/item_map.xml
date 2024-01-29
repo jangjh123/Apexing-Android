@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setGlideImage="@{map.asset != null ? map.asset : ``}" />
+            app:setImage="@{map.asset != null ? map.asset : ``}" />
 
         <TextView
             android:id="@+id/tv_map_type"

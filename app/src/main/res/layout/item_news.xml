@@ -9,7 +9,7 @@
             type="jyotti.apexing.apexing_android.data.model.main.news.News" />
 
         <variable
-            name="viewHolder"
+            name="vh"
             type="jyotti.apexing.apexing_android.ui.component.NewsAdapter.NewsViewHolder" />
     </data>
 
@@ -49,10 +49,10 @@
                     android:id="@+id/iv_news_image"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:onClick="@{() -> viewHolder.onClickNewsItem(news.link)}"
+                    android:onClick="@{() -> vh.onClickNewsItem(news.link)}"
                     android:scaleType="fitXY"
                     android:tintMode="src_atop"
-                    app:setGlideImage="@{news.img}"
+                    app:setImage="@{news.img}"
                     app:tint="#99000000" />
 
                 <TextView
