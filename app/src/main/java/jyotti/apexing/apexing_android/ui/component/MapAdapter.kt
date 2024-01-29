@@ -1,28 +1,17 @@
 package jyotti.apexing.apexing_android.ui.component
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import jyotti.apexing.apexing_android.data.model.main.map.Map
 import jyotti.apexing.apexing_android.databinding.ItemMapBinding
-import jyotti.apexing.apexing_android.util.getThumbnailWithCenterCrop
-import jyotti.apexing.apexing_android.util.getTimestampToDate
 
 
 class MapAdapter : ListAdapter<Map, RecyclerView.ViewHolder>(MapDiffUtil()) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(
-            ItemMapBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        return ViewHolder(ItemMapBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -32,23 +21,8 @@ class MapAdapter : ListAdapter<Map, RecyclerView.ViewHolder>(MapDiffUtil()) {
         }
     }
 
-    inner class ViewHolder(private val binding: ItemMapBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-
-        @SuppressLint("SetTextI18n")
-        fun bind(map: Map) {
-            with(binding) {
-                Glide.with(root)
-                    .load(map.asset)
-                    .thumbnail(getThumbnailWithCenterCrop(root.context, map.asset))
-                    .centerCrop()
-                    .into(ivMap)
-                tvMapType.text = root.context.getString(map.typeStringId)
-                tvMapName.text = map.name
-                tvMapTime.text = getTimestampToDate(map.endTime) + " 까지"
-            }
-        }
+    class ViewHolder(private val binding: ItemMapBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(map: Map) = with(binding) { this.map = map }
     }
 }
 

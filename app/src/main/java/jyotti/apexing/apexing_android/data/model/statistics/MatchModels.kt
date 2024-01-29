@@ -1,8 +1,6 @@
 package jyotti.apexing.apexing_android.data.model.statistics
 
-import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.RadarDataSet
 
 sealed class MatchModels {
     data class Header(
@@ -10,12 +8,10 @@ sealed class MatchModels {
         val matches: List<Match>,
         val mostLegends: List<Pair<String, MostLegend>>,
         val pieData: PieData,
-        val killAvgAll: Float,
-        val damageAvgAll: Float,
-        val killAvgRecent: Float,
-        val damageAvgRecent: Float,
-        val radarDataSet: RadarDataSet,
-        val barDataSet: List<BarDataSet>
+        val killAvgAllString: String,
+        val damageAvgAllString: String,
+        val killAvgRecentString: String,
+        val damageAvgRecentString: String
     ) : MatchModels()
 
     data class Match(
@@ -25,6 +21,6 @@ sealed class MatchModels {
         val date: Long,
         val kill: Int,
         val damage: Int,
-        val isValid: Boolean
+        val isTracked: Boolean
     ) : MatchModels()
 }

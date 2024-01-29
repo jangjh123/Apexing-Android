@@ -60,6 +60,7 @@
     <string name="battle_royale_rank">배틀로얄 - 랭크</string>
     <string name="arena_normal">아레나 - 일반</string>
     <string name="arena_rank">아레나 - 랭크</string>
+    <string name="map_time_limit">%s 까지</string>
     <string name="korean_nickname">한글 닉네임</string>
     <string name="level">Lv.%d</string>
     <string name="tab_to_detail">탭하여 자세히 알아보기</string>
