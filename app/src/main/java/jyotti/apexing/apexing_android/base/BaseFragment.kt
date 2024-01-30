@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutInflater) -> VB) : Fragment() {
-    lateinit var binding: VB
+    private var _binding: VB? = null
+    protected val binding get() = _binding!!
 
     protected abstract val viewModel: BaseViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = inflater(layoutInflater)
+        _binding = inflater(layoutInflater)
         binding.lifecycleOwner = viewLifecycleOwner
         initBinding()
         return binding.root
@@ -35,5 +36,10 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutI
 
     protected fun showSnackBar(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
