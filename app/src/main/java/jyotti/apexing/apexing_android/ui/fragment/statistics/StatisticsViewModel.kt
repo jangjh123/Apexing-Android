@@ -45,15 +45,23 @@ class StatisticsViewModel @Inject constructor(
     )
 
     init {
-        getStatistics()
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+
+            getStatistics()
+
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
     }
 
-    private fun getStatistics() {
+    private suspend fun getStatistics() {
         savedStateHandle.get<String>(KEY_ID)?.let { id ->
-            viewModelScope.launch(coroutineExceptionHandler) {
-                _uiState.update {
-                    it.copy(statistics = statisticsRepository.fetchStatistics(id))
-                }
+            _uiState.update {
+                it.copy(statistics = statisticsRepository.fetchStatistics(id))
             }
         }
     }

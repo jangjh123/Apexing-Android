@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,52 +45,54 @@ class MainViewModel @Inject constructor(
     )
 
     init {
-        getMaps()
-        getNotice()
-        getCraftings()
-        getUserInfo()
-        getNewses()
-    }
-
-    private fun getMaps() {
         viewModelScope.launch(coroutineExceptionHandler) {
             _uiState.update {
-                it.copy(maps = mainRepository.fetchMaps())
+                it.copy(isLoading = true)
+            }
+
+            supervisorScope {
+                launch { getNewses() }
+                launch { getMaps() }
+                launch { getNotice() }
+                launch { getCraftings() }
+                launch { getUserInfo() }
+            }
+
+            _uiState.update {
+                it.copy(isLoading = false)
             }
         }
     }
 
-    private fun getNotice() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _uiState.update {
-                it.copy(notice = mainRepository.fetchNotice())
-            }
+    private suspend fun getMaps() {
+        _uiState.update {
+            it.copy(maps = mainRepository.fetchMaps())
         }
     }
 
-    private fun getCraftings() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _uiState.update {
-                it.copy(craftings = mainRepository.fetchCraftings())
-            }
+    private suspend fun getNotice() {
+        _uiState.update {
+            it.copy(notice = mainRepository.fetchNotice())
         }
     }
 
-    private fun getUserInfo() {
+    private suspend fun getCraftings() {
+        _uiState.update {
+            it.copy(craftings = mainRepository.fetchCraftings())
+        }
+    }
+
+    private suspend fun getUserInfo() {
         savedStateHandle.get<String>(HomeActivity.KEY_ID)?.let { id ->
-            viewModelScope.launch(coroutineExceptionHandler) {
-                _uiState.update {
-                    it.copy(userInfo = mainRepository.fetchUserInfo(id))
-                }
+            _uiState.update {
+                it.copy(userInfo = mainRepository.fetchUserInfo(id))
             }
         }
     }
 
-    private fun getNewses() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _uiState.update {
-                it.copy(newses = mainRepository.fetchNewses())
-            }
+    private suspend fun getNewses() {
+        _uiState.update {
+            it.copy(newses = mainRepository.fetchNewses())
         }
     }
 }

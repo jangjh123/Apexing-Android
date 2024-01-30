@@ -26,12 +26,20 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>(FragmentStati
         }
     }
 
+    override fun collectUiState() {
+        repeatCallDefaultOnStarted {
+            viewModel.uiState.collect { uiState ->
+                setLoadingDialogVisibility(uiState.isLoading)
+            }
+        }
+    }
+
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
             viewModel.uiEffect.collect { uiEffect ->
                 when (uiEffect) {
                     is ScrollToTop -> {
-
+                        binding.rvMatch.scrollToPosition(0)
                     }
                 }
             }

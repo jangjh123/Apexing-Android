@@ -10,6 +10,7 @@ import jyotti.apexing.apexing_android.data.repository.AccountRepository
 import jyotti.apexing.apexing_android.di.IoDispatcher
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHelpPage
+import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.GoToHome
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.ShowSnackBar
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiState
 import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
@@ -55,6 +56,9 @@ class AccountViewModel @Inject constructor(
                 }
 
                 is ApexLegendsApiError.Unknown -> {
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
                     _uiEffect.emit(ShowSnackBar(R.string.exception_unknown))
                 }
             }
@@ -82,6 +86,10 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             val id = uiState.value.idText
             if (id.isNotEmpty()) {
+                _uiState.update {
+                    it.copy(isLoading = true)
+                }
+
                 getOriginAccount()
             } else {
                 _uiEffect.emit(ShowSnackBar(R.string.please_set_id))
@@ -93,12 +101,15 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch(coroutineExceptionHandler) {
             val id = uiState.value.idText
             val uid = repository.fetchOriginAccount(id)
+
             withContext(ioDispatcher) {
                 repository.storeAccount(
                     id = id,
                     uid = uid
                 )
             }
+
+            _uiEffect.emit(GoToHome(id))
         }
     }
 }

@@ -13,7 +13,6 @@ import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.MAIN
 import jyotti.apexing.apexing_android.ui.activity.home.ApexingFragment.STATISTICS
 import jyotti.apexing.apexing_android.ui.fragment.main.MainFragment
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsFragment
-import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
@@ -94,15 +93,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::infl
         }
     }
 
-    override fun collectUiEffect() {
-        repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collect { uiEffect ->
-                when (uiEffect) {
-                    else -> Unit
-                }
-            }
-        }
-    }
+    override fun collectUiState() = Unit
+
+    override fun collectUiEffect() = Unit
 
     companion object {
         private const val TAG_MAIN_FRAGMENT = "tag_main_fragment"

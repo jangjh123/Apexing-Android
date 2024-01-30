@@ -13,7 +13,6 @@ import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEf
 import jyotti.apexing.apexing_android.ui.activity.account.AccountUiContract.UiEffect.ShowSnackBar
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity
 import jyotti.apexing.apexing_android.util.repeatCallDefaultOnStarted
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity<ActivityAccountBinding>(ActivityAccountBinding::inflate) {
@@ -25,16 +24,23 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(ActivityAccountBind
         }
     }
 
+    override fun collectUiState() {
+        repeatCallDefaultOnStarted {
+            viewModel.uiState.collect { uiState ->
+                setLoadingDialogVisibility(uiState.isLoading)
+            }
+        }
+    }
+
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collectLatest { uiEffect ->
+            viewModel.uiEffect.collect { uiEffect ->
                 when (uiEffect) {
                     is GoToHelpPage -> goToHelpPage()
 
                     is ShowSnackBar -> showSnackBar(getString(uiEffect.stringId))
 
                     is GoToHome -> goToHome(uiEffect.id)
-
                 }
             }
         }
@@ -51,6 +57,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(ActivityAccountBind
                 id = id
             )
         )
+        finish()
     }
 
     companion object {

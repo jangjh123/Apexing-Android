@@ -28,13 +28,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
     }
 
-    override fun collectUiEffect() {
+    override fun collectUiState() {
         repeatCallDefaultOnStarted {
-            viewModel.uiEffect.collect { uiEffect ->
-                when (uiEffect) {
-                    else -> Unit
-                }
+            viewModel.uiState.collect { uiState ->
+                setLoadingDialogVisibility(uiState.isLoading)
             }
         }
     }
+
+    override fun collectUiEffect() = Unit
 }

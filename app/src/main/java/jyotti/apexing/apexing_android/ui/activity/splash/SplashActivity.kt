@@ -24,6 +24,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         }
     }
 
+    override fun collectUiState() = Unit
+
     override fun collectUiEffect() {
         repeatCallDefaultOnStarted {
             viewModel.uiEffect.collect { uiEffect ->
@@ -42,6 +44,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
 
     private fun goToAccount() {
         startActivity(AccountActivity.newIntent(this@SplashActivity))
+        finish()
     }
 
     private fun goToHome(id: String) {
@@ -51,5 +54,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
                 id = id,
             )
         )
+        finish()
     }
 }

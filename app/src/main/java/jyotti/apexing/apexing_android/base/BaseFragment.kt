@@ -10,7 +10,8 @@ import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutInflater) -> VB) : Fragment() {
     private var _binding: VB? = null
-    protected val binding get() = _binding!!
+    protected val binding: VB
+        get() = _binding!!
 
     protected abstract val viewModel: BaseViewModel
 
@@ -23,10 +24,13 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectUiState()
         collectUiEffect()
     }
 
     protected abstract fun initBinding()
+
+    protected abstract fun collectUiState()
 
     protected abstract fun collectUiEffect()
 
@@ -36,6 +40,10 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val inflater: (LayoutI
 
     protected fun showSnackBar(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    protected fun setLoadingDialogVisibility(visible: Boolean) {
+        (requireActivity() as BaseActivity<*>).setLoadingDialogVisibility(visible)
     }
 
     override fun onDestroyView() {
