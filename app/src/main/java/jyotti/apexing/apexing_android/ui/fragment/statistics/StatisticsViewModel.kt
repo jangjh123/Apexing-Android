@@ -8,6 +8,7 @@ import jyotti.apexing.apexing_android.base.BaseViewModel
 import jyotti.apexing.apexing_android.data.repository.StatisticsRepository
 import jyotti.apexing.apexing_android.ui.activity.home.HomeActivity.Companion.KEY_ID
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsUiContract.UiEffect
+import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsUiContract.UiEffect.ScrollToTop
 import jyotti.apexing.apexing_android.ui.fragment.statistics.StatisticsUiContract.UiState
 import jyotti.apexing.apexing_android.util.getCoroutineExceptionHandler
 import kotlinx.coroutines.channels.BufferOverflow
@@ -54,6 +55,12 @@ class StatisticsViewModel @Inject constructor(
                     it.copy(statistics = statisticsRepository.fetchStatistics(id))
                 }
             }
+        }
+    }
+
+    fun onClickFloatingActionButton() {
+        viewModelScope.launch {
+            _uiEffect.emit(ScrollToTop)
         }
     }
 }

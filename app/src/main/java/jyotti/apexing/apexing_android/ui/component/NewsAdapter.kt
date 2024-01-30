@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import jyotti.apexing.apexing_android.data.model.main.news.News
 import jyotti.apexing.apexing_android.databinding.ItemNewsBinding
 
-class NewsAdapter(private inline val onClickNews: (String) -> Unit) : ListAdapter<News, RecyclerView.ViewHolder>(NewsDiffUtil()) {
+class NewsAdapter(private val onClickNews: (String) -> Unit) : ListAdapter<News, RecyclerView.ViewHolder>(NewsDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return NewsViewHolder(
             binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
@@ -27,7 +27,10 @@ class NewsAdapter(private inline val onClickNews: (String) -> Unit) : ListAdapte
         private val binding: ItemNewsBinding,
         private val onClickNews: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(news: News) = with(binding) { this.news = news }
+        fun bind(news: News) = with(binding) {
+            this.news = news
+            this.vh = this@NewsViewHolder
+        }
 
         fun onClickNewsItem(link: String) {
             onClickNews(link)

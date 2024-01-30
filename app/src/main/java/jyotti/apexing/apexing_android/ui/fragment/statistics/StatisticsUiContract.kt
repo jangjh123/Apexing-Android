@@ -10,6 +10,6 @@ interface StatisticsUiContract : BaseContract<StatisticsUiContract.UiState, Stat
     )
 
     sealed interface UiEffect {
-
+        object ScrollToTop : UiEffect
     }
 }

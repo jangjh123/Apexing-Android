@@ -14,8 +14,8 @@ import jyotti.apexing.apexing_android.databinding.ItemMatchBinding
 import jyotti.apexing.apexing_android.databinding.ItemStatisticsHeaderBinding
 
 class MatchAdapter(
-    private inline val onClickRecordingDesc: () -> Unit,
-    private inline val onClickRefreshDesc: () -> Unit
+    private val onClickRecordingDesc: () -> Unit,
+    private val onClickRefreshDesc: () -> Unit
 ) : ListAdapter<MatchModels, RecyclerView.ViewHolder>(MatchDiffUtil()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -27,7 +27,12 @@ class MatchAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_HEADER -> HeaderViewHolder(ItemStatisticsHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            VIEW_TYPE_HEADER -> HeaderViewHolder(
+                binding = ItemStatisticsHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onClickRecordingDesc = onClickRecordingDesc,
+                onClickRefreshDesc = onClickRefreshDesc
+            )
+
             VIEW_TYPE_MATCH -> MatchViewHolder(ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw ClassCastException("Unknown ViewType")
         }
@@ -40,13 +45,25 @@ class MatchAdapter(
         }
     }
 
-    class HeaderViewHolder(private val binding: ItemStatisticsHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HeaderViewHolder(
+        private val binding: ItemStatisticsHeaderBinding,
+        private val onClickRecordingDesc: () -> Unit,
+        private val onClickRefreshDesc: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 200 }
         private val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 200 }
 
         fun bind(header: Header) = with(binding) {
             this.header = header
             this.vh = this@HeaderViewHolder
+        }
+
+        fun onClickRecordingHelp() {
+            onClickRecordingDesc()
+        }
+
+        fun onClickRefreshHelp() {
+            onClickRefreshDesc()
         }
 
         fun showLegendDetail(mostLv: Int) = with(binding) {

@@ -41,6 +41,7 @@
             android:alpha="0.3"
             android:src="@drawable/up_arrow"
             app:backgroundTint="@color/white"
+            android:onClick="@{() -> vm.onClickFloatingActionButton()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
