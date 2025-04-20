@@ -9,11 +9,6 @@
 또한, 에이펙스 레전드 게임 내에서 진행 중인 맵과 제작 아이템 정보를 실시간으로 확인할 수 있으며, EA Korea 에서 제공하는 
 관련 소식들도 살펴 볼 수 있습니다.
 
-
----
-## 🛒 Download
-https://play.google.com/store/apps/details?id=jyotti.apexing.apexing_android
-
 ---
 ## 📷 ScreenShots
 ![end](https://user-images.githubusercontent.com/82919343/175826164-259126e1-dcbb-4c23-bb63-4c98e162b128.png)
